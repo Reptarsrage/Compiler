@@ -11,13 +11,23 @@ class TestInheritanceSimple {
         if (p.getIsMale()) {
             System.out.println(1);
         }
-        return p.age;
+        return p.getAge();
     }
 }
 
 class Person {
-    private int age;
-    private boolean isMale;
+    int age;
+    boolean isMale;
+
+    public Person() {
+        age = 0;
+        isMale = false;
+    }
+
+    public Person(int a) {
+        age = a;
+        isMale = false;
+    }
     
     public Person(int a, boolean m) {
         age = a;

@@ -6,7 +6,7 @@ class cse401c_correct_06 {
 }
 
 class TestFunctionDispatch {
-    public test() {
+    public int test() {
         return 1;
     }
 }

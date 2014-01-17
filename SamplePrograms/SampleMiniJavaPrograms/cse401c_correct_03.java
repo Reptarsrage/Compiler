@@ -9,7 +9,7 @@ class TestWhileLoopIntLiteral {
     public int test() {
         int i = 0;
 
-        while (1) {
+        while (1 == 1) {
             i ++;
             if (i == 5) {
                 break;

@@ -7,7 +7,9 @@ class cse401c_correct_07 {
 
 class TestIntVars {
     public int test(int x) {
-        System.out.println(x);
-        return x+1;
+        int a = x;
+        System.out.println(a);
+        a = a + 1;
+        return a;
     }
 }
