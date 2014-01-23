@@ -114,7 +114,7 @@ import java_cup.runtime.Symbol;
         return "STATIC";
       case sym.VOID:
         return "VOID";
-      case sym.LENGTH;
+      case sym.LENGTH:
         return "LENGTH";
       case sym.STRING:
         return "STRING";
