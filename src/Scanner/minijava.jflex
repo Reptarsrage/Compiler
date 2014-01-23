@@ -80,9 +80,7 @@ import java_cup.runtime.Symbol;
         return "RBRACKET";
       case sym.DISPLAY:
         return "DISPLAY";
-      case sym.COMMENT:
- 	return "COMMENT";
-            case sym.PUBLIC:
+	  case sym.PUBLIC:
         return "PUBLIC";
       case sym.CLASS:
         return "CLASS";
@@ -96,10 +94,16 @@ import java_cup.runtime.Symbol;
         return "NEW";
       case sym.INT:
         return "INT";
-      case sym.DOUBLE:
-      return "DOUBLE";
       case sym.BOOLEAN:
         return "BOOLEAN";
+      case sym.IF:
+        return "IF";
+      case sym.ELSE:
+        return "ELSE";
+      case sym.WHILE:
+        return "WHILE";
+	  case sym.COMMENT:
+		return "COMMENT";
 	  case sym.NOT:
 	    return "NOT";
       case sym.IDENTIFIER:
@@ -133,16 +137,10 @@ white = {eol}|[ \t]
 
 /* reserved words */
 /* (put here so that reserved words take precedence over identifiers) */
-"public" { return symbol(sym.PUBLIC); }
-"class" { return symbol(sym.CLASS); }
 "display" { return symbol(sym.DISPLAY); }
-"this" { return symbol(sym.THIS); }
-"true" { return symbol(sym.TRUE); }
-"false" { return symbol(sym.FALSE); }
-"new" { return symbol(sym.NEW); }
-"int" { return symbol(sym.INT); }
-"double" { return symbol(sym.DOUBLE); }
-"boolean" { return symbol(sym.BOOLEAN); }
+"if" { return symbol(sym.IF); }
+"else" { return symbol(sym.ELSE); }
+"while" { return symbol(sym.WHILE); }
 
 /* operators */
 "&&" { return symbol(sym.AND); }

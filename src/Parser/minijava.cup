@@ -105,6 +105,9 @@ terminal DOUBLE;
 terminal BOOLEAN;
 terminal DISPLAY;
 terminal COMMENT;
+terminal IF;
+terminal ELSE;
+terminal WHILE;
 
 /* operators: */
 terminal AND, OR, EQ, LESSEQ, GREATEREQ, LESS, GREATER, PLUS, MINUS, MULT, DIV, MOD, BECOMES, NOT;
