@@ -97,7 +97,7 @@ parser code {:
 terminal DISPLAY;
 
 /* operators: */
-terminal PLUS, BECOMES;
+terminal AND, OR, EQ, LESSEQ, GREATEREQ, LESS, GREATER, PLUS, MINUS, MULT, DIV, MOD, BECOMES;
 
 /* delimiters: */
 terminal LPAREN, RPAREN, SEMICOLON;

@@ -38,6 +38,28 @@ import java_cup.runtime.Symbol;
   public String symbolToString(Symbol s) {
     String rep;
     switch (s.sym) {
+      case sym.AND:
+        return "AND";
+      case sym.OR:
+        return "OR";
+      case sym.EQ:
+        return "EQ";
+      case sym.LESSEQ:
+        return "LESSEQ";
+      case sym.GREATEREQ:
+        return "GREATEREQ";
+      case sym.LESS:
+        return "LESS";
+      case sym.GREATER:
+        return "GREATER";
+      case sym.MINUS:
+        return "MINUS";
+      case sym.MULT:
+        return "MULT";
+      case sym.DIV:
+        return "DIV";
+      case sym.MOD:
+        return "MOD";
       case sym.BECOMES:
         return "BECOMES";
       case sym.SEMICOLON:
@@ -79,8 +101,20 @@ white = {eol}|[ \t]
 "display" { return symbol(sym.DISPLAY); }
 
 /* operators */
+"&&" { return symbol(sym.AND); }
+"||" { return symbol(sym.OR); }
+"==" { return symbol(sym.EQ); }
+"<=" { return symbol(sym.LESSEQ); }
+"=>" { return symbol(sym.GREATEREQ); }
+"<" { return symbol(sym.LESS); }
+">" { return symbol(sym.GREATER); }
 "+" { return symbol(sym.PLUS); }
+"-" { return symbol(sym.MINUS); }
+"*" { return symbol(sym.MULT); }
+"/" { return symbol(sym.DIV); }
+"%" { return symbol(sym.MOD); }
 "=" { return symbol(sym.BECOMES); }
+
 
 /* delimiters */
 "(" { return symbol(sym.LPAREN); }
