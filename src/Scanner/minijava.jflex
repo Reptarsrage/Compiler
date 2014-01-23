@@ -114,6 +114,8 @@ import java_cup.runtime.Symbol;
 	    return "NOT";
       case sym.STATIC:
         return "STATIC";
+	  case sym.DOUBLE:
+	    return "DOUBLE";
       case sym.VOID:
         return "VOID";
       case sym.LENGTH:
@@ -122,6 +124,8 @@ import java_cup.runtime.Symbol;
         return "STRING";
 	  case sym.EXTENDS:
 		return "EXTENDS";
+	  case sym.COMMA:
+	    return "COMMA";
       case sym.IDENTIFIER:
         return "ID(" + (String)s.value + ")";
       case sym.CONSTANT:
@@ -193,6 +197,7 @@ white = {eol}|[ \t]
 
 
 /* delimiters */
+"," { return symbol(sym.COMMA); }
 "." { return symbol(sym.DOT); }
 "{" { return symbol(sym.LCURLYBRACE); }
 "}" { return symbol(sym.RCURLYBRACE); }
