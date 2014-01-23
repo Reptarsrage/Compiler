@@ -76,6 +76,8 @@ import java_cup.runtime.Symbol;
         return "ID(" + (String)s.value + ")";
       case sym.CONSTANT:
         return "CONSTANT(" + (String)s.value + ")";
+	case sym.DOUBLE:
+        return "DOUBLE(" + (String)s.value + ")";
       case sym.EOF:
         return "<EOF>";
       case sym.error:
@@ -125,6 +127,9 @@ white = {eol}|[ \t]
 {letter} ({letter}|{digit}|_)* { return symbol(sym.IDENTIFIER, yytext()); }
 
 /* constants */
+{digit}*\.{digit}*(d|D)? { return symbol(sym.DOUBLE, yytext()); }
+{digit}+(e|E)(\+|\-)?{digit}+ { return symbol(sym.DOUBLE, yytext()); }
+{digit}+(d|D) { return symbol(sym.DOUBLE, yytext()); }
 {digit}+ { return symbol(sym.CONSTANT, yytext()); }
 
 
