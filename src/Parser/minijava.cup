@@ -95,6 +95,7 @@ parser code {:
 
 /* reserved words: */
 terminal DISPLAY;
+terminal COMMENT;
 
 /* operators: */
 terminal AND, OR, EQ, LESSEQ, GREATEREQ, LESS, GREATER, PLUS, MINUS, MULT, DIV, MOD, BECOMES;
