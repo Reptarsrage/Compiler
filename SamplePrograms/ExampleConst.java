@@ -11,3 +11,6 @@ display 1d;
 display 1.0D;
 display .01D;
 display 1.d;
+{}
+[]
+!

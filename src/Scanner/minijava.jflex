@@ -70,16 +70,26 @@ import java_cup.runtime.Symbol;
         return "LPAREN";
       case sym.RPAREN:
         return "RPAREN";
+	  case sym.LCURLYBRACE:
+	    return "LCURLYBRACE";
+	  case sym.RCURLYBRACE:
+	    return "RCURLYBRACE";
+      case sym.LBRACKET:
+        return "LBRACKET";
+      case sym.RBRACKET:
+        return "RBRACKET";
       case sym.DISPLAY:
         return "DISPLAY";
 	  case sym.COMMENT:
 		return "COMMENT";
+	  case sym.NOT:
+	    return "NOT";
       case sym.IDENTIFIER:
         return "ID(" + (String)s.value + ")";
       case sym.CONSTANT:
         return "CONSTANT(" + (String)s.value + ")";
-	case sym.DOUBLE:
-        return "DOUBLE(" + (String)s.value + ")";
+	case sym.D_CONSTANT:
+        return "D_CONSTANT(" + (String)s.value + ")";
       case sym.EOF:
         return "<EOF>";
       case sym.error:
@@ -130,9 +140,14 @@ white = {eol}|[ \t]
 "/" { return symbol(sym.DIV); }
 "%" { return symbol(sym.MOD); }
 "=" { return symbol(sym.BECOMES); }
+"!" { return symbol(sym.NOT); }
 
 
 /* delimiters */
+"{" { return symbol(sym.LCURLYBRACE); }
+"}" { return symbol(sym.RCURLYBRACE); }
+"[" { return symbol(sym.LBRACKET); }
+"]" { return symbol(sym.RBRACKET); }
 "(" { return symbol(sym.LPAREN); }
 ")" { return symbol(sym.RPAREN); }
 ";" { return symbol(sym.SEMICOLON); }
@@ -141,9 +156,9 @@ white = {eol}|[ \t]
 {letter} ({letter}|{digit}|_)* { return symbol(sym.IDENTIFIER, yytext()); }
 
 /* constants */
-{digit}*\.{digit}*(d|D)? { return symbol(sym.DOUBLE, yytext()); }
-{digit}+(e|E)(\+|\-)?{digit}+ { return symbol(sym.DOUBLE, yytext()); }
-{digit}+(d|D) { return symbol(sym.DOUBLE, yytext()); }
+{digit}*\.{digit}*(d|D)? { return symbol(sym.D_CONSTANT, yytext()); }
+{digit}+(e|E)(\+|\-)?{digit}+ { return symbol(sym.D_CONSTANT, yytext()); }
+{digit}+(d|D) { return symbol(sym.D_CONSTANT, yytext()); }
 {digit}+ { return symbol(sym.CONSTANT, yytext()); }
 
 
