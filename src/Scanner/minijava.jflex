@@ -72,8 +72,26 @@ import java_cup.runtime.Symbol;
         return "RPAREN";
       case sym.DISPLAY:
         return "DISPLAY";
-	  case sym.COMMENT:
-		return "COMMENT";
+      case sym.COMMENT:
+ 	return "COMMENT";
+      case sym.PUBLIC:
+        return "PUBLIC";
+      case sym.CLASS:
+        return "CLASS";
+      case sym.THIS:
+        return "THIS";
+      case sym.TRUE:
+        return "TRUE";
+      case sym.FALSE:
+        return "FALSE";
+      case sym.NEW:
+        return "NEW";
+      case sym.INT:
+        return "INT";
+      case sym.DOUBLE:
+        return "DOUBLE";
+      case sym.BOOLEAN:
+        return "BOOLEAN";
       case sym.IDENTIFIER:
         return "ID(" + (String)s.value + ")";
       case sym.CONSTANT:

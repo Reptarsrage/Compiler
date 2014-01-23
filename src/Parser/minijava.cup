@@ -94,6 +94,15 @@ parser code {:
 /* Terminals (tokens returned by the scanner) */
 
 /* reserved words: */
+terminal PUBLIC;
+terminal CLASS;
+terminal THIS;
+terminal TRUE;
+terminal FALSE;
+terminal NEW;
+terminal INT;
+terminal DOUBLE;
+terminal BOOLEAN;
 terminal DISPLAY;
 terminal COMMENT;
 
