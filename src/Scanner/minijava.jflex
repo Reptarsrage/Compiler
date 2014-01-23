@@ -110,6 +110,8 @@ import java_cup.runtime.Symbol;
         return "STATIC";
       case sym.VOID:
         return "VOID";
+      case sym.LENGTH;
+        return "LENGTH";
       case sym.STRING:
         return "STRING";
       case sym.IDENTIFIER:
@@ -160,6 +162,7 @@ white = {eol}|[ \t]
 "boolean" { return symbol(sym.BOOLEAN); }
 "String" { return symbol(sym.STRING); }
 "void" { return symbol(sym.VOID); }
+".length" { return symbol(sym.LENGTH); }
 
 /* operators */
 "&&" { return symbol(sym.AND); }
