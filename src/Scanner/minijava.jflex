@@ -72,6 +72,8 @@ import java_cup.runtime.Symbol;
         return "RPAREN";
       case sym.DISPLAY:
         return "DISPLAY";
+	  case sym.COMMENT:
+		return "COMMENT";
       case sym.IDENTIFIER:
         return "ID(" + (String)s.value + ")";
       case sym.CONSTANT:
@@ -97,6 +99,9 @@ white = {eol}|[ \t]
 %%
 
 /* Token definitions */
+
+/* comments */
+\/\/.*{eol} { return symbol(sym.COMMENT); }
 
 /* reserved words */
 /* (put here so that reserved words take precedence over identifiers) */
