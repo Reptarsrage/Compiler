@@ -106,6 +106,12 @@ import java_cup.runtime.Symbol;
 		return "COMMENT";
 	  case sym.NOT:
 	    return "NOT";
+      case sym.STATIC:
+        return "STATIC";
+      case sym.VOID:
+        return "VOID";
+      case sym.STRING:
+        return "STRING";
       case sym.IDENTIFIER:
         return "ID(" + (String)s.value + ")";
       case sym.CONSTANT:
@@ -141,6 +147,19 @@ white = {eol}|[ \t]
 "if" { return symbol(sym.IF); }
 "else" { return symbol(sym.ELSE); }
 "while" { return symbol(sym.WHILE); }
+"public" { return symbol(sym.PUBLIC); }
+"static" { return symbol(sym.STATIC); }
+"class" { return symbol(sym.CLASS); }
+"display" { return symbol(sym.DISPLAY); }
+"this" { return symbol(sym.THIS); }
+"true" { return symbol(sym.TRUE); }
+"false" { return symbol(sym.FALSE); }
+"new" { return symbol(sym.NEW); }
+"int" { return symbol(sym.INT); }
+"double" { return symbol(sym.DOUBLE); }
+"boolean" { return symbol(sym.BOOLEAN); }
+"String" { return symbol(sym.STRING); }
+"void" { return symbol(sym.VOID); }
 
 /* operators */
 "&&" { return symbol(sym.AND); }

@@ -95,6 +95,7 @@ parser code {:
 
 /* reserved words: */
 terminal PUBLIC;
+terminal STATIC;
 terminal CLASS;
 terminal THIS;
 terminal TRUE;
@@ -103,11 +104,13 @@ terminal NEW;
 terminal INT;
 terminal DOUBLE;
 terminal BOOLEAN;
+terminal STRING;
 terminal DISPLAY;
 terminal COMMENT;
 terminal IF;
 terminal ELSE;
 terminal WHILE;
+terminal VOID;
 
 /* operators: */
 terminal AND, OR, EQ, LESSEQ, GREATEREQ, LESS, GREATER, PLUS, MINUS, MULT, DIV, MOD, BECOMES, NOT;
