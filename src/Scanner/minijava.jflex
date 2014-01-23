@@ -80,6 +80,10 @@ import java_cup.runtime.Symbol;
         return "RBRACKET";
       case sym.DISPLAY:
         return "DISPLAY";
+	  case sym.PRINTLN:
+		return "PRINTLN";
+	  case sym.RETURN:
+	    return "RETURN";
 	  case sym.PUBLIC:
         return "PUBLIC";
       case sym.CLASS:
@@ -114,6 +118,8 @@ import java_cup.runtime.Symbol;
         return "LENGTH";
       case sym.STRING:
         return "STRING";
+	  case sym.EXTENDS:
+		return "EXTENDS";
       case sym.IDENTIFIER:
         return "ID(" + (String)s.value + ")";
       case sym.CONSTANT:
@@ -146,6 +152,8 @@ white = {eol}|[ \t]
 /* reserved words */
 /* (put here so that reserved words take precedence over identifiers) */
 "display" { return symbol(sym.DISPLAY); }
+"system.out.println" { return symbol(sym.PRINTLN); }
+"return" { return symbol(sym.RETURN); }
 "if" { return symbol(sym.IF); }
 "else" { return symbol(sym.ELSE); }
 "while" { return symbol(sym.WHILE); }
@@ -163,6 +171,7 @@ white = {eol}|[ \t]
 "String" { return symbol(sym.STRING); }
 "void" { return symbol(sym.VOID); }
 ".length" { return symbol(sym.LENGTH); }
+"extends" { return symbol(sym.EXTENDS); }
 
 /* operators */
 "&&" { return symbol(sym.AND); }
