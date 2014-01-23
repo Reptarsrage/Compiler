@@ -100,7 +100,16 @@ white = {eol}|[ \t]
 
 /* reserved words */
 /* (put here so that reserved words take precedence over identifiers) */
+"public" { return symbol(sym.PUBLIC); }
+"class" { return symbol(sym.CLASS); }
 "display" { return symbol(sym.DISPLAY); }
+"this" { return symbol(sym.THIS); }
+"true" { return symbol(sym.TRUE); }
+"false" { return symbol(sym.FALSE); }
+"new" { return symbol(sym.NEW); }
+"int" { return symbol(sym.INT); }
+"double" { return symbol(sym.DOUBLE); }
+"boolean" { return symbol(sym.BOOLEAN); }
 
 /* operators */
 "&&" { return symbol(sym.AND); }
