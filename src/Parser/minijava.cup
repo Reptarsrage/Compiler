@@ -107,15 +107,15 @@ terminal DISPLAY;
 terminal COMMENT;
 
 /* operators: */
-terminal AND, OR, EQ, LESSEQ, GREATEREQ, LESS, GREATER, PLUS, MINUS, MULT, DIV, MOD, BECOMES;
+terminal AND, OR, EQ, LESSEQ, GREATEREQ, LESS, GREATER, PLUS, MINUS, MULT, DIV, MOD, BECOMES, NOT;
 
 /* delimiters: */
-terminal LPAREN, RPAREN, SEMICOLON;
+terminal LCURLYBRACE, RCURLYBRACE, LBRACKET, RBRACKET, LPAREN, RPAREN, SEMICOLON;
 
 /* tokens with values: */
 terminal String IDENTIFIER;
 terminal String CONSTANT;
-terminal String DOUBLE;
+terminal String D_CONSTANT;
 
 /* Nonterminals */
 
