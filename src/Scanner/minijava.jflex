@@ -78,6 +78,8 @@ import java_cup.runtime.Symbol;
         return "LBRACKET";
       case sym.RBRACKET:
         return "RBRACKET";
+	  case sym.DOT:
+	    return "DOT";
       case sym.DISPLAY:
         return "DISPLAY";
 	  case sym.PRINTLN:
@@ -170,7 +172,7 @@ white = {eol}|[ \t]
 "boolean" { return symbol(sym.BOOLEAN); }
 "String" { return symbol(sym.STRING); }
 "void" { return symbol(sym.VOID); }
-".length" { return symbol(sym.LENGTH); }
+"length" { return symbol(sym.LENGTH); }
 "extends" { return symbol(sym.EXTENDS); }
 
 /* operators */
@@ -191,6 +193,7 @@ white = {eol}|[ \t]
 
 
 /* delimiters */
+"." { return symbol(sym.DOT); }
 "{" { return symbol(sym.LCURLYBRACE); }
 "}" { return symbol(sym.RCURLYBRACE); }
 "[" { return symbol(sym.LBRACKET); }
