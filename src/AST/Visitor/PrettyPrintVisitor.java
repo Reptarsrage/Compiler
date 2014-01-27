@@ -12,6 +12,7 @@ import AST.ClassDecl;
 import AST.ClassDeclExtends;
 import AST.ClassDeclList;
 import AST.ClassDeclSimple;
+import AST.Comment;
 import AST.ConstantExp;
 import AST.Display;
 import AST.Divide;
@@ -199,6 +200,10 @@ public class PrettyPrintVisitor implements Visitor {
 
   public void visit(IntegerType n) {
     System.out.print("int");
+  }
+  
+  public void visit(Comment n) {
+    System.out.print("// Comment");
   }
 
   // String s;

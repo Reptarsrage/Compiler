@@ -18,6 +18,7 @@ import AST.ClassDecl;
 import AST.ClassDeclExtends;
 import AST.ClassDeclList;
 import AST.ClassDeclSimple;
+import AST.Comment;
 import AST.ConstantExp;
 import AST.Display;
 import AST.Divide;
@@ -140,6 +141,7 @@ nonterminal List<Statement> Program;
 nonterminal Statement Statement;
 nonterminal Assign AssignStatement;
 nonterminal Display DisplayStatement;
+nonterminal Comment CommentLine;
 nonterminal Exp Expression;
 nonterminal Identifier Identifier;
 
@@ -172,7 +174,9 @@ Statement   ::=
             {: RESULT = s; :}
         | DisplayStatement:s
             {: RESULT = s; :}
-        ;
+		| CommentLine:s
+            {: RESULT = s; :}
+        ;		
 
 AssignStatement ::=
           Identifier:id BECOMES Expression:expr SEMICOLON
@@ -187,6 +191,11 @@ Identifier  ::=
 DisplayStatement ::=
           DISPLAY:d Expression:expr SEMICOLON
              {: RESULT = new Display(expr, dleft); :}
+        ;
+		
+CommentLine ::=
+          COMMENT:c
+             {: RESULT = new Comment(cleft); :}
         ;
 
 Expression    ::=

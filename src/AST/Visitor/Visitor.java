@@ -12,6 +12,7 @@ import AST.ClassDecl;
 import AST.ClassDeclExtends;
 import AST.ClassDeclList;
 import AST.ClassDeclSimple;
+import AST.Comment;
 import AST.ConstantExp;
 import AST.Display;
 import AST.Divide;
@@ -86,6 +87,7 @@ public interface Visitor {
   public void visit(Minus n);
   public void visit(Mod n);
   public void visit(Times n);
+  public void visit(Comment n);
   public void visit(Divide n);
   public void visit(ArrayLookup n);
   public void visit(ArrayLength n);

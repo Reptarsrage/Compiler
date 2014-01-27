@@ -12,6 +12,7 @@ import AST.ClassDecl;
 import AST.ClassDeclExtends;
 import AST.ClassDeclList;
 import AST.ClassDeclSimple;
+import AST.Comment;
 import AST.ConstantExp;
 import AST.Display;
 import AST.Divide;
@@ -71,6 +72,10 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(Display n) {
     n.e.accept(this);
     cg.genDisplay();
+  }
+  
+  // Comment
+  public void visit(Comment n) {
   }
 
   // MainClass m;
