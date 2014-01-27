@@ -143,6 +143,7 @@ nonterminal Assign AssignStatement;
 nonterminal Display DisplayStatement;
 nonterminal Comment CommentLine;
 nonterminal Exp Expression;
+nonterminal ExpList ExpressionList;
 nonterminal Identifier Identifier;
 
 
@@ -151,6 +152,7 @@ nonterminal Identifier Identifier;
 precedence nonassoc AND, OR, EQ, LESSEQ, GREATEREQ, LESS, GREATER;
 precedence left PLUS, MINUS;
 precedence left MULT, DIV, MOD;
+precedence nonassoc DOT, NOT;
 
 
 /* Productions */
@@ -199,13 +201,7 @@ CommentLine ::=
         ;
 
 Expression    ::=
-          IDENTIFIER:name
-            {: RESULT = new IdentifierExp(name, nameleft); :}
-
-        | CONSTANT:value
-            {: RESULT = new ConstantExp(value, valueleft); :}
-  
-		| Expression:arg1 AND Expression:arg2
+        Expression:arg1 AND Expression:arg2
             {: RESULT = new ShortCircuitAnd(arg1, arg2, arg1left); :}
 		
 		| Expression:arg1 OR Expression:arg2
@@ -240,7 +236,54 @@ Expression    ::=
 
 		| Expression:arg1 MOD Expression:arg2
             {: RESULT = new Mod(arg1, arg2, arg1left); :}
+		  
+		| Expression:arg1 LBRACKET Expression:arg2 RBRACKET
+            {: RESULT = new ArrayLookup(arg1, arg2, arg1left); :}
+	
+		| Expression:arg1 DOT LENGTH
+            {: RESULT = new ArrayLength(arg1, arg1left); :}
+  
+		| Expression:arg1 DOT IDENTIFIER:name LPAREN ExpressionList:explist RPAREN
+            {: Identifier id = new Identifier(name, nameleft);
+			RESULT = new Call(arg1, id, explist, arg1left); :}
+		
+		| Expression:arg1 DOT IDENTIFIER:name LPAREN RPAREN
+            {:  ExpList list = new ExpList(arg1left);
+				Identifier id = new Identifier(name, nameleft);
+				RESULT = new Call(arg1, id, list, arg1left); :}
+	
+        | CONSTANT:value
+            {: RESULT = new ConstantExp(value, valueleft); :}
 			
-        | LPAREN Expression:expr RPAREN
+        | TRUE:t
+            {: RESULT = new True(tleft); :}
+		
+		| FALSE:f
+            {: RESULT = new False(fleft); :}
+			
+		|  IDENTIFIER:name
+            {: RESULT = new IdentifierExp(name, nameleft); :}
+
+		| THIS:t
+            {: RESULT = new This(tleft); :}
+		
+		| NEW:n INT LBRACKET Expression:exp RBRACKET
+            {: RESULT = new NewArray(exp, nleft); :}
+			
+		| NEW:n Identifier:name LPAREN RPAREN
+            {: RESULT = new NewObject(name, nleft); :}
+				
+		| LPAREN Expression:expr RPAREN
             {: RESULT = expr; :}
+        ;
+
+ExpressionList ::=
+		  Expression:e1 COMMA ExpressionList:explist
+             {: RESULT = new ExpList(e1left); 
+				RESULT.add(e1); 
+				for (int i = 0; i < explist.size(); i++)
+				  RESULT.add(explist.get(i)); :}
+          Expression:f1
+             {: RESULT = new ExpList(f1left); 
+			    RESULT.add(f1); :}
         ;
