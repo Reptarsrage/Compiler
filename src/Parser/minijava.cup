@@ -145,6 +145,8 @@ nonterminal Comment CommentLine;
 nonterminal Exp Expression;
 nonterminal ExpList ExpressionList;
 nonterminal Identifier Identifier;
+nonterminal Type Type;
+nonterminal VarDecl VarDeclaration;
 
 
 /* Precedence declarations */
@@ -188,6 +190,25 @@ AssignStatement ::=
 Identifier  ::=
           IDENTIFIER:id
             {: RESULT = new Identifier(id, idleft); :}
+        ;
+		
+Type  ::=
+		INT:i LBRACKET RBRACKET
+		   {: RESULT = new IntArrayType(ileft); :}
+		
+		| BOOLEAN:b
+		   {: RESULT = new BooleanType(bleft); :}
+		
+		| INT:i
+		   {: RESULT = new IntegerType(ileft); :}
+		
+		| Identifier:id
+		   {: RESULT = new IdentifierType(id.toString(), idleft); :}
+		;
+
+VarDeclaration ::=
+          Type:t Identifier:id SEMICOLON
+             {: RESULT = new VarDecl(t, id, tleft); :}
         ;
 
 DisplayStatement ::=
@@ -278,12 +299,11 @@ Expression    ::=
         ;
 
 ExpressionList ::=
-		  Expression:e1 COMMA ExpressionList:explist
-             {: RESULT = new ExpList(e1left); 
-				RESULT.add(e1); 
-				for (int i = 0; i < explist.size(); i++)
-				  RESULT.add(explist.get(i)); :}
-          Expression:f1
-             {: RESULT = new ExpList(f1left); 
-			    RESULT.add(f1); :}
+		  Expression:f1
+             {: ExpList list = new ExpList(f1left); 
+			    list.add(f1); 
+				RESULT = list; :}
+		  ExpressionList:list COMMA Expression:exp
+             {: list.add(exp);
+				RESULT = list; :}
         ;
