@@ -21,11 +21,14 @@ import AST.ClassDeclSimple;
 import AST.ConstantExp;
 import AST.Display;
 import AST.Divide;
+import AST.Equals;
 import AST.Exp;
 import AST.ExpList;
 import AST.False;
 import AST.Formal;
 import AST.FormalList;
+import AST.GreaterThan;
+import AST.GreaterThanOrEqualTo;
 import AST.Identifier;
 import AST.IdentifierExp;
 import AST.IdentifierType;
@@ -34,10 +37,12 @@ import AST.IntArrayType;
 import AST.IntegerLiteral;
 import AST.IntegerType;
 import AST.LessThan;
+import AST.LessThanOrEqualTo;
 import AST.MainClass;
 import AST.MethodDecl;
 import AST.MethodDeclList;
 import AST.Minus;
+import AST.Mod;
 import AST.NewArray;
 import AST.NewObject;
 import AST.Not;
@@ -45,6 +50,7 @@ import AST.Plus;
 import AST.Print;
 import AST.Program;
 import AST.ShortCircuitAnd;
+import AST.ShortCircuitOr;
 import AST.Statement;
 import AST.StatementList;
 import AST.This;
@@ -140,8 +146,9 @@ nonterminal Identifier Identifier;
 
 /* Precedence declarations */
 
+precedence nonassoc AND, OR, EQ, LESSEQ, GREATEREQ, LESS, GREATER;
 precedence left PLUS, MINUS;
-precedence left MULT, DIV;
+precedence left MULT, DIV, MOD;
 
 
 /* Productions */
@@ -188,8 +195,29 @@ Expression    ::=
 
         | CONSTANT:value
             {: RESULT = new ConstantExp(value, valueleft); :}
-
-        | Expression:arg1 PLUS Expression:arg2
+  
+		| Expression:arg1 AND Expression:arg2
+            {: RESULT = new ShortCircuitAnd(arg1, arg2, arg1left); :}
+		
+		| Expression:arg1 OR Expression:arg2
+            {: RESULT = new ShortCircuitOr(arg1, arg2, arg1left); :}
+		
+		| Expression:arg1 EQ Expression:arg2
+            {: RESULT = new Equals(arg1, arg2, arg1left); :}
+		
+		| Expression:arg1 LESSEQ Expression:arg2
+            {: RESULT = new LessThanOrEqualTo(arg1, arg2, arg1left); :}
+		
+		| Expression:arg1 GREATEREQ Expression:arg2
+            {: RESULT = new GreaterThanOrEqualTo(arg1, arg2, arg1left); :}
+		
+		| Expression:arg1 LESS Expression:arg2
+            {: RESULT = new LessThan(arg1, arg2, arg1left); :}
+		
+		| Expression:arg1 GREATER Expression:arg2
+            {: RESULT = new GreaterThan(arg1, arg2, arg1left); :}			
+        
+		| Expression:arg1 PLUS Expression:arg2
             {: RESULT = new Plus(arg1, arg2, arg1left); :}
 		
 		| Expression:arg1 MINUS Expression:arg2
@@ -201,6 +229,9 @@ Expression    ::=
 		| Expression:arg1 DIV Expression:arg2
             {: RESULT = new Divide(arg1, arg2, arg1left); :}
 
+		| Expression:arg1 MOD Expression:arg2
+            {: RESULT = new Mod(arg1, arg2, arg1left); :}
+			
         | LPAREN Expression:expr RPAREN
             {: RESULT = expr; :}
         ;
