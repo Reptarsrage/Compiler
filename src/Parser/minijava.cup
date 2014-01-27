@@ -20,6 +20,7 @@ import AST.ClassDeclList;
 import AST.ClassDeclSimple;
 import AST.ConstantExp;
 import AST.Display;
+import AST.Divide;
 import AST.Exp;
 import AST.ExpList;
 import AST.False;
@@ -139,7 +140,8 @@ nonterminal Identifier Identifier;
 
 /* Precedence declarations */
 
-precedence left PLUS;
+precedence left PLUS, MINUS;
+precedence left MULT, DIV;
 
 
 /* Productions */
@@ -189,6 +191,15 @@ Expression    ::=
 
         | Expression:arg1 PLUS Expression:arg2
             {: RESULT = new Plus(arg1, arg2, arg1left); :}
+		
+		| Expression:arg1 MINUS Expression:arg2
+            {: RESULT = new Minus(arg1, arg2, arg1left); :}
+		
+		| Expression:arg1 MULT Expression:arg2
+            {: RESULT = new Times(arg1, arg2, arg1left); :}
+		
+		| Expression:arg1 DIV Expression:arg2
+            {: RESULT = new Divide(arg1, arg2, arg1left); :}
 
         | LPAREN Expression:expr RPAREN
             {: RESULT = expr; :}

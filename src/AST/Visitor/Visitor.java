@@ -14,6 +14,7 @@ import AST.ClassDeclList;
 import AST.ClassDeclSimple;
 import AST.ConstantExp;
 import AST.Display;
+import AST.Divide;
 import AST.Exp;
 import AST.ExpList;
 import AST.False;
@@ -73,6 +74,7 @@ public interface Visitor {
   public void visit(Plus n);
   public void visit(Minus n);
   public void visit(Times n);
+  public void visit(Divide n);
   public void visit(ArrayLookup n);
   public void visit(ArrayLength n);
   public void visit(Call n);
