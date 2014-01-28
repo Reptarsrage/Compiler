@@ -41,6 +41,7 @@ import AST.Mod;
 import AST.NewArray;
 import AST.NewObject;
 import AST.Not;
+import AST.NotEqual;
 import AST.Plus;
 import AST.Print;
 import AST.Program;
@@ -330,6 +331,15 @@ public class PrettyPrintVisitor implements Visitor {
     System.out.print("(");
     n.e1.accept(this);
     System.out.print(" == ");
+    n.e2.accept(this);
+    System.out.print(")");
+  }
+  
+  // Exp e1,e2;
+  public void visit(NotEqual n) {
+    System.out.print("(");
+    n.e1.accept(this);
+    System.out.print(" != ");
     n.e2.accept(this);
     System.out.print(")");
   }

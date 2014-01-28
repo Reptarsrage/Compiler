@@ -41,6 +41,7 @@ import AST.Mod;
 import AST.NewArray;
 import AST.NewObject;
 import AST.Not;
+import AST.NotEqual;
 import AST.Plus;
 import AST.Print;
 import AST.Program;
@@ -85,6 +86,7 @@ public interface Visitor {
   public void visit(LessThan n);
   public void visit(Plus n);
   public void visit(Minus n);
+  public void visit(NotEqual n);
   public void visit(Mod n);
   public void visit(Times n);
   public void visit(Comment n);

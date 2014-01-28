@@ -41,6 +41,7 @@ import AST.Mod;
 import AST.NewArray;
 import AST.NewObject;
 import AST.Not;
+import AST.NotEqual;
 import AST.Plus;
 import AST.Print;
 import AST.Program;
@@ -253,6 +254,12 @@ public class CodeGeneratorVisitor implements Visitor {
   
   // Exp e1,e2;
   public void visit(Equals n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+  }
+  
+  // Exp e1,e2;
+  public void visit(NotEqual n) {
     n.e1.accept(this);
     n.e2.accept(this);
   }

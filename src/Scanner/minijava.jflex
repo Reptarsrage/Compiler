@@ -120,6 +120,8 @@ import java_cup.runtime.Symbol;
         return "VOID";
       case sym.LENGTH:
         return "LENGTH";
+	  case sym.NOTEQ:
+	    return "NOTEQ";
       case sym.STRING:
         return "STRING";
 	  case sym.EXTENDS:
@@ -183,6 +185,7 @@ white = {eol}|[ \t]
 "&&" { return symbol(sym.AND); }
 "||" { return symbol(sym.OR); }
 "==" { return symbol(sym.EQ); }
+"!=" { return symbol(sym.EQ); }
 "<=" { return symbol(sym.LESSEQ); }
 ">=" { return symbol(sym.GREATEREQ); }
 "<" { return symbol(sym.LESS); }

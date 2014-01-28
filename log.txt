@@ -1,0 +1,23 @@
+Buildfile: /homes/iws/xreptarx/cse401/401_project/build.xml
+
+init:
+    [mkdir] Created dir: /homes/iws/xreptarx/cse401/401_project/build/classes
+
+check.parse.files:
+
+gen-parser:
+
+gen-scanner:
+     [java] Reading "src/Scanner/minijava.jflex"
+     [java] Constructing NFA : 254 states in NFA
+     [java] Converting NFA to DFA : 
+     [java] .........................................................................................................................................................
+     [java] 155 states before minimization, 147 states in minimized DFA
+     [java] Writing code to "src/Scanner/scanner.java"
+
+compile:
+    [javac] Compiling 66 source files to /homes/iws/xreptarx/cse401/401_project/build/classes
+    [javac] /homes/iws/xreptarx/cse401/401_project/src/Scanner/scanner.java:469: error: : expected
+    [javac] 	  case sym.NOTEQ;
+    [javac] 	                ^
+    [javac] 1 error

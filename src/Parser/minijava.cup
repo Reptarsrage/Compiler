@@ -47,6 +47,7 @@ import AST.Mod;
 import AST.NewArray;
 import AST.NewObject;
 import AST.Not;
+import AST.NotEqual;
 import AST.Plus;
 import AST.Print;
 import AST.Program;
@@ -125,7 +126,7 @@ terminal VOID;
 terminal LENGTH;
 
 /* operators: */
-terminal AND, OR, EQ, LESSEQ, GREATEREQ, LESS, GREATER, PLUS, MINUS, MULT, DIV, MOD, BECOMES, NOT;
+terminal AND, OR, EQ, NOTEQ, LESSEQ, GREATEREQ, LESS, GREATER, PLUS, MINUS, MULT, DIV, MOD, BECOMES, NOT;
 
 /* delimiters: */
 terminal LCURLYBRACE, RCURLYBRACE, LBRACKET, RBRACKET, LPAREN, RPAREN, SEMICOLON, DOT, COMMA;
@@ -150,11 +151,17 @@ nonterminal VarDecl VarDeclaration;
 
 
 /* Precedence declarations */
-
-precedence nonassoc AND, OR, EQ, LESSEQ, GREATEREQ, LESS, GREATER;
+// source for these are http://en.cppreference.com/w/cpp/language/operator_precedence
+precedence left COMMA;
+precedence right BECOMES;
+precedence left OR;
+precedence left AND;
+precedence left EQ, NOTEQ;
+precedence left LESSEQ, GREATEREQ, LESS, GREATER;
 precedence left PLUS, MINUS;
 precedence left MULT, DIV, MOD;
-precedence nonassoc DOT, NOT;
+precedence right NOT, NEW;
+precedence left DOT, LPAREN, LBRACKET;
 
 
 /* Productions */
@@ -230,6 +237,9 @@ Expression    ::=
 		
 		| Expression:arg1 EQ Expression:arg2
             {: RESULT = new Equals(arg1, arg2, arg1left); :}
+		
+		| Expression:arg1 NOTEQ Expression:arg2
+            {: RESULT = new NotEqual(arg1, arg2, arg1left); :}
 		
 		| Expression:arg1 LESSEQ Expression:arg2
             {: RESULT = new LessThanOrEqualTo(arg1, arg2, arg1left); :}
