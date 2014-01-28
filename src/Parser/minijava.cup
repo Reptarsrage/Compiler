@@ -137,22 +137,29 @@ terminal String CONSTANT;
 terminal String D_CONSTANT;
 
 /* Nonterminals */
-
-nonterminal List<Statement> Program;
+nonterminal MainClass MainClass;
+nonterminal ClassDecl ClassDeclaration;
+nonterminal ClassDeclList ClassDeclarationList;
+nonterminal VarDecl VarDeclaration;
+nonterminal VarDeclList VariableDeclarationList;
+nonterminal MethodDecl MethodDeclaration;
+nonterminal MethodDeclList MethodDeclarationList;
+nonterminal FormalList FormalList;
+nonterminal Type Type;
 nonterminal Statement Statement;
+nonterminal StatementList StatementList;
 nonterminal Assign AssignStatement;
 nonterminal Display DisplayStatement;
 nonterminal ArrayAssign ArrayAssignStatement;
 nonterminal While WhileStatement;
 nonterminal Print PrintStatement;
-nonterminal StatementList StatementList;
 nonterminal Comment CommentLine;
 nonterminal If IfElseStatement;
 nonterminal Exp Expression;
 nonterminal ExpList ExpressionList;
 nonterminal Identifier Identifier;
-nonterminal Type Type;
-nonterminal VarDecl VarDeclaration;
+
+nonterminal List<Statement> Program;
 
 
 /* Precedence declarations */
@@ -236,6 +243,13 @@ VarDeclaration ::=
              {: RESULT = new VarDecl(t, id, tleft); :}
         ;
 
+MethodDeclaration ::=
+		  PUBLIC:p Type:t Identifier:i LPAREN FormalList:flist RPAREN 
+		  LCURLYBRACE VariableDeclarationList:vdlist StatementList:slist RETURN
+		  Expression:expr SEMICOLON RCURLYBRACE
+			{: RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
+		;
+		
 DisplayStatement ::=
           DISPLAY:d Expression:expr SEMICOLON
              {: RESULT = new Display(expr, dleft); :}
@@ -350,3 +364,8 @@ ExpressionList ::=
              {: list.add(exp);
 				RESULT = list; :}
         ;
+FormalList ::= FormalList:list {: RESULT = list; :}; //TODO
+MethodDeclarationList ::= MethodDeclarationList:list {: RESULT = list; :}; //TODO
+ClassDeclarationList ::= ClassDeclarationList:list {: RESULT = list; :}; //TODO
+VariableDeclarationList ::= VariableDeclarationList:list {: RESULT = list; :}; //TODO
+StatementList ::= StatementList:list {: RESULT = list; :}; //TODO
