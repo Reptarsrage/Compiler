@@ -193,7 +193,9 @@ Program ::=
         ;
 
 Statement   ::=
-		IfElseStatement:s
+		/*LCURLYBRACE:c StatementList:list RCURLYBRACE
+			{: RESULT = new Statement(cleft); :}
+		| */IfElseStatement:s
 		    {: RESULT = s; :}
 		| WhileStatement:s
 			{: RESULT = s; :}
