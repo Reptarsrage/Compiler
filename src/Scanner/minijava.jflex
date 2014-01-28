@@ -162,7 +162,7 @@ white = {eol}|[ \t]
 /* reserved words */
 /* (put here so that reserved words take precedence over identifiers) */
 "display" { return symbol(sym.DISPLAY); }
-"system.out.println" { return symbol(sym.PRINTLN); }
+"System.out.println" { return symbol(sym.PRINTLN); }
 "return" { return symbol(sym.RETURN); }
 "if" { return symbol(sym.IF); }
 "else" { return symbol(sym.ELSE); }
