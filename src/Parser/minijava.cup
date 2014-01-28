@@ -124,6 +124,7 @@ terminal ELSE;
 terminal WHILE;
 terminal VOID;
 terminal LENGTH;
+terminal MAIN;
 
 /* operators: */
 terminal AND, OR, EQ, NOTEQ, LESSEQ, GREATEREQ, LESS, GREATER, PLUS, MINUS, MULT, DIV, MOD, BECOMES, NOT;
@@ -250,6 +251,21 @@ MethodDeclaration ::=
 		  LCURLYBRACE VariableDeclarationList:vdlist StatementList:slist RETURN
 		  Expression:expr SEMICOLON RCURLYBRACE
 			{: RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
+		;
+ClassDeclaration ::=
+		  CLASS:c Identifier:i LPAREN EXTENDS Identifier:ext RPAREN LCURLYBRACE 
+		  VariableDeclarationList:vdlist MethodDeclarationList:mdlist RCURLYBRACE
+		    {: RESULT = new ClassDeclExtends(i, ext, vdlist, mdlist, cleft); :}
+		| CLASS:c Identifier:i LCURLYBRACE 
+		  VariableDeclarationList:vdlist MethodDeclarationList:mdlist RCURLYBRACE
+		    {: RESULT = new ClassDeclSimple(i, vdlist, mdlist, cleft); :}
+		;
+
+MainClass ::=
+		  CLASS:c Identifier:i1 LCURLYBRACE PUBLIC STATIC VOID MAIN LPAREN
+		  STRING LBRACKET RBRACKET Identifier:i2 RPAREN LCURLYBRACE Statement:s 
+		  RCURLYBRACE RCURLYBRACE
+		     {: RESULT = new MainClass(i1, i2, s, cleft); :}
 		;
 		
 DisplayStatement ::=

@@ -126,6 +126,8 @@ import java_cup.runtime.Symbol;
         return "STRING";
 	  case sym.EXTENDS:
 		return "EXTENDS";
+	  case sym.MAIN:
+	    return "MAIN";
 	  case sym.COMMA:
 	    return "COMMA";
       case sym.IDENTIFIER:
@@ -180,6 +182,7 @@ white = {eol}|[ \t]
 "void" { return symbol(sym.VOID); }
 "length" { return symbol(sym.LENGTH); }
 "extends" { return symbol(sym.EXTENDS); }
+"main" { return symbol(sym.MAIN); }
 
 /* operators */
 "&&" { return symbol(sym.AND); }
