@@ -142,7 +142,12 @@ nonterminal List<Statement> Program;
 nonterminal Statement Statement;
 nonterminal Assign AssignStatement;
 nonterminal Display DisplayStatement;
+nonterminal ArrayAssign ArrayAssignStatement;
+nonterminal While WhileStatement;
+nonterminal Print PrintStatement;
+nonterminal StatementList StatementList;
 nonterminal Comment CommentLine;
+nonterminal If IfElseStatement;
 nonterminal Exp Expression;
 nonterminal ExpList ExpressionList;
 nonterminal Identifier Identifier;
@@ -181,14 +186,27 @@ Program ::=
         ;
 
 Statement   ::=
-          AssignStatement:s
-            {: RESULT = s; :}
+		IfElseStatement:s
+		    {: RESULT = s; :}
+		| WhileStatement:s
+			{: RESULT = s; :}
+		| PrintStatement:s
+			{: RESULT = s; :}
         | DisplayStatement:s
             {: RESULT = s; :}
+		| AssignStatement:s
+            {: RESULT = s; :}
+		| ArrayAssignStatement:s
+			{: RESULT = s; :}
 		| CommentLine:s
             {: RESULT = s; :}
         ;		
 
+ArrayAssignStatement ::=
+          Identifier:id LBRACKET Expression:exp1 RBRACKET BECOMES Expression:exp2 SEMICOLON
+            {: RESULT = new ArrayAssign(id, exp1, exp2, idleft); :}
+        ;
+		
 AssignStatement ::=
           Identifier:id BECOMES Expression:expr SEMICOLON
             {: RESULT = new Assign(id, expr, idleft); :}
@@ -222,12 +240,24 @@ DisplayStatement ::=
           DISPLAY:d Expression:expr SEMICOLON
              {: RESULT = new Display(expr, dleft); :}
         ;
+PrintStatement ::=
+		  PRINTLN:p LPAREN Expression:exp RPAREN SEMICOLON
+		     {: RESULT = new Print(exp, pleft); :}
+		;
+WhileStatement ::=
+		  WHILE:w LPAREN Expression:exp RPAREN Statement:s
+		     {: RESULT = new While(exp, s, wleft); :}
+		;
 		
 CommentLine ::=
           COMMENT:c
              {: RESULT = new Comment(cleft); :}
         ;
-
+IfElseStatement ::=
+		  IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE Statement:s2
+		     {: RESULT = new If(e, s1, s2, ileft); :}
+		;
+			
 Expression    ::=
         Expression:arg1 AND Expression:arg2
             {: RESULT = new ShortCircuitAnd(arg1, arg2, arg1left); :}
