@@ -304,6 +304,9 @@ Expression    ::=
 		| NEW:n Identifier:name LPAREN RPAREN
             {: RESULT = new NewObject(name, nleft); :}
 				
+		| NOT:n Expression:expr
+            {: RESULT = new Not(expr, nleft); :}
+		
 		| LPAREN Expression:expr RPAREN
             {: RESULT = expr; :}
         ;
