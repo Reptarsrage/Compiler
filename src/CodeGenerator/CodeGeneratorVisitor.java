@@ -12,13 +12,18 @@ import AST.ClassDecl;
 import AST.ClassDeclExtends;
 import AST.ClassDeclList;
 import AST.ClassDeclSimple;
+import AST.Comment;
 import AST.ConstantExp;
 import AST.Display;
+import AST.Divide;
+import AST.Equals;
 import AST.Exp;
 import AST.ExpList;
 import AST.False;
 import AST.Formal;
 import AST.FormalList;
+import AST.GreaterThan;
+import AST.GreaterThanOrEqualTo;
 import AST.Identifier;
 import AST.IdentifierExp;
 import AST.IdentifierType;
@@ -27,17 +32,21 @@ import AST.IntArrayType;
 import AST.IntegerLiteral;
 import AST.IntegerType;
 import AST.LessThan;
+import AST.LessThanOrEqualTo;
 import AST.MainClass;
 import AST.MethodDecl;
 import AST.MethodDeclList;
 import AST.Minus;
+import AST.Mod;
 import AST.NewArray;
 import AST.NewObject;
 import AST.Not;
+import AST.NotEqual;
 import AST.Plus;
 import AST.Print;
 import AST.Program;
 import AST.ShortCircuitAnd;
+import AST.ShortCircuitOr;
 import AST.Statement;
 import AST.StatementList;
 import AST.This;
@@ -64,6 +73,10 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(Display n) {
     n.e.accept(this);
     cg.genDisplay();
+  }
+  
+  // Comment
+  public void visit(Comment n) {
   }
 
   // MainClass m;
@@ -208,9 +221,51 @@ public class CodeGeneratorVisitor implements Visitor {
     n.e1.accept(this);
     n.e2.accept(this);
   }
+  
+  // Exp e1,e2;
+  public void visit(ShortCircuitOr n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+  }
 
   // Exp e1,e2;
   public void visit(LessThan n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+  }
+  
+  // Exp e1,e2;
+  public void visit(LessThanOrEqualTo n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+  }
+  
+  // Exp e1,e2;
+  public void visit(GreaterThanOrEqualTo n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+  }
+  
+  // Exp e1,e2;
+  public void visit(GreaterThan n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+  }
+  
+  // Exp e1,e2;
+  public void visit(Equals n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+  }
+  
+  // Exp e1,e2;
+  public void visit(NotEqual n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+  }
+  
+  // Exp e1,e2;
+  public void visit(Mod n) {
     n.e1.accept(this);
     n.e2.accept(this);
   }
@@ -230,6 +285,12 @@ public class CodeGeneratorVisitor implements Visitor {
 
   // Exp e1,e2;
   public void visit(Times n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+  }
+  
+  // Exp e1,e2;
+  public void visit(Divide n) {
     n.e1.accept(this);
     n.e2.accept(this);
   }

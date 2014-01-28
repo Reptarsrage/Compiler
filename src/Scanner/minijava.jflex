@@ -78,6 +78,8 @@ import java_cup.runtime.Symbol;
         return "LBRACKET";
       case sym.RBRACKET:
         return "RBRACKET";
+	  case sym.DOT:
+	    return "DOT";
       case sym.DISPLAY:
         return "DISPLAY";
 	  case sym.PRINTLN:
@@ -112,14 +114,20 @@ import java_cup.runtime.Symbol;
 	    return "NOT";
       case sym.STATIC:
         return "STATIC";
+	  case sym.DOUBLE:
+	    return "DOUBLE";
       case sym.VOID:
         return "VOID";
       case sym.LENGTH:
         return "LENGTH";
+	  case sym.NOTEQ:
+	    return "NOTEQ";
       case sym.STRING:
         return "STRING";
 	  case sym.EXTENDS:
 		return "EXTENDS";
+	  case sym.COMMA:
+	    return "COMMA";
       case sym.IDENTIFIER:
         return "ID(" + (String)s.value + ")";
       case sym.CONSTANT:
@@ -170,15 +178,16 @@ white = {eol}|[ \t]
 "boolean" { return symbol(sym.BOOLEAN); }
 "String" { return symbol(sym.STRING); }
 "void" { return symbol(sym.VOID); }
-".length" { return symbol(sym.LENGTH); }
+"length" { return symbol(sym.LENGTH); }
 "extends" { return symbol(sym.EXTENDS); }
 
 /* operators */
 "&&" { return symbol(sym.AND); }
 "||" { return symbol(sym.OR); }
 "==" { return symbol(sym.EQ); }
+"!=" { return symbol(sym.EQ); }
 "<=" { return symbol(sym.LESSEQ); }
-"=>" { return symbol(sym.GREATEREQ); }
+">=" { return symbol(sym.GREATEREQ); }
 "<" { return symbol(sym.LESS); }
 ">" { return symbol(sym.GREATER); }
 "+" { return symbol(sym.PLUS); }
@@ -191,6 +200,8 @@ white = {eol}|[ \t]
 
 
 /* delimiters */
+"," { return symbol(sym.COMMA); }
+"." { return symbol(sym.DOT); }
 "{" { return symbol(sym.LCURLYBRACE); }
 "}" { return symbol(sym.RCURLYBRACE); }
 "[" { return symbol(sym.LBRACKET); }

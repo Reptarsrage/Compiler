@@ -12,13 +12,18 @@ import AST.ClassDecl;
 import AST.ClassDeclExtends;
 import AST.ClassDeclList;
 import AST.ClassDeclSimple;
+import AST.Comment;
 import AST.ConstantExp;
 import AST.Display;
+import AST.Divide;
+import AST.Equals;
 import AST.Exp;
 import AST.ExpList;
 import AST.False;
 import AST.Formal;
 import AST.FormalList;
+import AST.GreaterThan;
+import AST.GreaterThanOrEqualTo;
 import AST.Identifier;
 import AST.IdentifierExp;
 import AST.IdentifierType;
@@ -27,17 +32,21 @@ import AST.IntArrayType;
 import AST.IntegerLiteral;
 import AST.IntegerType;
 import AST.LessThan;
+import AST.LessThanOrEqualTo;
 import AST.MainClass;
 import AST.MethodDecl;
 import AST.MethodDeclList;
 import AST.Minus;
+import AST.Mod;
 import AST.NewArray;
 import AST.NewObject;
 import AST.Not;
+import AST.NotEqual;
 import AST.Plus;
 import AST.Print;
 import AST.Program;
 import AST.ShortCircuitAnd;
+import AST.ShortCircuitOr;
 import AST.Statement;
 import AST.StatementList;
 import AST.This;
@@ -193,6 +202,10 @@ public class PrettyPrintVisitor implements Visitor {
   public void visit(IntegerType n) {
     System.out.print("int");
   }
+  
+  public void visit(Comment n) {
+    System.out.print("// Comment");
+  }
 
   // String s;
   public void visit(IdentifierType n) {
@@ -267,12 +280,75 @@ public class PrettyPrintVisitor implements Visitor {
     n.e2.accept(this);
     System.out.print(")");
   }
+  
+  // Exp e1,e2;
+  public void visit(ShortCircuitOr n) {
+    System.out.print("(");
+    n.e1.accept(this);
+    System.out.print(" || ");
+    n.e2.accept(this);
+    System.out.print(")");
+  }
 
   // Exp e1,e2;
   public void visit(LessThan n) {
     System.out.print("(");
     n.e1.accept(this);
     System.out.print(" < ");
+    n.e2.accept(this);
+    System.out.print(")");
+  }
+  
+  // Exp e1,e2;
+  public void visit(LessThanOrEqualTo n) {
+    System.out.print("(");
+    n.e1.accept(this);
+    System.out.print(" <= ");
+    n.e2.accept(this);
+    System.out.print(")");
+  }
+  
+  // Exp e1,e2;
+  public void visit(GreaterThanOrEqualTo n) {
+    System.out.print("(");
+    n.e1.accept(this);
+    System.out.print(" >= ");
+    n.e2.accept(this);
+    System.out.print(")");
+  }
+  
+  // Exp e1,e2;
+  public void visit(GreaterThan n) {
+    System.out.print("(");
+    n.e1.accept(this);
+    System.out.print(" > ");
+    n.e2.accept(this);
+    System.out.print(")");
+  }
+  
+  // Exp e1,e2;
+  public void visit(Equals n) {
+    System.out.print("(");
+    n.e1.accept(this);
+    System.out.print(" == ");
+    n.e2.accept(this);
+    System.out.print(")");
+  }
+  
+  // Exp e1,e2;
+  public void visit(NotEqual n) {
+    System.out.print("(");
+    n.e1.accept(this);
+    System.out.print(" != ");
+    n.e2.accept(this);
+    System.out.print(")");
+  }
+  
+  // Exp e1,e2;
+  public void visit(Mod n) {
+    System.out.print("(");
+    n.e1.accept(this);
+    System.out.print(" % ");
     n.e2.accept(this);
     System.out.print(")");
   }
@@ -300,6 +376,15 @@ public class PrettyPrintVisitor implements Visitor {
     System.out.print("(");
     n.e1.accept(this);
     System.out.print(" * ");
+    n.e2.accept(this);
+    System.out.print(")");
+  }
+  
+  // Exp e1,e2;
+  public void visit(Divide n) {
+    System.out.print("(");
+    n.e1.accept(this);
+    System.out.print(" / ");
     n.e2.accept(this);
     System.out.print(")");
   }
