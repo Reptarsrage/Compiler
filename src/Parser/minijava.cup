@@ -159,7 +159,7 @@ nonterminal If IfElseStatement;
 nonterminal Exp Expression;
 nonterminal ExpList ExpressionList;
 nonterminal Identifier Identifier;
-
+nonterminal Formal Formal;
 nonterminal List<Statement> Program;
 
 
@@ -194,22 +194,24 @@ Program ::=
         ;
 
 Statement   ::=
-		/*TODO
-		  LCURLYBRACE:c StatementList:list RCURLYBRACE
-			{: RESULT = new Statement(cleft); :}
-		| */IfElseStatement:s
-		    {: RESULT = s; :}
-		| WhileStatement:s
-			{: RESULT = s; :}
-		| PrintStatement:s
-			{: RESULT = s; :}
+	/*TODO -- cant instantiate statement (abstract), but statementList
+               doesn't inherit. not sure what to do
+
+        LCURLYBRACE StatementList:list RCURLYBRACE
+	    {: RESULT = new Statement(listleft); :}
+	| */IfElseStatement:s
+	    {: RESULT = s; :}
+	| WhileStatement:s
+	    {: RESULT = s; :}
+	| PrintStatement:s
+	    {: RESULT = s; :}
         | DisplayStatement:s
             {: RESULT = s; :}
-		| AssignStatement:s
+	| AssignStatement:s
             {: RESULT = s; :}
-		| ArrayAssignStatement:s
-			{: RESULT = s; :}
-		| CommentLine:s
+	| ArrayAssignStatement:s
+	    {: RESULT = s; :}
+	| CommentLine:s
             {: RESULT = s; :}
         ;		
 
@@ -379,12 +381,71 @@ ExpressionList ::=
              {: ExpList list = new ExpList(f1left); 
 			    list.add(f1); 
 				RESULT = list; :}
-		  ExpressionList:list COMMA Expression:exp
+		|  ExpressionList:list COMMA Expression:exp // TODO - why comma?
              {: list.add(exp);
 				RESULT = list; :}
         ;
-FormalList ::= FormalList:list {: RESULT = list; :}; //TODO
-MethodDeclarationList ::= MethodDeclarationList:list {: RESULT = list; :}; //TODO
-ClassDeclarationList ::= ClassDeclarationList:list {: RESULT = list; :}; //TODO
-VariableDeclarationList ::= VariableDeclarationList:list {: RESULT = list; :}; //TODO
-StatementList ::= StatementList:list {: RESULT = list; :}; //TODO
+Formal ::=
+                Type:t Identifier:id
+              {: Formal f = new Formal(t, id, idleft); :}
+        ;
+       
+FormalList ::= 
+             Formal:f1
+           {: FormalList list = new FormalList(f1left);
+                         list.add(f1);
+                         RESULT = list; :}
+           | FormalList:list COMMA Formal:form
+           {: list.add(form);
+                RESULT = list; :}
+        ;
+
+//FormalList:list {: RESULT = list; :}; //TODO
+
+MethodDeclarationList ::= 
+             MethodDeclaration:dec
+             {: MethodDeclList list = new MethodDeclList(decleft);
+                list.add(dec);
+                RESULT = list; :}
+             | MethodDeclarationList:list MethodDeclaration:dec
+             {: list.add(dec);
+                RESULT = list; :}
+         ;
+
+//MethodDeclarationList ::= MethodDeclarationList:list {: RESULT = list; :}; //TODO
+
+ClassDeclarationList ::=
+             ClassDeclaration:dec
+             {: ClassDeclList list = new ClassDeclList(decleft);
+                list.add(dec);
+                RESULT = list; :}
+             | ClassDeclarationList:list ClassDeclaration:dec {:
+                list.add(dec);
+                RESULT = list; :}
+         ;
+
+//ClassDeclarationList ::= ClassDeclarationList:list {: RESULT = list; :}; //TODO
+
+VariableDeclarationList ::=
+             VarDeclaration:dec
+             {: VarDeclList list = new VarDeclList(decleft);
+                list.add(dec);
+                RESULT = list; :}
+             | VariableDeclarationList:list VarDeclaration:dec
+             {: list.add(dec);
+                RESULT = list; :}
+          ;
+
+//VariableDeclarationList ::= VariableDeclarationList:list {: RESULT = list; :}; //TODO
+
+StatementList ::=
+             Statement:smnt
+             {: StatementList list = new StatementList(smntleft);
+                list.add(smnt);
+                RESULT = list; :}
+             | StatementList:list Statement:smnt
+             {: list.add(smnt);
+                RESULT = list; :}
+          ;
+
+//StatementList ::= StatementList:list {: RESULT = list; :}; //TODO
