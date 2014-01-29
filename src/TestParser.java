@@ -10,7 +10,6 @@ import AST.ClassDecl;
 import AST.ClassDeclExtends;
 import AST.ClassDeclList;
 import AST.ClassDeclSimple;
-import AST.Comment;
 import AST.ConstantExp;
 import AST.Display;
 import AST.Divide;

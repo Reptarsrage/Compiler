@@ -18,7 +18,6 @@ import AST.ClassDecl;
 import AST.ClassDeclExtends;
 import AST.ClassDeclList;
 import AST.ClassDeclSimple;
-import AST.Comment;
 import AST.ConstantExp;
 import AST.Display;
 import AST.Divide;
@@ -115,7 +114,6 @@ terminal DISPLAY;
 terminal PRINTLN;
 terminal RETURN;
 terminal EXTENDS;
-terminal COMMENT;
 terminal IF;
 terminal ELSE;
 terminal WHILE;
@@ -151,7 +149,6 @@ nonterminal Display DisplayStatement;
 nonterminal ArrayAssign ArrayAssignStatement;
 nonterminal While WhileStatement;
 nonterminal Print PrintStatement;
-nonterminal Comment CommentLine;
 nonterminal If IfElseStatement;
 nonterminal Exp Expression;
 nonterminal ExpList ExpressionList;
@@ -202,8 +199,6 @@ Statement   ::=
             {: RESULT = s; :}
 	| ArrayAssignStatement:s
 	    {: RESULT = s; :}
-	| CommentLine:s
-            {: RESULT = s; :}
         ;		
 
 ArrayAssignStatement ::=
@@ -275,10 +270,6 @@ WhileStatement ::=
 		     {: RESULT = new While(exp, s, wleft); :}
 		;
 		
-CommentLine ::=
-          COMMENT:c
-             {: RESULT = new Comment(cleft); :}
-        ;
 IfElseStatement ::=
 		  IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE Statement:s2
 		     {: RESULT = new If(e, s1, s2, ileft); :}

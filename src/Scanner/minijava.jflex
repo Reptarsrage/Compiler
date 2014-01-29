@@ -108,8 +108,6 @@ import java_cup.runtime.Symbol;
         return "ELSE";
       case sym.WHILE:
         return "WHILE";
-	  case sym.COMMENT:
-		return "COMMENT";
 	  case sym.NOT:
 	    return "NOT";
       case sym.STATIC:
@@ -157,7 +155,7 @@ white = {eol}|[ \t]
 /* Token definitions */
 
 /* comments */
-\/\/.*{eol} { return symbol(sym.COMMENT); }
+\/\/.*{eol} {} // do nothing
 
 /* reserved words */
 /* (put here so that reserved words take precedence over identifiers) */
