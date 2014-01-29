@@ -2,9 +2,9 @@ package AST;
 import AST.Visitor.Visitor;
 
 public class IntegerLiteral extends Exp {
-  public int i;
+  public long i;
 
-  public IntegerLiteral(int ai, int lineNumber) {
+  public IntegerLiteral(long ai, int lineNumber) {
     super(lineNumber);
     this.i = ai;
   }

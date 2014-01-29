@@ -3,7 +3,6 @@
  * Change this into the scanner for your implementation of MiniJava.
  * CSE 401/P501 Au11
  */
-
 package Scanner;
 
 import Parser.sym;
@@ -215,10 +214,10 @@ white = {eol}|[ \t]
 {letter} ({letter}|{digit}|_)* { return symbol(sym.IDENTIFIER, yytext()); }
 
 /* constants */
-{digit}*\.{digit}*(d|D)? { return symbol(sym.D_CONSTANT, yytext()); }
-{digit}+(e|E)(\+|\-)?{digit}+ { return symbol(sym.D_CONSTANT, yytext()); }
-{digit}+(d|D) { return symbol(sym.D_CONSTANT, yytext()); }
-{digit}+ { return symbol(sym.CONSTANT, yytext()); }
+{digit}*\.{digit}*(d|D)? { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
+{digit}+(e|E)(\+|\-)?{digit}+ { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
+{digit}+(d|D) { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
+{digit}+ { return symbol(sym.CONSTANT, Long.parseLong(yytext())); }
 
 
 /* whitespace */

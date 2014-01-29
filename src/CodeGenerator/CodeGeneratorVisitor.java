@@ -185,10 +185,12 @@ public class CodeGeneratorVisitor implements Visitor {
   }
 
   // Exp e;
-  // Statement s;
+  // StatementList s;
   public void visit(While n) {
     n.e.accept(this);
-    n.s.accept(this);
+    for (int i = 0; i < n.s.size(); i++) {
+      n.s.get(i).accept(this);
+    }
   }
 
   // Exp e;

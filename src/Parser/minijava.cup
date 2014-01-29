@@ -129,8 +129,8 @@ terminal LCURLYBRACE, RCURLYBRACE, LBRACKET, RBRACKET, LPAREN, RPAREN, SEMICOLON
 
 /* tokens with values: */
 terminal String IDENTIFIER;
-terminal String CONSTANT;
-terminal String D_CONSTANT;
+terminal long CONSTANT;
+terminal double D_CONSTANT;
 
 /* Nonterminals */
 nonterminal MainClass MainClass;
@@ -406,7 +406,7 @@ Expression    ::=
 				RESULT = new Call(arg1, id, list, arg1left); :}
 	
         | CONSTANT:value // TODO parse string into a integer literal?
-            {: RESULT = new ConstantExp(value, valueleft); :}
+            {:  RESULT = new IntegerLiteral(value, valueleft); :}
 			
         | TRUE:t
             {: RESULT = new True(tleft); :}

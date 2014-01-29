@@ -232,12 +232,17 @@ public class PrettyPrintVisitor implements Visitor {
   }
 
   // Exp e;
-  // Statement s;
+  // StatementList s;
   public void visit(While n) {
     System.out.print("while (");
     n.e.accept(this);
-    System.out.print(") ");
-    n.s.accept(this);
+    System.out.print(") {\n");
+    for (int i = 0; i < n.s.size(); i++) {
+      System.out.print("\t  ");
+	  n.s.get(i).accept(this);
+	  System.out.print("\n");
+    }
+	System.out.print("\t}");
   }
 
   // Exp e;
