@@ -214,7 +214,8 @@ white = {eol}|[ \t]
 {letter} ({letter}|{digit}|_)* { return symbol(sym.IDENTIFIER, yytext()); }
 
 /* constants */
-{digit}*\.{digit}*(d|D)? { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
+{digit}+\.{digit}*(d|D)? { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
+{digit}*\.{digit}+(d|D)? { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
 {digit}+(e|E)(\+|\-)?{digit}+ { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
 {digit}+(d|D) { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
 {digit}+ { return symbol(sym.CONSTANT, Long.parseLong(yytext())); }

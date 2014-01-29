@@ -15,6 +15,9 @@ import AST.ClassDeclSimple;
 import AST.ConstantExp;
 import AST.Display;
 import AST.Divide;
+import AST.DoubleArrayType;
+import AST.DoubleLiteral;
+import AST.DoubleType;
 import AST.Equals;
 import AST.Exp;
 import AST.ExpList;
@@ -162,7 +165,7 @@ public class PrettyPrintVisitor implements Visitor {
     n.i.accept(this);
     System.out.print(" (");
     for (int i = 0; i < n.fl.size(); i++) {
-      n.fl.get(i).accept(this);
+	  n.fl.get(i).accept(this);
       if (i+1 < n.fl.size()) { System.out.print(", "); }
     }
     System.out.println(") { ");
@@ -193,6 +196,10 @@ public class PrettyPrintVisitor implements Visitor {
   public void visit(IntArrayType n) {
     System.out.print("int []");
   }
+  
+  public void visit(DoubleArrayType n) {
+    System.out.print("double []");
+  }
 
   public void visit(BooleanType n) {
     System.out.print("boolean");
@@ -200,6 +207,10 @@ public class PrettyPrintVisitor implements Visitor {
 
   public void visit(IntegerType n) {
     System.out.print("int");
+  }
+  
+  public void visit(DoubleType n) {
+    System.out.print("double");
   }
 
   // String s;
@@ -420,8 +431,13 @@ public class PrettyPrintVisitor implements Visitor {
     System.out.print(")");
   }
 
-  // int i;
+  // long i;
   public void visit(IntegerLiteral n) {
+    System.out.print(n.i);
+  }
+  
+  // double i;
+  public void visit(DoubleLiteral n) {
     System.out.print(n.i);
   }
 

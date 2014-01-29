@@ -21,6 +21,9 @@ import AST.ClassDeclSimple;
 import AST.ConstantExp;
 import AST.Display;
 import AST.Divide;
+import AST.DoubleArrayType;
+import AST.DoubleLiteral;
+import AST.DoubleType;
 import AST.Equals;
 import AST.Exp;
 import AST.ExpList;
@@ -182,12 +185,7 @@ Program ::=
         ;
 
 Statement   ::=
-	/*TODO -- cant instantiate statement (abstract), but statementList
-               doesn't inherit. not sure what to do
-
-        LCURLYBRACE StatementList:list RCURLYBRACE
-	    {: RESULT = new Statement(listleft); :}
-	| */IfElseStatement:s
+	IfElseStatement:s
 	    {: RESULT = s; :}
 	| WhileStatement:s
 	    {: RESULT = s; :}
@@ -217,11 +215,17 @@ Identifier  ::=
         ;
 		
 Type  ::=
-		INT:i LBRACKET RBRACKET
+		DOUBLE:i LBRACKET RBRACKET
+		   {: RESULT = new DoubleArrayType(ileft); :}
+		
+		| INT:i LBRACKET RBRACKET
 		   {: RESULT = new IntArrayType(ileft); :}
 		
 		| BOOLEAN:b
 		   {: RESULT = new BooleanType(bleft); :}
+		
+		| DOUBLE:i
+		   {: RESULT = new DoubleType(ileft); :}
 		
 		| INT:i
 		   {: RESULT = new IntegerType(ileft); :}
@@ -405,8 +409,11 @@ Expression    ::=
 				Identifier id = new Identifier(name, nameleft);
 				RESULT = new Call(arg1, id, list, arg1left); :}
 	
-        | CONSTANT:value // TODO parse string into a integer literal?
+        | CONSTANT:value
             {:  RESULT = new IntegerLiteral(value, valueleft); :}
+		
+		| D_CONSTANT:value
+            {:  RESULT = new DoubleLiteral(value, valueleft); :}
 			
         | TRUE:t
             {: RESULT = new True(tleft); :}
@@ -444,7 +451,7 @@ ExpressionList ::=
         ;
 Formal ::=
         Type:t Identifier:id
-          {: Formal f = new Formal(t, id, idleft); :}
+          {: RESULT = new Formal(t, id, idleft); :}
         ;
        
 FormalList ::= 
@@ -457,8 +464,6 @@ FormalList ::=
                 RESULT = list; :}
         ;
 
-//FormalList:list {: RESULT = list; :}; //TODO
-
 MethodDeclarationList ::= 
             MethodDeclaration:dec
              {: MethodDeclList list = new MethodDeclList(decleft);
@@ -468,8 +473,6 @@ MethodDeclarationList ::=
                {: list.add(dec);
 				  RESULT = list; :}
          ;
-
-//MethodDeclarationList ::= MethodDeclarationList:list {: RESULT = list; :}; //TODO
 
 ClassDeclarationList ::=
              ClassDeclaration:dec
@@ -481,8 +484,6 @@ ClassDeclarationList ::=
                 RESULT = list; :}
          ;
 
-//ClassDeclarationList ::= ClassDeclarationList:list {: RESULT = list; :}; //TODO
-
 VariableDeclarationList ::=
              VarDeclaration:dec
              {: VarDeclList list = new VarDeclList(decleft);
@@ -492,8 +493,6 @@ VariableDeclarationList ::=
              {: list.add(dec);
                 RESULT = list; :}
           ;
-
-//VariableDeclarationList ::= VariableDeclarationList:list {: RESULT = list; :}; //TODO
 
 StatementList ::=
 			 Statement:smnt
@@ -505,5 +504,3 @@ StatementList ::=
                 RESULT = list; :}
 			   
           ;
-
-//StatementList ::= StatementList:list {: RESULT = list; :}; //TODO
