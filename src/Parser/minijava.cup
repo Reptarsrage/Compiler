@@ -236,18 +236,89 @@ VarDeclaration ::=
         ;
 
 MethodDeclaration ::=
-		  PUBLIC:p Type:t Identifier:i LPAREN FormalList:flist RPAREN 
+		PUBLIC:p Type:t Identifier:i LPAREN FormalList:flist RPAREN 
 		  LCURLYBRACE VariableDeclarationList:vdlist StatementList:slist RETURN
 		  Expression:expr SEMICOLON RCURLYBRACE
 			{: RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
+		
+		| PUBLIC:p Type:t Identifier:i LPAREN FormalList:flist RPAREN 
+		  LCURLYBRACE StatementList:slist RETURN
+		  Expression:expr SEMICOLON RCURLYBRACE
+			{: 	
+				VarDeclList vdlist =  new VarDeclList(0);
+				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
+		
+		| PUBLIC:p Type:t Identifier:i LPAREN FormalList:flist RPAREN 
+		  LCURLYBRACE VariableDeclarationList:vdlist RETURN
+		  Expression:expr SEMICOLON RCURLYBRACE
+			{:	StatementList slist = new StatementList(0);
+				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
+		
+		| PUBLIC:p Type:t Identifier:i LPAREN FormalList:flist RPAREN LCURLYBRACE RETURN
+		  Expression:expr SEMICOLON RCURLYBRACE
+			{: 	VarDeclList vdlist =  new VarDeclList(0);
+				StatementList slist = new StatementList(0);
+				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
+		
+		| PUBLIC:p Type:t Identifier:i LPAREN RPAREN LCURLYBRACE 
+		  VariableDeclarationList:vdlist StatementList:slist RETURN Expression:expr SEMICOLON RCURLYBRACE
+			{:  FormalList flist = new FormalList(0);
+				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
+		
+		| PUBLIC:p Type:t Identifier:i LPAREN RPAREN LCURLYBRACE StatementList:slist RETURN
+		  Expression:expr SEMICOLON RCURLYBRACE
+			{:  FormalList flist = new FormalList(0);
+				VarDeclList vdlist =  new VarDeclList(0);
+				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
+		
+		| PUBLIC:p Type:t Identifier:i LPAREN RPAREN 
+		  LCURLYBRACE VariableDeclarationList:vdlist RETURN Expression:expr SEMICOLON RCURLYBRACE
+			{:	FormalList flist = new FormalList(0);
+				StatementList slist = new StatementList(0);
+				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
+		
+		| PUBLIC:p Type:t Identifier:i LPAREN RPAREN LCURLYBRACE RETURN Expression:expr SEMICOLON RCURLYBRACE
+			{:	FormalList flist = new FormalList(0);
+				VarDeclList vdlist =  new VarDeclList(0);
+				StatementList slist = new StatementList(0);
+				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
 		;
 ClassDeclaration ::=
-		  CLASS:c Identifier:i LPAREN EXTENDS Identifier:ext RPAREN LCURLYBRACE 
+		CLASS:c Identifier:i LPAREN EXTENDS Identifier:ext RPAREN LCURLYBRACE 
 		  VariableDeclarationList:vdlist MethodDeclarationList:mdlist RCURLYBRACE
 		    {: RESULT = new ClassDeclExtends(i, ext, vdlist, mdlist, cleft); :}
-		| CLASS:c Identifier:i LCURLYBRACE 
-		  VariableDeclarationList:vdlist MethodDeclarationList:mdlist RCURLYBRACE
+		
+		| CLASS:c Identifier:i LPAREN EXTENDS Identifier:ext RPAREN LCURLYBRACE 
+		  VariableDeclarationList:vdlist RCURLYBRACE
+		    {: 	MethodDeclList mdlist = new MethodDeclList(0);
+				RESULT = new ClassDeclExtends(i, ext, vdlist, mdlist, cleft); :}
+		
+		| CLASS:c Identifier:i LPAREN EXTENDS Identifier:ext RPAREN LCURLYBRACE 
+		  MethodDeclarationList:mdlist RCURLYBRACE
+		    {: 	VarDeclList vdlist = new VarDeclList(0);
+				RESULT = new ClassDeclExtends(i, ext, vdlist, mdlist, cleft); :}
+		
+		| CLASS:c Identifier:i LPAREN EXTENDS Identifier:ext RPAREN LCURLYBRACE RCURLYBRACE
+		    {: 	VarDeclList vdlist= new VarDeclList(0);
+				MethodDeclList mdlist = new MethodDeclList(0);
+				RESULT = new ClassDeclExtends(i, ext, vdlist, mdlist, cleft); :}
+		
+		| CLASS:c Identifier:i LCURLYBRACE VariableDeclarationList:vdlist 
+		  MethodDeclarationList:mdlist RCURLYBRACE
 		    {: RESULT = new ClassDeclSimple(i, vdlist, mdlist, cleft); :}
+		
+		| CLASS:c Identifier:i LCURLYBRACE VariableDeclarationList:vdlist RCURLYBRACE
+		    {: 	MethodDeclList mdlist = new MethodDeclList(0);
+				RESULT = new ClassDeclSimple(i, vdlist, mdlist, cleft); :}
+		
+		| CLASS:c Identifier:i LCURLYBRACE MethodDeclarationList:mdlist RCURLYBRACE
+		    {: 	VarDeclList vdlist =  new VarDeclList(0);
+				RESULT = new ClassDeclSimple(i, vdlist, mdlist, cleft); :}
+		
+		| CLASS:c Identifier:i LCURLYBRACE RCURLYBRACE
+		    {: 	VarDeclList vdlist =  new VarDeclList(0);
+				MethodDeclList mdlist = new MethodDeclList(0);
+				RESULT = new ClassDeclSimple(i, vdlist, mdlist, cleft); :}
 		;
 
 MainClass ::=
@@ -266,12 +337,16 @@ PrintStatement ::=
 		     {: RESULT = new Print(exp, pleft); :}
 		;
 WhileStatement ::=
-		  WHILE:w LPAREN Expression:exp RPAREN Statement:s
-		     {: RESULT = new While(exp, s, wleft); :}
+		  WHILE:w LPAREN Expression:exp RPAREN LCURLYBRACE StatementList:slist RCURLYBRACE
+		     {: RESULT = new While(exp, slist, wleft); :}
+		  | WHILE:w LPAREN Expression:exp RPAREN Statement:s
+		     {: StatementList slist = new StatementList(wleft);
+			    slist.add(s);
+				RESULT = new While(exp, slist, wleft); :}
 		;
 		
 IfElseStatement ::=
-		  IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE Statement:s2
+		  IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE Statement:s2 // TODO curly braces?
 		     {: RESULT = new If(e, s1, s2, ileft); :}
 		;
 			
@@ -359,39 +434,39 @@ Expression    ::=
         ;
 
 ExpressionList ::=
-		  Expression:f1
+		Expression:f1
              {: ExpList list = new ExpList(f1left); 
 			    list.add(f1); 
 				RESULT = list; :}
-		|  ExpressionList:list COMMA Expression:exp // TODO - why comma?
+		|  ExpressionList:list COMMA Expression:exp // TODO - why comma? for calls
              {: list.add(exp);
 				RESULT = list; :}
         ;
 Formal ::=
-                Type:t Identifier:id
-              {: Formal f = new Formal(t, id, idleft); :}
+        Type:t Identifier:id
+          {: Formal f = new Formal(t, id, idleft); :}
         ;
        
 FormalList ::= 
-             Formal:f1
-           {: FormalList list = new FormalList(f1left);
-                         list.add(f1);
-                         RESULT = list; :}
+        Formal:f1
+          {: FormalList list = new FormalList(f1left);
+              list.add(f1);
+              RESULT = list; :}
            | FormalList:list COMMA Formal:form
-           {: list.add(form);
+             {: list.add(form);
                 RESULT = list; :}
         ;
 
 //FormalList:list {: RESULT = list; :}; //TODO
 
 MethodDeclarationList ::= 
-             MethodDeclaration:dec
+            MethodDeclaration:dec
              {: MethodDeclList list = new MethodDeclList(decleft);
                 list.add(dec);
                 RESULT = list; :}
              | MethodDeclarationList:list MethodDeclaration:dec
-             {: list.add(dec);
-                RESULT = list; :}
+               {: list.add(dec);
+				  RESULT = list; :}
          ;
 
 //MethodDeclarationList ::= MethodDeclarationList:list {: RESULT = list; :}; //TODO
@@ -401,8 +476,8 @@ ClassDeclarationList ::=
              {: ClassDeclList list = new ClassDeclList(decleft);
                 list.add(dec);
                 RESULT = list; :}
-             | ClassDeclarationList:list ClassDeclaration:dec {:
-                list.add(dec);
+             | ClassDeclarationList:list ClassDeclaration:dec 
+			 {: list.add(dec);
                 RESULT = list; :}
          ;
 
@@ -421,13 +496,14 @@ VariableDeclarationList ::=
 //VariableDeclarationList ::= VariableDeclarationList:list {: RESULT = list; :}; //TODO
 
 StatementList ::=
-             Statement:smnt
+			 Statement:smnt
              {: StatementList list = new StatementList(smntleft);
                 list.add(smnt);
                 RESULT = list; :}
              | StatementList:list Statement:smnt
              {: list.add(smnt);
                 RESULT = list; :}
+			   
           ;
 
 //StatementList ::= StatementList:list {: RESULT = list; :}; //TODO

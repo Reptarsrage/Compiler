@@ -7,15 +7,12 @@ class cse401c_correct_03 {
 
 class TestWhileLoopIntLiteral {
     public int test() {
-        int i = 0;
+        int i;
+	i = 0;
 
-        while (1 == 1) {
-            i ++;
-            if (i == 5) {
-                break;
-            } else {
-                System.out.println(i);
-            }
+        while (i < 5) {
+            i = i + 1;
+            System.out.println(i);
         }
         return 5;
     }

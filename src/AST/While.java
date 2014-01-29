@@ -3,9 +3,9 @@ import AST.Visitor.Visitor;
 
 public class While extends Statement {
   public Exp e;
-  public Statement s;
+  public StatementList s;
 
-  public While(Exp ae, Statement as, int lineNumber) {
+  public While(Exp ae, StatementList as, int lineNumber) {
     super(lineNumber);
     this.e = ae;
     this.s = as;
