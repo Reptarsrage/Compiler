@@ -397,9 +397,9 @@
       fork="true"
       input="SamplePrograms/ExampleConst.java"
       >
-      
+      <!--
       <arg value="-p"/>
-      
+      -->
       <arg value="-i"/>
       <arg value="SamplePrograms/ExampleConst.java"/>
       <arg value="-o"/>
@@ -410,19 +410,18 @@
     
   <target name="test-parser-all" depends="compile">
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_correct_03.java"
 	  >
-	  <arg value="-p"/>
 	  <arg value="-i"/>
 	  <arg value="SamplePrograms/cse401c_correct_03.java"/>
 	  <arg value="-o"/>
-	  <arg value="SamplePrograms/cse401c_correct_03.s"/>
+	   <arg value="SamplePrograms/cse401c_correct_03.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_correct_07.java"
@@ -433,7 +432,7 @@
 	   <arg value="SamplePrograms/cse401c_correct_07.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/ExerciseDouble.java"
@@ -444,7 +443,7 @@
 	   <arg value="SamplePrograms/ExerciseDouble.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/BinaryTree.java"
@@ -455,7 +454,7 @@
 	   <arg value="SamplePrograms/BinaryTree.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/QuickSort.java"
@@ -466,7 +465,7 @@
 	   <arg value="SamplePrograms/QuickSort.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_ctfail_13.java"
@@ -477,7 +476,7 @@
 	   <arg value="SamplePrograms/cse401c_ctfail_13.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/LinearSearch.java"
@@ -488,7 +487,7 @@
 	   <arg value="SamplePrograms/LinearSearch.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_ctfail_17.java"
@@ -499,7 +498,7 @@
 	   <arg value="SamplePrograms/cse401c_ctfail_17.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/BinarySearch.java"
@@ -510,7 +509,7 @@
 	   <arg value="SamplePrograms/BinarySearch.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/DoubleOutput.java"
@@ -521,7 +520,7 @@
 	   <arg value="SamplePrograms/DoubleOutput.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/Factorial.java"
@@ -532,7 +531,7 @@
 	   <arg value="SamplePrograms/Factorial.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/Pi.java"
@@ -543,7 +542,7 @@
 	   <arg value="SamplePrograms/Pi.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_ctfail_16.java"
@@ -554,7 +553,7 @@
 	   <arg value="SamplePrograms/cse401c_ctfail_16.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/Sqrt.java"
@@ -565,7 +564,7 @@
 	   <arg value="SamplePrograms/Sqrt.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_correct_02.java"
@@ -576,7 +575,7 @@
 	   <arg value="SamplePrograms/cse401c_correct_02.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_correct_06.java"
@@ -587,7 +586,7 @@
 	   <arg value="SamplePrograms/cse401c_correct_06.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/Asin.java"
@@ -598,7 +597,7 @@
 	   <arg value="SamplePrograms/Asin.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_correct_10.java"
@@ -609,7 +608,7 @@
 	   <arg value="SamplePrograms/cse401c_correct_10.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_correct_08.java"
@@ -620,7 +619,7 @@
 	   <arg value="SamplePrograms/cse401c_correct_08.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_ctfail_21.java"
@@ -631,7 +630,7 @@
 	   <arg value="SamplePrograms/cse401c_ctfail_21.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_ctfail_14.java"
@@ -642,7 +641,7 @@
 	   <arg value="SamplePrograms/cse401c_ctfail_14.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_rtfail_12.java"
@@ -653,7 +652,7 @@
 	   <arg value="SamplePrograms/cse401c_rtfail_12.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_correct_00.java"
@@ -664,7 +663,7 @@
 	   <arg value="SamplePrograms/cse401c_correct_00.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_ctfail_18.java"
@@ -675,7 +674,7 @@
 	   <arg value="SamplePrograms/cse401c_ctfail_18.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_correct_04.java"
@@ -686,7 +685,7 @@
 	   <arg value="SamplePrograms/cse401c_correct_04.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/BubbleSort.java"
@@ -697,7 +696,7 @@
 	   <arg value="SamplePrograms/BubbleSort.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_correct_01.java"
@@ -708,7 +707,7 @@
 	   <arg value="SamplePrograms/cse401c_correct_01.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/TreeVisitor.java"
@@ -719,7 +718,7 @@
 	   <arg value="SamplePrograms/TreeVisitor.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_ctfail_19.java"
@@ -730,7 +729,7 @@
 	   <arg value="SamplePrograms/cse401c_ctfail_19.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/LinkedList.java"
@@ -741,7 +740,7 @@
 	   <arg value="SamplePrograms/LinkedList.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_correct_05.java"
@@ -752,7 +751,7 @@
 	   <arg value="SamplePrograms/cse401c_correct_05.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_ctfail_20.java"
@@ -763,7 +762,7 @@
 	   <arg value="SamplePrograms/cse401c_ctfail_20.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_correct_09.java"
@@ -774,7 +773,7 @@
 	   <arg value="SamplePrograms/cse401c_correct_09.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_ctfail_11.java"
@@ -785,7 +784,7 @@
 	   <arg value="SamplePrograms/cse401c_ctfail_11.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_ctfail_15.java"
@@ -796,7 +795,7 @@
 	   <arg value="SamplePrograms/cse401c_ctfail_15.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/ExampleConst.java"
@@ -807,7 +806,7 @@
 	   <arg value="SamplePrograms/ExampleConst.s"/>
 	</java>
 	<java
-	  classname="TestScanner"
+	  classname="TestParser"
 	  classpath="build/classes;lib/CUP.jar"
 	  fork="true"
 	  input="SamplePrograms/Example.java"
