@@ -81,6 +81,7 @@ public class TestParser {
         tracePrettyPrint = true;
       } else if (args[i].equals("-i")) {
         inputFileName = args[i+1];
+		System.out.print("\n------------Parsing " + inputFileName + "------------\n");
         i += 1;
       } else if (args[i].equals("-o")) {
         outputFileName = args[i+1];
@@ -96,7 +97,7 @@ public class TestParser {
       //
       // create a scanner on the input file
       //
-      scanner s = new scanner(System.in);
+	  scanner s = new scanner(System.in);
       parser p = new parser(s);
       CodeGenerator cg = new CodeGenerator(outputFileName);
       Symbol root;

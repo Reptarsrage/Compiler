@@ -9,32 +9,41 @@ gen-parser:
 gen-scanner:
 
 compile:
+    [javac] Compiling 1 source file to /homes/iws/xreptarx/cse401/401_project/build/classes
 
 test-parser-all:
      [java] Syntax error at line 10 of input
      [java] Couldn't repair and continue parse at line 10 of input
+     [java] ------------Parsing SamplePrograms/cse401c_correct_03.java------------
+     [java] 
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
      [java] Syntax error at line 10 of input
      [java] Couldn't repair and continue parse at line 10 of input
+     [java] ------------Parsing SamplePrograms/cse401c_correct_07.java------------
+     [java] 
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
      [java] Syntax error at line 19 of input
      [java] Couldn't repair and continue parse at line 19 of input
-     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
+     [java] 
+     [java] ------------Parsing SamplePrograms/ExerciseDouble.java------------Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
+     [java] 
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/BinaryTree.java------------
      [java] Syntax error at line 137 of input
      [java] Couldn't repair and continue parse at line 137 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -42,23 +51,29 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
-     [java] Syntax error at line 41 of input
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] Syntax error at line 41 of input------------Parsing SamplePrograms/QuickSort.java------------
      [java] Couldn't repair and continue parse at line 41 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
+     [java] 
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
      [java] Syntax error at line 5 of input
      [java] Couldn't repair and continue parse at line 5 of input
-     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_13.java------------Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
+     [java] 
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/LinearSearch.java------------
      [java] Syntax error at line 63 of input
      [java] Couldn't repair and continue parse at line 63 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -66,15 +81,19 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
-     [java] Syntax error at line 5 of input
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_17.java------------Syntax error at line 5 of input
      [java] Couldn't repair and continue parse at line 5 of input
+     [java] 
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/BinarySearch.java------------
      [java] class BinarySearch {
      [java]   public static void main (String [] a) {
      [java]     System.out.println(new BS().Start(20));  }
@@ -201,6 +220,8 @@ test-parser-all:
      [java]     return 0;
      [java]   }
      [java] }
+     [java] 
+     [java] ------------Parsing SamplePrograms/DoubleOutput.java------------
      [java] class DoubleOutput {
      [java]   public static void main (String [] a) {
      [java]     System.out.println(new DoubleOutputWorker().doWork());  }
@@ -246,7 +267,11 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/Factorial.java------------
+     [java] 
+     [java] ------------Parsing SamplePrograms/Pi.java------------
      [java] Syntax error at line 62 of input
      [java] Couldn't repair and continue parse at line 62 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -254,7 +279,9 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_16.java------------
      [java] class cse401c_ctfail_16 {
      [java]   public static void main (String [] args) {
      [java]     System.out.println(new TestOverload().a(0));  }
@@ -269,6 +296,8 @@ test-parser-all:
      [java]     return x;
      [java]   }
      [java] }
+     [java] 
+     [java] ------------Parsing SamplePrograms/Sqrt.java------------
      [java] Syntax error at line 40 of input
      [java] Couldn't repair and continue parse at line 40 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -276,15 +305,19 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
      [java] Syntax error at line 10 of input
      [java] Couldn't repair and continue parse at line 10 of input
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_correct_02.java------------
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_correct_06.java------------
      [java] class cse401c_correct_06 {
      [java]   public static void main (String [] args) {
      [java]     System.out.println(new TestFunctionDispatch().test());  }
@@ -296,6 +329,8 @@ test-parser-all:
      [java]     return 1;
      [java]   }
      [java] }
+     [java] 
+     [java] ------------Parsing SamplePrograms/Asin.java------------
      [java] Syntax error at line 38 of input
      [java] Couldn't repair and continue parse at line 38 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -303,7 +338,9 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_correct_10.java------------
      [java] Syntax error at line 5 of input
      [java] Couldn't repair and continue parse at line 5 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -311,43 +348,55 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
-     [java] Syntax error at line 5 of input
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_correct_08.java------------Syntax error at line 5 of input
      [java] Couldn't repair and continue parse at line 5 of input
+     [java] 
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
      [java] Syntax error at line 5 of input
      [java] Couldn't repair and continue parse at line 5 of input
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_21.java------------
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
      [java] Syntax error at line 5 of input
      [java] Couldn't repair and continue parse at line 5 of input
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_14.java------------Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
+     [java] 
+     [java] java.lang.Exception: Can't recover from previous error(s)
+     [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
+     [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
+     [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] Syntax error at line 5 of input------------Parsing SamplePrograms/cse401c_rtfail_12.java------------
+     [java] Couldn't repair and continue parse at line 5 of input
+     [java] 
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
-     [java] Syntax error at line 5 of input
-     [java] Couldn't repair and continue parse at line 5 of input
-     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
-     [java] java.lang.Exception: Can't recover from previous error(s)
-     [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
-     [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
-     [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_correct_00.java------------
      [java] class cse401c_correct_00 {
      [java]   public static void main (String [] args) {
      [java]     System.out.println(1);  }
      [java] }
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_18.java------------
      [java] Syntax error at line 5 of input
      [java] Couldn't repair and continue parse at line 5 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -355,15 +404,19 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
-     [java] Syntax error at line 4 of input
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_correct_04.java------------Syntax error at line 4 of input
+     [java] 
      [java] Couldn't repair and continue parse at line 4 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/BubbleSort.java------------
      [java] Syntax error at line 49 of input
      [java] Couldn't repair and continue parse at line 49 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -371,7 +424,9 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_correct_01.java------------
      [java] class cse401c_correct_01 {
      [java]   public static void main (String [] args) {
      [java]     System.out.println(new TestIntLiteralArithmetic().test());  }
@@ -388,6 +443,8 @@ test-parser-all:
      [java]     return 1;
      [java]   }
      [java] }
+     [java] 
+     [java] ------------Parsing SamplePrograms/TreeVisitor.java------------
      [java] Syntax error at line 152 of input
      [java] Couldn't repair and continue parse at line 152 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -395,7 +452,9 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_19.java------------
      [java] Syntax error at line 5 of input
      [java] Couldn't repair and continue parse at line 5 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -403,15 +462,19 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
      [java] Syntax error at line 43 of input
      [java] Couldn't repair and continue parse at line 43 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
+     [java] ------------Parsing SamplePrograms/LinkedList.java------------
+     [java] 
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_correct_05.java------------
      [java] Syntax error at line 10 of input
      [java] Couldn't repair and continue parse at line 10 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -419,7 +482,9 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_20.java------------
      [java] Syntax error at line 5 of input
      [java] Couldn't repair and continue parse at line 5 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -427,7 +492,9 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_correct_09.java------------
      [java] Syntax error at line 5 of input
      [java] Couldn't repair and continue parse at line 5 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -435,7 +502,9 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_11.java------------
      [java] Syntax error at line 5 of input
      [java] Couldn't repair and continue parse at line 5 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -443,7 +512,9 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_15.java------------
      [java] Syntax error at line 10 of input
      [java] Couldn't repair and continue parse at line 10 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
@@ -451,7 +522,9 @@ test-parser-all:
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
+     [java] 
+     [java] ------------Parsing SamplePrograms/ExampleConst.java------------
      [java] class BinarySearch {
      [java]   public static void main (String [] a) {
      [java]     System.out.println(new BS().Start(20));  }
@@ -580,12 +653,14 @@ test-parser-all:
      [java] }
      [java] Syntax error at line 1 of input
      [java] Couldn't repair and continue parse at line 1 of input
+     [java] 
+     [java] ------------Parsing SamplePrograms/Example.java------------
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:109)
+     [java] 	at TestParser.main(TestParser.java:110)
 
 BUILD SUCCESSFUL
-Total time: 19 seconds
+Total time: 20 seconds
