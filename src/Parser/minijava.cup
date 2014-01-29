@@ -64,9 +64,6 @@ import AST.VarDeclList;
 import AST.While;
 import java_cup.runtime.Symbol;
 
-import java.util.LinkedList;
-import java.util.List;
-
 /* Code in the following section is included in the generated parser */
 
 parser code {:
@@ -160,7 +157,7 @@ nonterminal Exp Expression;
 nonterminal ExpList ExpressionList;
 nonterminal Identifier Identifier;
 nonterminal Formal Formal;
-nonterminal List<Statement> Program;
+nonterminal Program Program;
 
 
 /* Precedence declarations */
@@ -180,17 +177,11 @@ precedence left DOT, LPAREN, LBRACKET;
 /* Productions */
 
 Program ::=
-          Statement:s
-            {:
-              List<Statement> p = new LinkedList<Statement>();
-              p.add(s);
-              RESULT = p;
-            :}
-        | Program:p Statement:s
-            {:
-              p.add(s);
-              RESULT = p;
-            :}
+          MainClass:mc ClassDeclarationList:cdlist // EOF
+		    {: RESULT = new Program(mc, cdlist,mcleft); :}
+		| MainClass:mc // EOF
+		    {: ClassDeclList list = new ClassDeclList(0);
+			   RESULT = new Program(mc, list, mcleft); :}
         ;
 
 Statement   ::=
@@ -348,7 +339,7 @@ Expression    ::=
 				Identifier id = new Identifier(name, nameleft);
 				RESULT = new Call(arg1, id, list, arg1left); :}
 	
-        | CONSTANT:value
+        | CONSTANT:value // TODO parse string into a integer literal?
             {: RESULT = new ConstantExp(value, valueleft); :}
 			
         | TRUE:t
@@ -357,7 +348,7 @@ Expression    ::=
 		| FALSE:f
             {: RESULT = new False(fleft); :}
 			
-		|  IDENTIFIER:name
+		| IDENTIFIER:name
             {: RESULT = new IdentifierExp(name, nameleft); :}
 
 		| THIS:t

@@ -10,13 +10,18 @@ import AST.ClassDecl;
 import AST.ClassDeclExtends;
 import AST.ClassDeclList;
 import AST.ClassDeclSimple;
+import AST.Comment;
 import AST.ConstantExp;
 import AST.Display;
+import AST.Divide;
+import AST.Equals;
 import AST.Exp;
 import AST.ExpList;
 import AST.False;
 import AST.Formal;
 import AST.FormalList;
+import AST.GreaterThan;
+import AST.GreaterThanOrEqualTo;
 import AST.Identifier;
 import AST.IdentifierExp;
 import AST.IdentifierType;
@@ -25,17 +30,21 @@ import AST.IntArrayType;
 import AST.IntegerLiteral;
 import AST.IntegerType;
 import AST.LessThan;
+import AST.LessThanOrEqualTo;
 import AST.MainClass;
 import AST.MethodDecl;
 import AST.MethodDeclList;
 import AST.Minus;
+import AST.Mod;
 import AST.NewArray;
 import AST.NewObject;
 import AST.Not;
+import AST.NotEqual;
 import AST.Plus;
 import AST.Print;
 import AST.Program;
 import AST.ShortCircuitAnd;
+import AST.ShortCircuitOr;
 import AST.Statement;
 import AST.StatementList;
 import AST.This;
@@ -96,11 +105,8 @@ public class TestParser {
       // parser shift/reduce actions during parse
       //
       root = p.parse();
-      List<Statement> program = (List<Statement>)root.value;
-      for (Statement statement: program) {
-        statement.accept(new PrettyPrintVisitor());
-        System.out.print("\n");
-      }
+      Program program = (Program)root.value;
+      program.accept(new PrettyPrintVisitor());
       //
       // System.out.print("\n" + "Parsing completed");
       //

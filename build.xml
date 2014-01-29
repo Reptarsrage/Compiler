@@ -397,9 +397,9 @@
       fork="true"
       input="SamplePrograms/ExampleConst.java"
       >
-      <!--
+      
       <arg value="-p"/>
-      -->
+      
       <arg value="-i"/>
       <arg value="SamplePrograms/ExampleConst.java"/>
       <arg value="-o"/>
@@ -415,10 +415,11 @@
 	  fork="true"
 	  input="SamplePrograms/SampleMiniJavaPrograms/cse401c_correct_03.java"
 	  >
+	  <arg value="-p"/>
 	  <arg value="-i"/>
 	  <arg value="SamplePrograms/cse401c_correct_03.java"/>
 	  <arg value="-o"/>
-	   <arg value="SamplePrograms/cse401c_correct_03.s"/>
+	  <arg value="SamplePrograms/cse401c_correct_03.s"/>
 	</java>
 	<java
 	  classname="TestScanner"
