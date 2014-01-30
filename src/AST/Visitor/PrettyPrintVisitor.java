@@ -230,16 +230,21 @@ public class PrettyPrintVisitor implements Visitor {
   }
 
   // Exp e;
-  // Statement s1,s2;
+  // StatementList s1,s2;
   public void visit(If n) {
     System.out.print("if (");
     n.e.accept(this);
-    System.out.println(") ");
+    System.out.println(") {");
     System.out.print("    ");
-    n.s1.accept(this);
+    for (int i = 0; i < n.s1.size(); i++) {
+	  n.s1.get(i).accept(this);
+	}
     System.out.println();
-    System.out.print("    else ");
-    n.s2.accept(this);
+    System.out.print("}   else {");
+    for (int i = 0; i < n.s2.size(); i++) {
+	  n.s2.get(i).accept(this);
+	}
+	System.out.print("    }");
   }
 
   // Exp e;

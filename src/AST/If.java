@@ -3,9 +3,9 @@ import AST.Visitor.Visitor;
 
 public class If extends Statement {
   public Exp e;
-  public Statement s1,s2;
+  public StatementList s1,s2;
 
-  public If(Exp ae, Statement as1, Statement as2, int lineNumber) {
+  public If(Exp ae, StatementList as1, StatementList as2, int lineNumber) {
     super(lineNumber);
     this.e = ae;
     this.s1 = as1;

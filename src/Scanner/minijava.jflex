@@ -217,6 +217,8 @@ white = {eol}|[ \t]
 {digit}+\.{digit}*(d|D)? { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
 {digit}*\.{digit}+(d|D)? { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
 {digit}+(e|E)(\+|\-)?{digit}+ { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
+{digit}*\.{digit}+(e|E)(\+|\-)?{digit}+ { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
+{digit}+\.{digit}*(e|E)(\+|\-)?{digit}+ { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
 {digit}+(d|D) { return symbol(sym.D_CONSTANT, Double.parseDouble(yytext())); }
 {digit}+ { return symbol(sym.CONSTANT, Long.parseLong(yytext())); }
 

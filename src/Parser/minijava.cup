@@ -347,11 +347,67 @@ WhileStatement ::=
 		     {: StatementList slist = new StatementList(wleft);
 			    slist.add(s);
 				RESULT = new While(exp, slist, wleft); :}
-		;
+		  /*| WHILE:w LPAREN Expression:exp RPAREN
+		     {: StatementList slist = new StatementList(0);
+		     	RESULT = new While(exp, slist, wleft); :}
+		  | WHILE:w LPAREN Expression:exp RPAREN LCURLYBRACE RCURLYBRACE
+		     {:  StatementList slist = new StatementList(0);
+			     RESULT = new While(exp, slist, wleft); :}	
+		*/;
 		
 IfElseStatement ::=
-		  IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE Statement:s2 // TODO curly braces?
-		     {: RESULT = new If(e, s1, s2, ileft); :}
+		  IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE Statement:s2
+		     {: StatementList s1list = new StatementList(ileft);
+			    StatementList s2list = new StatementList(ileft);
+				s1list.add(s1);
+				s2list.add(s2);
+				RESULT = new If(e, s1list, s2list, ileft); :}
+		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE StatementList:s1list RCURLYBRACE ELSE Statement:s2
+		     {: StatementList s2list = new StatementList(ileft);
+				s2list.add(s2);
+				RESULT = new If(e, s1list, s2list, ileft); :}
+		  | IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE LCURLYBRACE StatementList:s2list RCURLYBRACE 
+		     {: StatementList s1list = new StatementList(ileft);
+				s1list.add(s1);
+				RESULT = new If(e, s1list, s2list, ileft); :} 
+		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE StatementList:s1list RCURLYBRACE 
+			 ELSE LCURLYBRACE StatementList:s2list RCURLYBRACE
+		     {: RESULT = new If(e, s1list, s2list, ileft); :}
+		  /*| IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE
+		     {: StatementList s1list = new StatementList(ileft);
+			    StatementList s2list = new StatementList(0);
+				s1list.add(s1);
+				RESULT = new If(e, s1list, s2list, ileft); :}
+		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE StatementList:s1list RCURLYBRACE ELSE
+		     {: StatementList s2list = new StatementList(0);
+				RESULT = new If(e, s1list, s2list, ileft); :}
+		  | IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE LCURLYBRACE RCURLYBRACE 
+		     {: StatementList s2list = new StatementList(0);
+			    StatementList s1list = new StatementList(ileft);
+				s1list.add(s1);
+				RESULT = new If(e, s1list, s2list, ileft); :} 
+		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE StatementList:s1list RCURLYBRACE 
+			 ELSE LCURLYBRACE RCURLYBRACE
+		     {: StatementList s2list = new StatementList(0);
+			    RESULT = new If(e, s1list, s2list, ileft); :}
+		  | IF:i LPAREN Expression:e RPAREN ELSE Statement:s2
+		     {: StatementList s1list = new StatementList(0);
+			    StatementList s2list = new StatementList(ileft);
+				s2list.add(s2);
+				RESULT = new If(e, s1list, s2list, ileft); :}
+		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE RCURLYBRACE ELSE Statement:s2
+		     {: StatementList s1list = new StatementList(0);
+			    StatementList s2list = new StatementList(ileft);
+				s2list.add(s2);
+				RESULT = new If(e, s1list, s2list, ileft); :}
+		  | IF:i LPAREN Expression:e RPAREN ELSE LCURLYBRACE StatementList:s2list RCURLYBRACE 
+		     {: StatementList s1list = new StatementList(0);
+				RESULT = new If(e, s1list, s2list, ileft); :} 
+		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE RCURLYBRACE 
+			 ELSE LCURLYBRACE StatementList:s2list RCURLYBRACE
+		     {: StatementList s1list = new StatementList(0);
+			    RESULT = new If(e, s1list, s2list, ileft); :}*/
+			 
 		;
 			
 Expression    ::=
@@ -430,6 +486,9 @@ Expression    ::=
 		| NEW:n INT LBRACKET Expression:exp RBRACKET
             {: RESULT = new NewArray(exp, nleft); :}
 			
+		| NEW:n DOUBLE LBRACKET Expression:exp RBRACKET
+            {: RESULT = new NewArray(exp, nleft); :}
+			
 		| NEW:n Identifier:name LPAREN RPAREN
             {: RESULT = new NewObject(name, nleft); :}
 				
@@ -445,7 +504,7 @@ ExpressionList ::=
              {: ExpList list = new ExpList(f1left); 
 			    list.add(f1); 
 				RESULT = list; :}
-		|  ExpressionList:list COMMA Expression:exp // TODO - why comma? for calls
+		|  ExpressionList:list COMMA Expression:exp
              {: list.add(exp);
 				RESULT = list; :}
         ;
