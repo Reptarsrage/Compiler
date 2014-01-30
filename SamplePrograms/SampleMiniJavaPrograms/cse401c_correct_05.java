@@ -7,11 +7,17 @@ class cse401c_correct_05 {
 
 class TestInheritanceSimple {
     public int test() {
-        Person p = new Male(21);
+        Person p;
+        boolean b;
+        int i;
+        p  = new Male();
+        b = p.setAge(21);
+        b = p.setIsMale(true);
         if (p.getIsMale()) {
             System.out.println(1);
         }
-        return p.getAge();
+        i = p.getAge();
+        return i;
     }
 }
 
@@ -24,14 +30,14 @@ class Person {
         isMale = false;
     }
 
-    public Person(int a) {
+    public boolean setAge(int a) {
         age = a;
-        isMale = false;
+        return true;
     }
     
-    public Person(int a, boolean m) {
-        age = a;
-        isMale = m;
+    public boolean setIsMale(boolean iM) {
+        isMale = iM;
+        return true;
     }
 
     public int getAge() {
@@ -44,8 +50,8 @@ class Person {
 }
 
 class Male extends Person {
-    public Male(int a) {
-        age = a;
-        isMale = true;
-    }
+    //    public Male(int a) {
+    //  age = a;
+    //  isMale = true;
+    //}
 }

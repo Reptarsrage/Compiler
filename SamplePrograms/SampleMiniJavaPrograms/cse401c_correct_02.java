@@ -7,10 +7,12 @@ class cse401c_correct_02 {
 
 class TestIntLiteralCompareBranch {
     public int test() {
+        int res;
         if (1 == 1) {
-            return 1;
+            res = 1;
         } else {
-            return 0;
+            res = 0;
         }
+        return res;
     }
 }
