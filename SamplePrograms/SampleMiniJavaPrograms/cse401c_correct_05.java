@@ -13,22 +13,15 @@ class TestInheritanceSimple {
         p  = new Male();
         b = p.setAge(21);
         b = p.setIsMale(true);
-        if (p.getIsMale()) {
-            System.out.println(1);
-        }
         i = p.getAge();
-        return i;
+        b = p.getIsMale();
+        return 21;
     }
 }
 
 class Person {
     int age;
     boolean isMale;
-
-    public Person() {
-        age = 0;
-        isMale = false;
-    }
 
     public boolean setAge(int a) {
         age = a;
@@ -49,7 +42,7 @@ class Person {
     }
 }
 
-class Male extends Person {
+class Male (extends Person) {
     //    public Male(int a) {
     //  age = a;
     //  isMale = true;
