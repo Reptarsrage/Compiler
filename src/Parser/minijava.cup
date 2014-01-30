@@ -288,21 +288,21 @@ MethodDeclaration ::=
 				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
 		;
 ClassDeclaration ::=
-		CLASS:c Identifier:i LPAREN EXTENDS Identifier:ext RPAREN LCURLYBRACE 
+		CLASS:c Identifier:i EXTENDS Identifier:ext LCURLYBRACE 
 		  VariableDeclarationList:vdlist MethodDeclarationList:mdlist RCURLYBRACE
 		    {: RESULT = new ClassDeclExtends(i, ext, vdlist, mdlist, cleft); :}
 		
-		| CLASS:c Identifier:i LPAREN EXTENDS Identifier:ext RPAREN LCURLYBRACE 
+		| CLASS:c Identifier:i EXTENDS Identifier:ext LCURLYBRACE 
 		  VariableDeclarationList:vdlist RCURLYBRACE
 		    {: 	MethodDeclList mdlist = new MethodDeclList(0);
 				RESULT = new ClassDeclExtends(i, ext, vdlist, mdlist, cleft); :}
 		
-		| CLASS:c Identifier:i LPAREN EXTENDS Identifier:ext RPAREN LCURLYBRACE 
+		| CLASS:c Identifier:i EXTENDS Identifier:ext LCURLYBRACE 
 		  MethodDeclarationList:mdlist RCURLYBRACE
 		    {: 	VarDeclList vdlist = new VarDeclList(0);
 				RESULT = new ClassDeclExtends(i, ext, vdlist, mdlist, cleft); :}
 		
-		| CLASS:c Identifier:i LPAREN EXTENDS Identifier:ext RPAREN LCURLYBRACE RCURLYBRACE
+		| CLASS:c Identifier:i EXTENDS Identifier:ext LCURLYBRACE RCURLYBRACE
 		    {: 	VarDeclList vdlist= new VarDeclList(0);
 				MethodDeclList mdlist = new MethodDeclList(0);
 				RESULT = new ClassDeclExtends(i, ext, vdlist, mdlist, cleft); :}
