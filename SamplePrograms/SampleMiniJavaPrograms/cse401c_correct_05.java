@@ -42,7 +42,7 @@ class Person {
     }
 }
 
-class Male (extends Person) {
+class Male extends Person {
     //    public Male(int a) {
     //  age = a;
     //  isMale = true;
