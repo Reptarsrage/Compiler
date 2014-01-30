@@ -347,67 +347,54 @@ WhileStatement ::=
 		     {: StatementList slist = new StatementList(wleft);
 			    slist.add(s);
 				RESULT = new While(exp, slist, wleft); :}
-		  /*| WHILE:w LPAREN Expression:exp RPAREN
-		     {: StatementList slist = new StatementList(0);
-		     	RESULT = new While(exp, slist, wleft); :}
 		  | WHILE:w LPAREN Expression:exp RPAREN LCURLYBRACE RCURLYBRACE
 		     {:  StatementList slist = new StatementList(0);
 			     RESULT = new While(exp, slist, wleft); :}	
-		*/;
+		;
 		
 IfElseStatement ::=
-		  IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE Statement:s2
+		  IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE Statement:s2 // if (exp) statement else statement
 		     {: StatementList s1list = new StatementList(ileft);
 			    StatementList s2list = new StatementList(ileft);
 				s1list.add(s1);
 				s2list.add(s2);
 				RESULT = new If(e, s1list, s2list, ileft); :}
-		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE StatementList:s1list RCURLYBRACE ELSE Statement:s2
+		  
+		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE StatementList:s1list RCURLYBRACE ELSE Statement:s2 // if (exp) {list} else statement
 		     {: StatementList s2list = new StatementList(ileft);
 				s2list.add(s2);
 				RESULT = new If(e, s1list, s2list, ileft); :}
-		  | IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE LCURLYBRACE StatementList:s2list RCURLYBRACE 
+		  
+		  | IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE LCURLYBRACE StatementList:s2list RCURLYBRACE // if (exp) statement else {list}
 		     {: StatementList s1list = new StatementList(ileft);
 				s1list.add(s1);
 				RESULT = new If(e, s1list, s2list, ileft); :} 
-		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE StatementList:s1list RCURLYBRACE 
+		  
+		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE StatementList:s1list RCURLYBRACE // if (exp) { list } else { list } 
 			 ELSE LCURLYBRACE StatementList:s2list RCURLYBRACE
 		     {: RESULT = new If(e, s1list, s2list, ileft); :}
-		  /*| IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE
-		     {: StatementList s1list = new StatementList(ileft);
-			    StatementList s2list = new StatementList(0);
-				s1list.add(s1);
-				RESULT = new If(e, s1list, s2list, ileft); :}
-		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE StatementList:s1list RCURLYBRACE ELSE
-		     {: StatementList s2list = new StatementList(0);
-				RESULT = new If(e, s1list, s2list, ileft); :}
-		  */| IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE LCURLYBRACE RCURLYBRACE 
+		  
+		  | IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE LCURLYBRACE RCURLYBRACE // if (exp) statement else {}
 		     {: StatementList s2list = new StatementList(0);
 			    StatementList s1list = new StatementList(ileft);
 				s1list.add(s1);
 				RESULT = new If(e, s1list, s2list, ileft); :} 
-		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE StatementList:s1list RCURLYBRACE 
+		  
+		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE StatementList:s1list RCURLYBRACE  // if (exp) {list} else {}
 			 ELSE LCURLYBRACE RCURLYBRACE
 		     {: StatementList s2list = new StatementList(0);
 			    RESULT = new If(e, s1list, s2list, ileft); :}
-		  /*| IF:i LPAREN Expression:e RPAREN ELSE Statement:s2
+		  
+		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE RCURLYBRACE ELSE Statement:s2 // if (exp) {} else state
 		     {: StatementList s1list = new StatementList(0);
 			    StatementList s2list = new StatementList(ileft);
 				s2list.add(s2);
 				RESULT = new If(e, s1list, s2list, ileft); :}
-		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE RCURLYBRACE ELSE Statement:s2
-		     {: StatementList s1list = new StatementList(0);
-			    StatementList s2list = new StatementList(ileft);
-				s2list.add(s2);
-				RESULT = new If(e, s1list, s2list, ileft); :}
-		  | IF:i LPAREN Expression:e RPAREN ELSE LCURLYBRACE StatementList:s2list RCURLYBRACE 
-		     {: StatementList s1list = new StatementList(0);
-				RESULT = new If(e, s1list, s2list, ileft); :} 
-		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE RCURLYBRACE 
+		  
+		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE RCURLYBRACE   //if (exp) {} else {list}
 			 ELSE LCURLYBRACE StatementList:s2list RCURLYBRACE
 		     {: StatementList s1list = new StatementList(0);
-			    RESULT = new If(e, s1list, s2list, ileft); :}*/
-			 
+			    RESULT = new If(e, s1list, s2list, ileft); :}
 		;
 			
 Expression    ::=
