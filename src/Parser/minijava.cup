@@ -381,7 +381,7 @@ IfElseStatement ::=
 		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE StatementList:s1list RCURLYBRACE ELSE
 		     {: StatementList s2list = new StatementList(0);
 				RESULT = new If(e, s1list, s2list, ileft); :}
-		  | IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE LCURLYBRACE RCURLYBRACE 
+		  */| IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE LCURLYBRACE RCURLYBRACE 
 		     {: StatementList s2list = new StatementList(0);
 			    StatementList s1list = new StatementList(ileft);
 				s1list.add(s1);
@@ -390,7 +390,7 @@ IfElseStatement ::=
 			 ELSE LCURLYBRACE RCURLYBRACE
 		     {: StatementList s2list = new StatementList(0);
 			    RESULT = new If(e, s1list, s2list, ileft); :}
-		  | IF:i LPAREN Expression:e RPAREN ELSE Statement:s2
+		  /*| IF:i LPAREN Expression:e RPAREN ELSE Statement:s2
 		     {: StatementList s1list = new StatementList(0);
 			    StatementList s2list = new StatementList(ileft);
 				s2list.add(s2);
