@@ -2,8 +2,16 @@
 
 class cse401c_ctfail_14 {
 	public static void main(String[] args) {
-		int i = 0;
-		int i = 0;
-		System.out.println(i);
+		System.out.println(new Test().test());
 	}
+}
+
+class Test {
+    public int test() {
+        int i;
+		int i;
+        i = 0;
+        i = 0;
+		return i;
+    }
 }

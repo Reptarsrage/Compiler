@@ -7,8 +7,10 @@ class cse401c_ctfail_15 {
 
 class TestMismatchTypes {
     public int test(int x, double y) {
-        int test1 = y;
-        double test2 = x;
-        return x + y;
+        int test1;
+        double test2;
+        test1 = x;
+        test2 = y;
+        return test1 + test2;
     }
 }
