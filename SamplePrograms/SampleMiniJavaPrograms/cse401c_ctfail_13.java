@@ -2,13 +2,13 @@
 
 class cse401c_ctfail_13 {
 	public static void main(String[] args) {
-		TestFailure test = new TestFailure();
-		test.test();
+        System.out.println(new TestFailure().test());
 	}
 }
 
 class TestFailure {
-	public void test1() {
+	public int test1() {
 		System.out.println(1);
+        return 1;
 	}
 }
