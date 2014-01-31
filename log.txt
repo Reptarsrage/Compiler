@@ -1,21 +1,32 @@
-Buildfile: /homes/iws/xreptarx/cse401/401_project/build.xml
+Buildfile: /home/adam/Documents/school/cse401/401_project/build.xml
 
 init:
+    [mkdir] Created dir: /home/adam/Documents/school/cse401/401_project/build/classes
 
 check.parse.files:
 
 gen-parser:
 
 gen-scanner:
+     [java] Reading "src/Scanner/minijava.jflex"
+     [java] Constructing NFA : 307 states in NFA
+     [java] Converting NFA to DFA : 
+     [java] .........................................................................................................................................................................
+     [java] 171 states before minimization, 151 states in minimized DFA
+     [java] Writing code to "src/Scanner/scanner.java"
 
 compile:
+    [javac] Compiling 68 source files to /home/adam/Documents/school/cse401/401_project/build/classes
+    [javac] Note: /home/adam/Documents/school/cse401/401_project/src/CodeGenMain.java uses unchecked or unsafe operations.
+    [javac] Note: Recompile with -Xlint:unchecked for details.
 
 test-parser-all:
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_03.java------------
      [java] class cse401c_correct_03 {
      [java]   public static void main (String [] args) {
-     [java]     System.out.println(new TestWhileLoopIntLiteral().test());  }
+     [java]     System.out.println(new TestWhileLoopIntLiteral().test());
+     [java]   }
      [java] }
      [java] 
      [java] class TestWhileLoopIntLiteral { 
@@ -26,8 +37,10 @@ test-parser-all:
      [java]     while ((i < 5)) {
      [java] 	  i = (i + 1);
      [java] 	  if ((i == 5)) {
-     [java]     System.out.println(i);
-     [java] }   else {System.out.println(i);    }
+     [java]         System.out.println(i);
+     [java]     } else {
+     [java]          System.out.println(i);
+     [java]     }
      [java] 	}
      [java]     return 5;
      [java]   }
@@ -36,7 +49,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/cse401c_correct_07.java------------
      [java] class cse401c_correct_07 {
      [java]   public static void main (String [] args) {
-     [java]     System.out.println(new TestIntVars().test(0));  }
+     [java]     System.out.println(new TestIntVars().test(0));
+     [java]   }
      [java] }
      [java] 
      [java] class TestIntVars { 
@@ -53,7 +67,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/ExerciseDouble.java------------
      [java] class ExerciseDouble {
      [java]   public static void main (String [] args) {
-     [java]     System.out.println(new Worker().OneFloat());  }
+     [java]     System.out.println(new Worker().OneFloat());
+     [java]   }
      [java] }
      [java] 
      [java] class Worker { 
@@ -61,8 +76,10 @@ test-parser-all:
      [java]   public double AddFloatInt (double d, int i) { 
      [java]     double back;
      [java]     if ((i == 1)) {
-     [java]     back = (d + 1.0);
-     [java] }   else {back = (d + 2.0);    }
+     [java]         back = (d + 1.0);
+     [java]     } else {
+     [java]          back = (d + 2.0);
+     [java]     }
      [java]     return back;
      [java]   }
      [java]   public double OneFloat () { 
@@ -72,66 +89,106 @@ test-parser-all:
      [java]     double aNaN;
      [java]     double aInf;
      [java]     if ((3.0 < 4.0)) {
-     [java]     System.out.println(0);
-     [java] }   else {System.out.println(9999);    }
+     [java]         System.out.println(0);
+     [java]     } else {
+     [java]          System.out.println(9999);
+     [java]     }
      [java]     if ((3.0 <= 3.0)) {
-     [java]     System.out.println(0);
-     [java] }   else {System.out.println(9999);    }
+     [java]         System.out.println(0);
+     [java]     } else {
+     [java]          System.out.println(9999);
+     [java]     }
      [java]     if ((3.0 == 3.0)) {
-     [java]     System.out.println(0);
-     [java] }   else {System.out.println(9999);    }
+     [java]         System.out.println(0);
+     [java]     } else {
+     [java]          System.out.println(9999);
+     [java]     }
      [java]     if ((3.0 == 4.0)) {
-     [java]     System.out.println(0);
-     [java] }   else {System.out.println(9999);    }
+     [java]         System.out.println(0);
+     [java]     } else {
+     [java]          System.out.println(9999);
+     [java]     }
      [java]     if ((4.0 == 3.0)) {
-     [java]     System.out.println(0);
-     [java] }   else {System.out.println(9999);    }
+     [java]         System.out.println(0);
+     [java]     } else {
+     [java]          System.out.println(9999);
+     [java]     }
      [java]     if ((4.0 >= 4.0)) {
-     [java]     System.out.println(0);
-     [java] }   else {System.out.println(9999);    }
+     [java]         System.out.println(0);
+     [java]     } else {
+     [java]          System.out.println(9999);
+     [java]     }
      [java]     if ((4.0 >= 3.0)) {
-     [java]     System.out.println(0);
-     [java] }   else {System.out.println(9999);    }
+     [java]         System.out.println(0);
+     [java]     } else {
+     [java]          System.out.println(9999);
+     [java]     }
      [java]     aNaN = (0.0 / 0.0);
      [java]     if ((aNaN == aNaN)) {
-     [java]     System.out.println(0);
-     [java] }   else {System.out.println(8888);    }
+     [java]         System.out.println(0);
+     [java]     } else {
+     [java]          System.out.println(8888);
+     [java]     }
      [java]     if ((3.0 < aNaN)) {
-     [java]     System.out.println(8887);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(8887);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if ((3.0 <= aNaN)) {
-     [java]     System.out.println(8886);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(8886);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if ((3.0 == aNaN)) {
-     [java]     System.out.println(8885);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(8885);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if ((3.0 == aNaN)) {
-     [java]     System.out.println(0);
-     [java] }   else {System.out.println(8884);    }
+     [java]         System.out.println(0);
+     [java]     } else {
+     [java]          System.out.println(8884);
+     [java]     }
      [java]     if ((3.0 >= aNaN)) {
-     [java]     System.out.println(8883);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(8883);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if ((3.0 > aNaN)) {
-     [java]     System.out.println(8882);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(8882);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if ((aNaN < 3.0)) {
-     [java]     System.out.println(7777);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(7777);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if ((aNaN <= 3.0)) {
-     [java]     System.out.println(7776);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(7776);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if ((aNaN == 3.0)) {
-     [java]     System.out.println(7775);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(7775);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if ((aNaN == 3.0)) {
-     [java]     System.out.println(0);
-     [java] }   else {System.out.println(7774);    }
+     [java]         System.out.println(0);
+     [java]     } else {
+     [java]          System.out.println(7774);
+     [java]     }
      [java]     if ((aNaN >= 3.0)) {
-     [java]     System.out.println(7773);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(7773);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if ((aNaN > 3.0)) {
-     [java]     System.out.println(7772);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(7772);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     A = new int [20];
      [java]     i = 0;
      [java]     d = 0.0;
@@ -147,7 +204,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/BinaryTree.java------------
      [java] class BinaryTree {
      [java]   public static void main (String [] a) {
-     [java]     System.out.println(new BT().Start());  }
+     [java]     System.out.println(new BT().Start());
+     [java]   }
      [java] }
      [java] 
      [java] class BT { 
@@ -235,10 +293,14 @@ test-parser-all:
      [java]     ntb = false;
      [java]     nti = (num2 + 1);
      [java]     if ((num1 < num2)) {
-     [java]     ntb = false;
-     [java] }   else {if (!(num1 < nti)) {
-     [java]     ntb = false;
-     [java] }   else {ntb = true;    }    }
+     [java]         ntb = false;
+     [java]     } else {
+     [java]          if (!(num1 < nti)) {
+     [java]         ntb = false;
+     [java]     } else {
+     [java]          ntb = true;
+     [java]     }
+     [java]     }
      [java]     return ntb;
      [java]   }
      [java]   public boolean Insert (int v_key) { 
@@ -254,12 +316,22 @@ test-parser-all:
      [java]     while (cont) {
      [java] 	  key_aux = current_node.GetKey();
      [java] 	  if ((v_key < key_aux)) {
-     [java]     if (current_node.GetHas_Left()) {
-     [java]     current_node = current_node.GetLeft();
-     [java] }   else {cont = false;ntb = current_node.SetHas_Left(true);ntb = current_node.SetLeft(new_node);    }
-     [java] }   else {if (current_node.GetHas_Right()) {
-     [java]     current_node = current_node.GetRight();
-     [java] }   else {cont = false;ntb = current_node.SetHas_Right(true);ntb = current_node.SetRight(new_node);    }    }
+     [java]         if (current_node.GetHas_Left()) {
+     [java]         current_node = current_node.GetLeft();
+     [java]     } else {
+     [java]          cont = false;
+     [java]          ntb = current_node.SetHas_Left(true);
+     [java]          ntb = current_node.SetLeft(new_node);
+     [java]     }
+     [java]     } else {
+     [java]          if (current_node.GetHas_Right()) {
+     [java]         current_node = current_node.GetRight();
+     [java]     } else {
+     [java]          cont = false;
+     [java]          ntb = current_node.SetHas_Right(true);
+     [java]          ntb = current_node.SetRight(new_node);
+     [java]     }
+     [java]     }
      [java] 	}
      [java]     return true;
      [java]   }
@@ -279,18 +351,34 @@ test-parser-all:
      [java]     while (cont) {
      [java] 	  key_aux = current_node.GetKey();
      [java] 	  if ((v_key < key_aux)) {
-     [java]     if (current_node.GetHas_Left()) {
-     [java]     parent_node = current_node;current_node = current_node.GetLeft();
-     [java] }   else {cont = false;    }
-     [java] }   else {if ((key_aux < v_key)) {
-     [java]     if (current_node.GetHas_Right()) {
-     [java]     parent_node = current_node;current_node = current_node.GetRight();
-     [java] }   else {cont = false;    }
-     [java] }   else {if (is_root) {
-     [java]     if ((!current_node.GetHas_Right() && !current_node.GetHas_Left())) {
-     [java]     ntb = true;
-     [java] }   else {ntb = this.Remove(parent_node, current_node);    }
-     [java] }   else {ntb = this.Remove(parent_node, current_node);    }found = true;cont = false;    }    }
+     [java]         if (current_node.GetHas_Left()) {
+     [java]         parent_node = current_node;
+     [java]         current_node = current_node.GetLeft();
+     [java]     } else {
+     [java]          cont = false;
+     [java]     }
+     [java]     } else {
+     [java]          if ((key_aux < v_key)) {
+     [java]         if (current_node.GetHas_Right()) {
+     [java]         parent_node = current_node;
+     [java]         current_node = current_node.GetRight();
+     [java]     } else {
+     [java]          cont = false;
+     [java]     }
+     [java]     } else {
+     [java]          if (is_root) {
+     [java]         if ((!current_node.GetHas_Right() && !current_node.GetHas_Left())) {
+     [java]         ntb = true;
+     [java]     } else {
+     [java]          ntb = this.Remove(parent_node, current_node);
+     [java]     }
+     [java]     } else {
+     [java]          ntb = this.Remove(parent_node, current_node);
+     [java]     }
+     [java]          found = true;
+     [java]          cont = false;
+     [java]     }
+     [java]     }
      [java] 	  is_root = false;
      [java] 	}
      [java]     return found;
@@ -300,12 +388,22 @@ test-parser-all:
      [java]     int auxkey1;
      [java]     int auxkey2;
      [java]     if (c_node.GetHas_Left()) {
-     [java]     ntb = this.RemoveLeft(p_node, c_node);
-     [java] }   else {if (c_node.GetHas_Right()) {
-     [java]     ntb = this.RemoveRight(p_node, c_node);
-     [java] }   else {auxkey1 = c_node.GetKey();auxkey2 = p_node.GetLeft().GetKey();if (this.Compare(auxkey1, auxkey2)) {
-     [java]     ntb = p_node.SetLeft(my_null);ntb = p_node.SetHas_Left(false);
-     [java] }   else {ntb = p_node.SetRight(my_null);ntb = p_node.SetHas_Right(false);    }    }    }
+     [java]         ntb = this.RemoveLeft(p_node, c_node);
+     [java]     } else {
+     [java]          if (c_node.GetHas_Right()) {
+     [java]         ntb = this.RemoveRight(p_node, c_node);
+     [java]     } else {
+     [java]          auxkey1 = c_node.GetKey();
+     [java]          auxkey2 = p_node.GetLeft().GetKey();
+     [java]          if (this.Compare(auxkey1, auxkey2)) {
+     [java]         ntb = p_node.SetLeft(my_null);
+     [java]         ntb = p_node.SetHas_Left(false);
+     [java]     } else {
+     [java]          ntb = p_node.SetRight(my_null);
+     [java]          ntb = p_node.SetHas_Right(false);
+     [java]     }
+     [java]     }
+     [java]     }
      [java]     return true;
      [java]   }
      [java]   public boolean RemoveRight (Tree p_node, Tree c_node) { 
@@ -341,14 +439,23 @@ test-parser-all:
      [java]     while (cont) {
      [java] 	  key_aux = current_node.GetKey();
      [java] 	  if ((v_key < key_aux)) {
-     [java]     if (current_node.GetHas_Left()) {
-     [java]     current_node = current_node.GetLeft();
-     [java] }   else {cont = false;    }
-     [java] }   else {if ((key_aux < v_key)) {
-     [java]     if (current_node.GetHas_Right()) {
-     [java]     current_node = current_node.GetRight();
-     [java] }   else {cont = false;    }
-     [java] }   else {ifound = 1;cont = false;    }    }
+     [java]         if (current_node.GetHas_Left()) {
+     [java]         current_node = current_node.GetLeft();
+     [java]     } else {
+     [java]          cont = false;
+     [java]     }
+     [java]     } else {
+     [java]          if ((key_aux < v_key)) {
+     [java]         if (current_node.GetHas_Right()) {
+     [java]         current_node = current_node.GetRight();
+     [java]     } else {
+     [java]          cont = false;
+     [java]     }
+     [java]     } else {
+     [java]          ifound = 1;
+     [java]          cont = false;
+     [java]     }
+     [java]     }
      [java] 	}
      [java]     return ifound;
      [java]   }
@@ -362,12 +469,16 @@ test-parser-all:
      [java]   public boolean RecPrint (Tree node) { 
      [java]     boolean ntb;
      [java]     if (node.GetHas_Left()) {
-     [java]     ntb = this.RecPrint(node.GetLeft());
-     [java] }   else {ntb = true;    }
+     [java]         ntb = this.RecPrint(node.GetLeft());
+     [java]     } else {
+     [java]          ntb = true;
+     [java]     }
      [java]     System.out.println(node.GetKey());
      [java]     if (node.GetHas_Right()) {
-     [java]     ntb = this.RecPrint(node.GetRight());
-     [java] }   else {ntb = true;    }
+     [java]         ntb = this.RecPrint(node.GetRight());
+     [java]     } else {
+     [java]          ntb = true;
+     [java]     }
      [java]     return true;
      [java]   }
      [java] }
@@ -375,7 +486,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/QuickSort.java------------
      [java] class QuickSort {
      [java]   public static void main (String [] a) {
-     [java]     System.out.println(new QS().Start(10));  }
+     [java]     System.out.println(new QS().Start(10));
+     [java]   }
      [java] }
      [java] 
      [java] class QS { 
@@ -402,31 +514,48 @@ test-parser-all:
      [java]     int aux03;
      [java]     t = 0;
      [java]     if ((left < right)) {
-     [java]     v = number[right];i = (left - 1);j = right;cont01 = true;while (cont01) {
+     [java]         v = number[right];
+     [java]         i = (left - 1);
+     [java]         j = right;
+     [java]         cont01 = true;
+     [java]         while (cont01) {
      [java] 	  cont02 = true;
      [java] 	  while (cont02) {
      [java] 	  i = (i + 1);
      [java] 	  aux03 = number[i];
      [java] 	  if (!(aux03 < v)) {
-     [java]     cont02 = false;
-     [java] }   else {cont02 = true;    }
+     [java]         cont02 = false;
+     [java]     } else {
+     [java]          cont02 = true;
+     [java]     }
      [java] 	}
      [java] 	  cont02 = true;
      [java] 	  while (cont02) {
      [java] 	  j = (j - 1);
      [java] 	  aux03 = number[j];
      [java] 	  if (!(v < aux03)) {
-     [java]     cont02 = false;
-     [java] }   else {cont02 = true;    }
+     [java]         cont02 = false;
+     [java]     } else {
+     [java]          cont02 = true;
+     [java]     }
      [java] 	}
      [java] 	  t = number[i];
      [java] 	  number[i] = number[j];
      [java] 	  number[j] = t;
      [java] 	  if ((j < (i + 1))) {
-     [java]     cont01 = false;
-     [java] }   else {cont01 = true;    }
-     [java] 	}number[j] = number[i];number[i] = number[right];number[right] = t;nt = this.Sort(left, (i - 1));nt = this.Sort((i + 1), right);
-     [java] }   else {nt = 0;    }
+     [java]         cont01 = false;
+     [java]     } else {
+     [java]          cont01 = true;
+     [java]     }
+     [java] 	}
+     [java]         number[j] = number[i];
+     [java]         number[i] = number[right];
+     [java]         number[right] = t;
+     [java]         nt = this.Sort(left, (i - 1));
+     [java]         nt = this.Sort((i + 1), right);
+     [java]     } else {
+     [java]          nt = 0;
+     [java]     }
      [java]     return 0;
      [java]   }
      [java]   public int Print () { 
@@ -456,19 +585,25 @@ test-parser-all:
      [java] }
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_13.java------------
-     [java] Syntax error at line 5 of input
-     [java] Couldn't repair and continue parse at line 5 of input
-     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
-     [java] java.lang.Exception: Can't recover from previous error(s)
-     [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
-     [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
-     [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:110)
+     [java] class cse401c_ctfail_13 {
+     [java]   public static void main (String [] args) {
+     [java]     System.out.println(new TestFailure().test());
+     [java]   }
+     [java] }
+     [java] 
+     [java] class TestFailure { 
+     [java] 
+     [java]   public int test1 () { 
+     [java]     System.out.println(1);
+     [java]     return 1;
+     [java]   }
+     [java] }
      [java] 
      [java] ------------Parsing SamplePrograms/LinearSearch.java------------
      [java] class LinearSearch {
      [java]   public static void main (String [] a) {
-     [java]     System.out.println(new LS().Start(10));  }
+     [java]     System.out.println(new LS().Start(10));
+     [java]   }
      [java] }
      [java] 
      [java] class LS { 
@@ -509,10 +644,16 @@ test-parser-all:
      [java] 	  aux01 = number[j];
      [java] 	  aux02 = (num + 1);
      [java] 	  if ((aux01 < num)) {
-     [java]     nt = 0;
-     [java] }   else {if (!(aux01 < aux02)) {
-     [java]     nt = 0;
-     [java] }   else {ls01 = true;ifound = 1;j = size;    }    }
+     [java]         nt = 0;
+     [java]     } else {
+     [java]          if (!(aux01 < aux02)) {
+     [java]         nt = 0;
+     [java]     } else {
+     [java]          ls01 = true;
+     [java]          ifound = 1;
+     [java]          j = size;
+     [java]     }
+     [java]     }
      [java] 	  j = (j + 1);
      [java] 	}
      [java]     return ifound;
@@ -536,11 +677,11 @@ test-parser-all:
      [java]     return 0;
      [java]   }
      [java] }
-     [java] Syntax error at line 5 of input
-     [java] Couldn't repair and continue parse at line 5 of input
-     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
-     [java] ------------Parsing SamplePrograms/cse401c_ctfail_17.java------------
      [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_17.java------------
+     [java] Syntax error at line 12 of input
+     [java] Couldn't repair and continue parse at line 12 of input
+     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
@@ -550,7 +691,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/BinarySearch.java------------
      [java] class BinarySearch {
      [java]   public static void main (String [] a) {
-     [java]     System.out.println(new BS().Start(20));  }
+     [java]     System.out.println(new BS().Start(20));
+     [java]   }
      [java] }
      [java] 
      [java] class BS { 
@@ -562,29 +704,45 @@ test-parser-all:
      [java]     aux01 = this.Init(sz);
      [java]     aux02 = this.Print();
      [java]     if (this.Search(8)) {
-     [java]     System.out.println(1);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(1);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if (this.Search(19)) {
-     [java]     System.out.println(1);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(1);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if (this.Search(20)) {
-     [java]     System.out.println(1);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(1);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if (this.Search(21)) {
-     [java]     System.out.println(1);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(1);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if (this.Search(37)) {
-     [java]     System.out.println(1);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(1);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if (this.Search(38)) {
-     [java]     System.out.println(1);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(1);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if (this.Search(39)) {
-     [java]     System.out.println(1);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(1);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     if (this.Search(50)) {
-     [java]     System.out.println(1);
-     [java] }   else {System.out.println(0);    }
+     [java]         System.out.println(1);
+     [java]     } else {
+     [java]          System.out.println(0);
+     [java]     }
      [java]     return 999;
      [java]   }
      [java]   public boolean Search (int num) { 
@@ -606,18 +764,26 @@ test-parser-all:
      [java] 	  medium = this.Div(medium);
      [java] 	  aux01 = number[medium];
      [java] 	  if ((num < aux01)) {
-     [java]     right = (medium - 1);
-     [java] }   else {left = (medium + 1);    }
+     [java]         right = (medium - 1);
+     [java]     } else {
+     [java]          left = (medium + 1);
+     [java]     }
      [java] 	  if (this.Compare(aux01, num)) {
-     [java]     var_cont = false;
-     [java] }   else {var_cont = true;    }
+     [java]         var_cont = false;
+     [java]     } else {
+     [java]          var_cont = true;
+     [java]     }
      [java] 	  if ((right < left)) {
-     [java]     var_cont = false;
-     [java] }   else {nt = 0;    }
+     [java]         var_cont = false;
+     [java]     } else {
+     [java]          nt = 0;
+     [java]     }
      [java] 	}
      [java]     if (this.Compare(aux01, num)) {
-     [java]     bs01 = true;
-     [java] }   else {bs01 = false;    }
+     [java]         bs01 = true;
+     [java]     } else {
+     [java]          bs01 = false;
+     [java]     }
      [java]     return bs01;
      [java]   }
      [java]   public int Div (int num) { 
@@ -639,10 +805,14 @@ test-parser-all:
      [java]     retval = false;
      [java]     aux02 = (num2 + 1);
      [java]     if ((num1 < num2)) {
-     [java]     retval = false;
-     [java] }   else {if (!(num1 < aux02)) {
-     [java]     retval = false;
-     [java] }   else {retval = true;    }    }
+     [java]         retval = false;
+     [java]     } else {
+     [java]          if (!(num1 < aux02)) {
+     [java]         retval = false;
+     [java]     } else {
+     [java]          retval = true;
+     [java]     }
+     [java]     }
      [java]     return retval;
      [java]   }
      [java]   public int Print () { 
@@ -678,7 +848,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/DoubleOutput.java------------
      [java] class DoubleOutput {
      [java]   public static void main (String [] a) {
-     [java]     System.out.println(new DoubleOutputWorker().doWork());  }
+     [java]     System.out.println(new DoubleOutputWorker().doWork());
+     [java]   }
      [java] }
      [java] 
      [java] class DoubleOutputWorker { 
@@ -718,7 +889,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/Factorial.java------------
      [java] class Factorial {
      [java]   public static void main (String [] a) {
-     [java]     System.out.println(new Fac().ComputeFac(10));  }
+     [java]     System.out.println(new Fac().ComputeFac(10));
+     [java]   }
      [java] }
      [java] 
      [java] class Fac { 
@@ -726,8 +898,10 @@ test-parser-all:
      [java]   public int ComputeFac (int num) { 
      [java]     int num_aux;
      [java]     if ((num < 1)) {
-     [java]     num_aux = 1;
-     [java] }   else {num_aux = (num * this.ComputeFac((num - 1)));    }
+     [java]         num_aux = 1;
+     [java]     } else {
+     [java]          num_aux = (num * this.ComputeFac((num - 1)));
+     [java]     }
      [java]     return num_aux;
      [java]   }
      [java] }
@@ -735,7 +909,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/Pi.java------------
      [java] class Pi {
      [java]   public static void main (String [] a) {
-     [java]     System.out.println(new PiWorker().doWork());  }
+     [java]     System.out.println(new PiWorker().doWork());
+     [java]   }
      [java] }
      [java] 
      [java] class PiWorker { 
@@ -779,18 +954,31 @@ test-parser-all:
      [java] 	  a[1] = (q % 10);
      [java] 	  q = (q / 10);
      [java] 	  if ((q == 9)) {
-     [java]     nines = (nines + 1);
-     [java] }   else {if ((q == 10)) {
-     [java]     junk = this.writeDigit((predigit + 1));k = 1;while ((k <= nines)) {
+     [java]         nines = (nines + 1);
+     [java]     } else {
+     [java]          if ((q == 10)) {
+     [java]         junk = this.writeDigit((predigit + 1));
+     [java]         k = 1;
+     [java]         while ((k <= nines)) {
      [java] 	  junk = this.writeDigit(0);
      [java] 	  k = (k + 1);
-     [java] 	}predigit = 0;nines = 0;
-     [java] }   else {junk = this.writeDigit(predigit);predigit = q;if ((nines == 0)) {
-     [java]     k = 1;while ((k <= nines)) {
+     [java] 	}
+     [java]         predigit = 0;
+     [java]         nines = 0;
+     [java]     } else {
+     [java]          junk = this.writeDigit(predigit);
+     [java]          predigit = q;
+     [java]          if ((nines == 0)) {
+     [java]         k = 1;
+     [java]         while ((k <= nines)) {
      [java] 	  junk = this.writeDigit(9);
      [java] 	  k = (k + 1);
-     [java] 	}nines = 0;
-     [java] }   else {    }    }    }
+     [java] 	}
+     [java]         nines = 0;
+     [java]     } else {
+     [java]     }
+     [java]     }
+     [java]     }
      [java] 	  j = (j + 1);
      [java] 	}
      [java]     junk = this.writeDigit(predigit);
@@ -801,7 +989,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_16.java------------
      [java] class cse401c_ctfail_16 {
      [java]   public static void main (String [] args) {
-     [java]     System.out.println(new TestOverload().a(0));  }
+     [java]     System.out.println(new TestOverload().a(0));
+     [java]   }
      [java] }
      [java] 
      [java] class TestOverload { 
@@ -817,7 +1006,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/Sqrt.java------------
      [java] class Sqrt {
      [java]   public static void main (String [] a) {
-     [java]     System.out.println(new SqrtWorker().Sqrt(2.0));  }
+     [java]     System.out.println(new SqrtWorker().Sqrt(2.0));
+     [java]   }
      [java] }
      [java] 
      [java] class SqrtWorker { 
@@ -835,8 +1025,10 @@ test-parser-all:
      [java]   public double Abs (double v) { 
      [java]     double abs;
      [java]     if ((v < 0.0)) {
-     [java]     abs = (0.0 - v);
-     [java] }   else {abs = v;    }
+     [java]         abs = (0.0 - v);
+     [java]     } else {
+     [java]          abs = v;
+     [java]     }
      [java]     return abs;
      [java]   }
      [java] }
@@ -844,7 +1036,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/cse401c_correct_02.java------------
      [java] class cse401c_correct_02 {
      [java]   public static void main (String [] args) {
-     [java]     System.out.println(new TestIntLiteralCompareBranch().test());  }
+     [java]     System.out.println(new TestIntLiteralCompareBranch().test());
+     [java]   }
      [java] }
      [java] 
      [java] class TestIntLiteralCompareBranch { 
@@ -852,8 +1045,10 @@ test-parser-all:
      [java]   public int test () { 
      [java]     int res;
      [java]     if ((1 == 1)) {
-     [java]     res = 1;
-     [java] }   else {res = 0;    }
+     [java]         res = 1;
+     [java]     } else {
+     [java]          res = 0;
+     [java]     }
      [java]     return res;
      [java]   }
      [java] }
@@ -861,7 +1056,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/cse401c_correct_06.java------------
      [java] class cse401c_correct_06 {
      [java]   public static void main (String [] args) {
-     [java]     System.out.println(new TestFunctionDispatch().test());  }
+     [java]     System.out.println(new TestFunctionDispatch().test());
+     [java]   }
      [java] }
      [java] 
      [java] class TestFunctionDispatch { 
@@ -874,7 +1070,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/Asin.java------------
      [java] class Asin {
      [java]   public static void main (String [] a) {
-     [java]     System.out.println(new AsinWorker().driver());  }
+     [java]     System.out.println(new AsinWorker().driver());
+     [java]   }
      [java] }
      [java] 
      [java] class AsinWorker { 
@@ -897,16 +1094,30 @@ test-parser-all:
      [java]     double back;
      [java]     double temp;
      [java]     if ((x == 0.0)) {
-     [java]     temp = x;
-     [java] }   else {if ((x < 0.0)) {
-     [java]     x = (0.0 - x);sign = true;
-     [java] }   else {sign = false;    }if ((x > 1.0)) {
-     [java]     temp = this.NaN();
-     [java] }   else {temp = this.Sqrt((1.0 - (x * x)));if ((x > 0.7)) {
-     [java]     temp = ((this.Pi() / 2.0) - this.satan((temp / x)));
-     [java] }   else {temp = this.satan((x / temp));    }if (sign) {
-     [java]     temp = (0.0 - temp);
-     [java] }   else {temp = temp;    }    }    }
+     [java]         temp = x;
+     [java]     } else {
+     [java]          if ((x < 0.0)) {
+     [java]         x = (0.0 - x);
+     [java]         sign = true;
+     [java]     } else {
+     [java]          sign = false;
+     [java]     }
+     [java]          if ((x > 1.0)) {
+     [java]         temp = this.NaN();
+     [java]     } else {
+     [java]          temp = this.Sqrt((1.0 - (x * x)));
+     [java]          if ((x > 0.7)) {
+     [java]         temp = ((this.Pi() / 2.0) - this.satan((temp / x)));
+     [java]     } else {
+     [java]          temp = this.satan((x / temp));
+     [java]     }
+     [java]          if (sign) {
+     [java]         temp = (0.0 - temp);
+     [java]     } else {
+     [java]          temp = temp;
+     [java]     }
+     [java]     }
+     [java]     }
      [java]     return temp;
      [java]   }
      [java]   public double NaN () { 
@@ -915,8 +1126,10 @@ test-parser-all:
      [java]   public double Abs (double v) { 
      [java]     double abs;
      [java]     if ((v < 0.0)) {
-     [java]     abs = (0.0 - v);
-     [java] }   else {abs = v;    }
+     [java]         abs = (0.0 - v);
+     [java]     } else {
+     [java]          abs = v;
+     [java]     }
      [java]     return abs;
      [java]   }
      [java]   public double Sqrt (double c) { 
@@ -936,10 +1149,14 @@ test-parser-all:
      [java]     Morebits = 6.123233995736766E-17;
      [java]     Tan3pio8 = 2.414213562373095;
      [java]     if ((x <= 0.66)) {
-     [java]     back = this.xatan(x);
-     [java] }   else {if ((x > Tan3pio8)) {
-     [java]     back = (((this.Pi() / 2.0) - this.xatan((1.0 / x))) + Morebits);
-     [java] }   else {back = (((this.Pi() / 4.0) + this.xatan(((x - 1.0) / (x + 1.0)))) + (0.5 * Morebits));    }    }
+     [java]         back = this.xatan(x);
+     [java]     } else {
+     [java]          if ((x > Tan3pio8)) {
+     [java]         back = (((this.Pi() / 2.0) - this.xatan((1.0 / x))) + Morebits);
+     [java]     } else {
+     [java]          back = (((this.Pi() / 4.0) + this.xatan(((x - 1.0) / (x + 1.0)))) + (0.5 * Morebits));
+     [java]     }
+     [java]     }
      [java]     return back;
      [java]   }
      [java]   public double xatan (double x) { 
@@ -974,7 +1191,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/cse401c_correct_10.java------------
      [java] class cse401c_correct_10 {
      [java]   public static void main (String [] args) {
-     [java]     System.out.println(new TestDoubleSimple().test());  }
+     [java]     System.out.println(new TestDoubleSimple().test());
+     [java]   }
      [java] }
      [java] 
      [java] class TestDoubleSimple { 
@@ -1000,12 +1218,6 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/cse401c_correct_08.java------------
      [java] class cse401c_correct_08 {
      [java]   public static void main (String [] args) {
-     [java]     System.out.println(new TestDoubleSimple().test());  }
-     [java] }
-     [java] 
-     [java] class TestDoubleSimple { 
-     [java] 
-     [java]   public double test () { 
      [java]     System.out.println(1.0);
      [java]     System.out.println(1.0);
      [java]     System.out.println(1.0);
@@ -1016,49 +1228,77 @@ test-parser-all:
      [java]     System.out.println(1.0);
      [java]     System.out.println(1.01);
      [java]     System.out.println(10000.0);
-     [java]     return 1.0;
      [java]   }
      [java] }
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_21.java------------
-     [java] Syntax error at line 5 of input
-     [java] Couldn't repair and continue parse at line 5 of input
-     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
-     [java] java.lang.Exception: Can't recover from previous error(s)
-     [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
-     [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
-     [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:110)
+     [java] class cse401c_ctfail_21 {
+     [java]   public static void main (String [] args) {
+     [java]     System.out.println(new Test().test());
+     [java]   }
+     [java] }
+     [java] 
+     [java] class Test { 
+     [java] 
+     [java]   public int test () { 
+     [java]     foo i;
+     [java]     return 1;
+     [java]   }
+     [java] }
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_14.java------------
-     [java] Syntax error at line 5 of input
-     [java] Couldn't repair and continue parse at line 5 of input
-     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
-     [java] java.lang.Exception: Can't recover from previous error(s)
-     [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
-     [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
-     [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:110)
+     [java] class cse401c_ctfail_14 {
+     [java]   public static void main (String [] args) {
+     [java]     System.out.println(new Test().test());
+     [java]   }
+     [java] }
+     [java] 
+     [java] class Test { 
+     [java] 
+     [java]   public int test () { 
+     [java]     int i;
+     [java]     int i;
+     [java]     i = 0;
+     [java]     i = 0;
+     [java]     return i;
+     [java]   }
+     [java] }
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_rtfail_12.java------------
-     [java] Syntax error at line 5 of input
-     [java] Couldn't repair and continue parse at line 5 of input
-     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
-     [java] java.lang.Exception: Can't recover from previous error(s)
-     [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
-     [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
-     [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:110)
+     [java] class cse401c_rtfail_12 {
+     [java]   public static void main (String [] args) {
+     [java]     System.out.println(new TestUnin().init());
+     [java]   }
+     [java] }
+     [java] 
+     [java] class TestUnin { 
+     [java] 
+     [java]   public int init () { 
+     [java]     int [] arr;
+     [java]     arr = new int [1];
+     [java]     return this.test(arg);
+     [java]   }
+     [java]   public int test (int [] i) { 
+     [java]     int count;
+     [java]     count = 0;
+     [java]     while (true) {
+     [java] 	  i[count] = 1;
+     [java] 	  count = (count + 1);
+     [java] 	}
+     [java]     return 1;
+     [java]   }
+     [java] }
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_00.java------------
      [java] class cse401c_correct_00 {
      [java]   public static void main (String [] args) {
-     [java]     System.out.println(1);  }
+     [java]     System.out.println(1);
+     [java]   }
      [java] }
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_18.java------------
-     [java] Syntax error at line 5 of input
-     [java] Couldn't repair and continue parse at line 5 of input
+     [java] Syntax error at line 12 of input
+     [java] Couldn't repair and continue parse at line 12 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
@@ -1069,7 +1309,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/cse401c_correct_04.java------------
      [java] class cse401c_correct_04 {
      [java]   public static void main (String [] args) {
-     [java]     System.out.println(new TestObjects().run(100));  }
+     [java]     System.out.println(new TestObjects().run(100));
+     [java]   }
      [java] }
      [java] 
      [java] class TestObjects { 
@@ -1097,7 +1338,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/BubbleSort.java------------
      [java] class BubbleSort {
      [java]   public static void main (String [] a) {
-     [java]     System.out.println(new BBS().Start(10));  }
+     [java]     System.out.println(new BBS().Start(10));
+     [java]   }
      [java] }
      [java] 
      [java] class BBS { 
@@ -1131,8 +1373,13 @@ test-parser-all:
      [java] 	  aux04 = number[aux07];
      [java] 	  aux05 = number[j];
      [java] 	  if ((aux05 < aux04)) {
-     [java]     aux06 = (j - 1);t = number[aux06];number[aux06] = number[j];number[j] = t;
-     [java] }   else {nt = 0;    }
+     [java]         aux06 = (j - 1);
+     [java]         t = number[aux06];
+     [java]         number[aux06] = number[j];
+     [java]         number[j] = t;
+     [java]     } else {
+     [java]          nt = 0;
+     [java]     }
      [java] 	  j = (j + 1);
      [java] 	}
      [java] 	  i = (i - 1);
@@ -1168,7 +1415,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/cse401c_correct_01.java------------
      [java] class cse401c_correct_01 {
      [java]   public static void main (String [] args) {
-     [java]     System.out.println(new TestIntLiteralArithmetic().test());  }
+     [java]     System.out.println(new TestIntLiteralArithmetic().test());
+     [java]   }
      [java] }
      [java] 
      [java] class TestIntLiteralArithmetic { 
@@ -1186,7 +1434,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/TreeVisitor.java------------
      [java] class TreeVisitor {
      [java]   public static void main (String [] a) {
-     [java]     System.out.println(new TV().Start());  }
+     [java]     System.out.println(new TV().Start());
+     [java]   }
      [java] }
      [java] 
      [java] class TV { 
@@ -1279,10 +1528,14 @@ test-parser-all:
      [java]     ntb = false;
      [java]     nti = (num2 + 1);
      [java]     if ((num1 < num2)) {
-     [java]     ntb = false;
-     [java] }   else {if (!(num1 < nti)) {
-     [java]     ntb = false;
-     [java] }   else {ntb = true;    }    }
+     [java]         ntb = false;
+     [java]     } else {
+     [java]          if (!(num1 < nti)) {
+     [java]         ntb = false;
+     [java]     } else {
+     [java]          ntb = true;
+     [java]     }
+     [java]     }
      [java]     return ntb;
      [java]   }
      [java]   public boolean Insert (int v_key) { 
@@ -1298,12 +1551,22 @@ test-parser-all:
      [java]     while (cont) {
      [java] 	  key_aux = current_node.GetKey();
      [java] 	  if ((v_key < key_aux)) {
-     [java]     if (current_node.GetHas_Left()) {
-     [java]     current_node = current_node.GetLeft();
-     [java] }   else {cont = false;ntb = current_node.SetHas_Left(true);ntb = current_node.SetLeft(new_node);    }
-     [java] }   else {if (current_node.GetHas_Right()) {
-     [java]     current_node = current_node.GetRight();
-     [java] }   else {cont = false;ntb = current_node.SetHas_Right(true);ntb = current_node.SetRight(new_node);    }    }
+     [java]         if (current_node.GetHas_Left()) {
+     [java]         current_node = current_node.GetLeft();
+     [java]     } else {
+     [java]          cont = false;
+     [java]          ntb = current_node.SetHas_Left(true);
+     [java]          ntb = current_node.SetLeft(new_node);
+     [java]     }
+     [java]     } else {
+     [java]          if (current_node.GetHas_Right()) {
+     [java]         current_node = current_node.GetRight();
+     [java]     } else {
+     [java]          cont = false;
+     [java]          ntb = current_node.SetHas_Right(true);
+     [java]          ntb = current_node.SetRight(new_node);
+     [java]     }
+     [java]     }
      [java] 	}
      [java]     return true;
      [java]   }
@@ -1323,18 +1586,34 @@ test-parser-all:
      [java]     while (cont) {
      [java] 	  key_aux = current_node.GetKey();
      [java] 	  if ((v_key < key_aux)) {
-     [java]     if (current_node.GetHas_Left()) {
-     [java]     parent_node = current_node;current_node = current_node.GetLeft();
-     [java] }   else {cont = false;    }
-     [java] }   else {if ((key_aux < v_key)) {
-     [java]     if (current_node.GetHas_Right()) {
-     [java]     parent_node = current_node;current_node = current_node.GetRight();
-     [java] }   else {cont = false;    }
-     [java] }   else {if (is_root) {
-     [java]     if ((!current_node.GetHas_Right() && !current_node.GetHas_Left())) {
-     [java]     ntb = true;
-     [java] }   else {ntb = this.Remove(parent_node, current_node);    }
-     [java] }   else {ntb = this.Remove(parent_node, current_node);    }found = true;cont = false;    }    }
+     [java]         if (current_node.GetHas_Left()) {
+     [java]         parent_node = current_node;
+     [java]         current_node = current_node.GetLeft();
+     [java]     } else {
+     [java]          cont = false;
+     [java]     }
+     [java]     } else {
+     [java]          if ((key_aux < v_key)) {
+     [java]         if (current_node.GetHas_Right()) {
+     [java]         parent_node = current_node;
+     [java]         current_node = current_node.GetRight();
+     [java]     } else {
+     [java]          cont = false;
+     [java]     }
+     [java]     } else {
+     [java]          if (is_root) {
+     [java]         if ((!current_node.GetHas_Right() && !current_node.GetHas_Left())) {
+     [java]         ntb = true;
+     [java]     } else {
+     [java]          ntb = this.Remove(parent_node, current_node);
+     [java]     }
+     [java]     } else {
+     [java]          ntb = this.Remove(parent_node, current_node);
+     [java]     }
+     [java]          found = true;
+     [java]          cont = false;
+     [java]     }
+     [java]     }
      [java] 	  is_root = false;
      [java] 	}
      [java]     return found;
@@ -1344,12 +1623,22 @@ test-parser-all:
      [java]     int auxkey1;
      [java]     int auxkey2;
      [java]     if (c_node.GetHas_Left()) {
-     [java]     ntb = this.RemoveLeft(p_node, c_node);
-     [java] }   else {if (c_node.GetHas_Right()) {
-     [java]     ntb = this.RemoveRight(p_node, c_node);
-     [java] }   else {auxkey1 = c_node.GetKey();auxkey2 = p_node.GetLeft().GetKey();if (this.Compare(auxkey1, auxkey2)) {
-     [java]     ntb = p_node.SetLeft(my_null);ntb = p_node.SetHas_Left(false);
-     [java] }   else {ntb = p_node.SetRight(my_null);ntb = p_node.SetHas_Right(false);    }    }    }
+     [java]         ntb = this.RemoveLeft(p_node, c_node);
+     [java]     } else {
+     [java]          if (c_node.GetHas_Right()) {
+     [java]         ntb = this.RemoveRight(p_node, c_node);
+     [java]     } else {
+     [java]          auxkey1 = c_node.GetKey();
+     [java]          auxkey2 = p_node.GetLeft().GetKey();
+     [java]          if (this.Compare(auxkey1, auxkey2)) {
+     [java]         ntb = p_node.SetLeft(my_null);
+     [java]         ntb = p_node.SetHas_Left(false);
+     [java]     } else {
+     [java]          ntb = p_node.SetRight(my_null);
+     [java]          ntb = p_node.SetHas_Right(false);
+     [java]     }
+     [java]     }
+     [java]     }
      [java]     return true;
      [java]   }
      [java]   public boolean RemoveRight (Tree p_node, Tree c_node) { 
@@ -1385,14 +1674,23 @@ test-parser-all:
      [java]     while (cont) {
      [java] 	  key_aux = current_node.GetKey();
      [java] 	  if ((v_key < key_aux)) {
-     [java]     if (current_node.GetHas_Left()) {
-     [java]     current_node = current_node.GetLeft();
-     [java] }   else {cont = false;    }
-     [java] }   else {if ((key_aux < v_key)) {
-     [java]     if (current_node.GetHas_Right()) {
-     [java]     current_node = current_node.GetRight();
-     [java] }   else {cont = false;    }
-     [java] }   else {ifound = 1;cont = false;    }    }
+     [java]         if (current_node.GetHas_Left()) {
+     [java]         current_node = current_node.GetLeft();
+     [java]     } else {
+     [java]          cont = false;
+     [java]     }
+     [java]     } else {
+     [java]          if ((key_aux < v_key)) {
+     [java]         if (current_node.GetHas_Right()) {
+     [java]         current_node = current_node.GetRight();
+     [java]     } else {
+     [java]          cont = false;
+     [java]     }
+     [java]     } else {
+     [java]          ifound = 1;
+     [java]          cont = false;
+     [java]     }
+     [java]     }
      [java] 	}
      [java]     return ifound;
      [java]   }
@@ -1406,12 +1704,16 @@ test-parser-all:
      [java]   public boolean RecPrint (Tree node) { 
      [java]     boolean ntb;
      [java]     if (node.GetHas_Left()) {
-     [java]     ntb = this.RecPrint(node.GetLeft());
-     [java] }   else {ntb = true;    }
+     [java]         ntb = this.RecPrint(node.GetLeft());
+     [java]     } else {
+     [java]          ntb = true;
+     [java]     }
      [java]     System.out.println(node.GetKey());
      [java]     if (node.GetHas_Right()) {
-     [java]     ntb = this.RecPrint(node.GetRight());
-     [java] }   else {ntb = true;    }
+     [java]         ntb = this.RecPrint(node.GetRight());
+     [java]     } else {
+     [java]          ntb = true;
+     [java]     }
      [java]     return true;
      [java]   }
      [java]   public int accept (Visitor v) { 
@@ -1428,45 +1730,66 @@ test-parser-all:
      [java]   public int visit (Tree n) { 
      [java]     int nti;
      [java]     if (n.GetHas_Right()) {
-     [java]     r = n.GetRight();nti = r.accept(this);
-     [java] }   else {nti = 0;    }
+     [java]         r = n.GetRight();
+     [java]         nti = r.accept(this);
+     [java]     } else {
+     [java]          nti = 0;
+     [java]     }
      [java]     if (n.GetHas_Left()) {
-     [java]     l = n.GetLeft();nti = l.accept(this);
-     [java] }   else {nti = 0;    }
+     [java]         l = n.GetLeft();
+     [java]         nti = l.accept(this);
+     [java]     } else {
+     [java]          nti = 0;
+     [java]     }
      [java]     return 0;
      [java]   }
      [java] }
      [java] 
-     [java] class MyVisitor extends 
-     [java] Visitor { 
+     [java] class MyVisitor extends Visitor { 
      [java] 
      [java]   public int visit (Tree n) { 
      [java]     int nti;
      [java]     if (n.GetHas_Right()) {
-     [java]     r = n.GetRight();nti = r.accept(this);
-     [java] }   else {nti = 0;    }
+     [java]         r = n.GetRight();
+     [java]         nti = r.accept(this);
+     [java]     } else {
+     [java]          nti = 0;
+     [java]     }
      [java]     System.out.println(n.GetKey());
      [java]     if (n.GetHas_Left()) {
-     [java]     l = n.GetLeft();nti = l.accept(this);
-     [java] }   else {nti = 0;    }
+     [java]         l = n.GetLeft();
+     [java]         nti = l.accept(this);
+     [java]     } else {
+     [java]          nti = 0;
+     [java]     }
      [java]     return 0;
      [java]   }
      [java] }
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_19.java------------
-     [java] Syntax error at line 5 of input
-     [java] Couldn't repair and continue parse at line 5 of input
-     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
-     [java] java.lang.Exception: Can't recover from previous error(s)
-     [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
-     [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
-     [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:110)
+     [java] class cse401c_ctfail_19 {
+     [java]   public static void main (String [] args) {
+     [java]     System.out.println(new Test().test());
+     [java]   }
+     [java] }
+     [java] 
+     [java] class Test { 
+     [java] 
+     [java]   public int test () { 
+     [java]     int [] i;
+     [java]     int [] j;
+     [java]     i = new int [10];
+     [java]     j = new int [10];
+     [java]     i = (j / i);
+     [java]     return i;
+     [java]   }
+     [java] }
      [java] 
      [java] ------------Parsing SamplePrograms/LinkedList.java------------
      [java] class LinkedList {
      [java]   public static void main (String [] a) {
-     [java]     System.out.println(new LL().Start());  }
+     [java]     System.out.println(new LL().Start());
+     [java]   }
      [java] }
      [java] 
      [java] class Element { 
@@ -1496,16 +1819,27 @@ test-parser-all:
      [java]     ret_val = true;
      [java]     aux01 = other.GetAge();
      [java]     if (!this.Compare(aux01, Age)) {
-     [java]     ret_val = false;
-     [java] }   else {aux02 = other.GetSalary();if (!this.Compare(aux02, Salary)) {
-     [java]     ret_val = false;
-     [java] }   else {if (Married) {
-     [java]     if (!other.GetMarried()) {
-     [java]     ret_val = false;
-     [java] }   else {nt = 0;    }
-     [java] }   else {if (other.GetMarried()) {
-     [java]     ret_val = false;
-     [java] }   else {nt = 0;    }    }    }    }
+     [java]         ret_val = false;
+     [java]     } else {
+     [java]          aux02 = other.GetSalary();
+     [java]          if (!this.Compare(aux02, Salary)) {
+     [java]         ret_val = false;
+     [java]     } else {
+     [java]          if (Married) {
+     [java]         if (!other.GetMarried()) {
+     [java]         ret_val = false;
+     [java]     } else {
+     [java]          nt = 0;
+     [java]     }
+     [java]     } else {
+     [java]          if (other.GetMarried()) {
+     [java]         ret_val = false;
+     [java]     } else {
+     [java]          nt = 0;
+     [java]     }
+     [java]     }
+     [java]     }
+     [java]     }
      [java]     return ret_val;
      [java]   }
      [java]   public boolean Compare (int num1, int num2) { 
@@ -1514,10 +1848,14 @@ test-parser-all:
      [java]     retval = false;
      [java]     aux02 = (num2 + 1);
      [java]     if ((num1 < num2)) {
-     [java]     retval = false;
-     [java] }   else {if (!(num1 < aux02)) {
-     [java]     retval = false;
-     [java] }   else {retval = true;    }    }
+     [java]         retval = false;
+     [java]     } else {
+     [java]          if (!(num1 < aux02)) {
+     [java]         retval = false;
+     [java]     } else {
+     [java]          retval = true;
+     [java]     }
+     [java]     }
      [java]     return retval;
      [java]   }
      [java] }
@@ -1568,13 +1906,26 @@ test-parser-all:
      [java]     var_elem = elem;
      [java]     while ((!var_end && !ret_val)) {
      [java] 	  if (e.Equal(var_elem)) {
-     [java]     ret_val = true;if ((aux04 < 0)) {
-     [java]     my_head = aux01.GetNext();
-     [java] }   else {System.out.println((0 - 555));aux05 = prev.SetNext(aux01.GetNext());System.out.println((0 - 555));    }
-     [java] }   else {nt = 0;    }
+     [java]         ret_val = true;
+     [java]         if ((aux04 < 0)) {
+     [java]         my_head = aux01.GetNext();
+     [java]     } else {
+     [java]          System.out.println((0 - 555));
+     [java]          aux05 = prev.SetNext(aux01.GetNext());
+     [java]          System.out.println((0 - 555));
+     [java]     }
+     [java]     } else {
+     [java]          nt = 0;
+     [java]     }
      [java] 	  if (!ret_val) {
-     [java]     prev = aux01;aux01 = aux01.GetNext();var_end = aux01.GetEnd();var_elem = aux01.GetElem();aux04 = 1;
-     [java] }   else {nt = 0;    }
+     [java]         prev = aux01;
+     [java]         aux01 = aux01.GetNext();
+     [java]         var_end = aux01.GetEnd();
+     [java]         var_elem = aux01.GetElem();
+     [java]         aux04 = 1;
+     [java]     } else {
+     [java]          nt = 0;
+     [java]     }
      [java] 	}
      [java]     return my_head;
      [java]   }
@@ -1590,8 +1941,10 @@ test-parser-all:
      [java]     var_elem = elem;
      [java]     while (!var_end) {
      [java] 	  if (e.Equal(var_elem)) {
-     [java]     int_ret_val = 1;
-     [java] }   else {nt = 0;    }
+     [java]         int_ret_val = 1;
+     [java]     } else {
+     [java]          nt = 0;
+     [java]     }
      [java] 	  aux01 = aux01.GetNext();
      [java] 	  var_end = aux01.GetEnd();
      [java] 	  var_elem = aux01.GetElem();
@@ -1676,7 +2029,8 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/cse401c_correct_05.java------------
      [java] class cse401c_correct_05 {
      [java]   public static void main (String [] args) {
-     [java]     System.out.println(new TestInheritanceSimple().test());  }
+     [java]     System.out.println(new TestInheritanceSimple().test());
+     [java]   }
      [java] }
      [java] 
      [java] class TestInheritanceSimple { 
@@ -1713,25 +2067,29 @@ test-parser-all:
      [java]   }
      [java] }
      [java] 
-     [java] class Male extends 
-     [java] Person { 
+     [java] class Male extends Person { 
      [java] 
      [java] }
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_20.java------------
-     [java] Syntax error at line 5 of input
-     [java] Couldn't repair and continue parse at line 5 of input
-     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
-     [java] java.lang.Exception: Can't recover from previous error(s)
-     [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
-     [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
-     [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:110)
+     [java] class cse401c_ctfail_20 {
+     [java]   public static void main (String [] args) {
+     [java]     System.out.println(new TestFailure().test());
+     [java]   }
+     [java] }
+     [java] 
+     [java] class TestFailure { 
+     [java] 
+     [java]   public double test () { 
+     [java]     return 1;
+     [java]   }
+     [java] }
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_09.java------------
      [java] class cse401c_correct_09 {
      [java]   public static void main (String [] args) {
-     [java]     System.out.println(new TestDoubleArithmetic().test());  }
+     [java]     System.out.println(new TestDoubleArithmetic().test());
+     [java]   }
      [java] }
      [java] 
      [java] class TestDoubleArithmetic { 
@@ -1747,29 +2105,44 @@ test-parser-all:
      [java] }
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_11.java------------
-     [java] Syntax error at line 5 of input
-     [java] Couldn't repair and continue parse at line 5 of input
-     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
-     [java] java.lang.Exception: Can't recover from previous error(s)
-     [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
-     [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
-     [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:110)
+     [java] class cse401c_ctfail_11 {
+     [java]   public static void main (String [] args) {
+     [java]     System.out.println(new Test().test());
+     [java]   }
+     [java] }
      [java] 
-     [java] Syntax error at line 10 of input------------Parsing SamplePrograms/cse401c_ctfail_15.java------------
-     [java] Couldn't repair and continue parse at line 10 of input
+     [java] class Test { 
      [java] 
-     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
-     [java] java.lang.Exception: Can't recover from previous error(s)
-     [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
-     [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
-     [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:110)
+     [java]   public int test () { 
+     [java]     int unin;
+     [java]     unin = (unin + 1);
+     [java]     return unin;
+     [java]   }
+     [java] }
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_15.java------------
+     [java] class cse401c_ctfail_15 {
+     [java]   public static void main (String [] args) {
+     [java]     System.out.println(new TestMismatchTypes().test(1, 1.0));
+     [java]   }
+     [java] }
+     [java] 
+     [java] class TestMismatchTypes { 
+     [java] 
+     [java]   public int test (int x, double y) { 
+     [java]     int test1;
+     [java]     double test2;
+     [java]     test1 = x;
+     [java]     test2 = y;
+     [java]     return (test1 + test2);
+     [java]   }
+     [java] }
      [java] 
      [java] ------------Parsing SamplePrograms/ExampleConst.java------------
      [java] class LinearSearch {
      [java]   public static void main (String [] a) {
-     [java]     System.out.println(new LS().Start(10));  }
+     [java]     System.out.println(new LS().Start(10));
+     [java]   }
      [java] }
      [java] 
      [java] class LS { 
@@ -1810,10 +2183,16 @@ test-parser-all:
      [java] 	  aux01 = number[j];
      [java] 	  aux02 = (num + 1);
      [java] 	  if ((aux01 < num)) {
-     [java]     nt = 0;
-     [java] }   else {if (!(aux01 < aux02)) {
-     [java]     nt = 0;
-     [java] }   else {ls01 = true;ifound = 1;j = size;    }    }
+     [java]         nt = 0;
+     [java]     } else {
+     [java]          if (!(aux01 < aux02)) {
+     [java]         nt = 0;
+     [java]     } else {
+     [java]          ls01 = true;
+     [java]          ifound = 1;
+     [java]          j = size;
+     [java]     }
+     [java]     }
      [java] 	  j = (j + 1);
      [java] 	}
      [java]     return ifound;
@@ -1849,4 +2228,4 @@ test-parser-all:
      [java] 	at TestParser.main(TestParser.java:110)
 
 BUILD SUCCESSFUL
-Total time: 19 seconds
+Total time: 25 seconds
