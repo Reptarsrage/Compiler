@@ -92,7 +92,10 @@ public class CodeGeneratorVisitor implements Visitor {
     cg.genFunctionEntry("asm_main");
     n.i1.accept(this);
     n.i2.accept(this);
-    n.s.accept(this);
+    //    n.s.accept(this);
+    for (int i = 0; i < n.s.size(); i ++) {
+        n.s.get(i).accept(this);
+    }
     cg.genFunctionExit("asm_main");
   }
 
