@@ -2,9 +2,17 @@
 
 class cse401c_ctfail_19 {
 	public static void main(String[] args) {
-		int[] i = new int[10];
-		int[] j = new int[10];
-		i = j / i;
-		System.out.println(i);
+        System.out.println(new Test().test());
 	}
+}
+
+class Test {
+    public int test() {
+        int[] i;
+		int[] j;
+        i = new int[10];
+        j = new int[10];
+		i = j / i;
+        return i;
+    }
 }
