@@ -1,4 +1,4 @@
-// test to make sure there is no unreachable code -- fail at parse time?
+// test to make sure there is no unreachable code (parse fail)
 
 class cse401c_ctfail_18 {
 	public static void main(String[] args) {
