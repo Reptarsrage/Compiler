@@ -163,6 +163,7 @@ public class PrettyPrintVisitor implements Visitor {
   // StatementList sl;
   // Exp e;
   public void visit(MethodDecl n) {
+    System.out.println();
     System.out.print("  public ");
     n.t.accept(this);
     System.out.print(" ");
