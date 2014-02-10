@@ -44,6 +44,16 @@ public class CodeGenerator {
     printInsn("ret");
   }
 
+  public void genCall(String functionName, int argc) {
+      //      printComment("method call for " + functionName + " from line ");
+    String[] registers = {"%r9", "%r8", "%rcx", "%rax", "%rsi", "%rdi"};
+    for (int i = 0; i < argc; i ++) {
+        printInsn("popq", registers[registers.length - 1 - i]); // have to pop args in reverse order
+    }
+    printInsn("call", functionName);
+    printInsn("push", "%rax");
+  }
+
   public void genConstant(int value) {
     printInsn("movq", String.format("$%d", value), "%rax");
     printInsn("pushq", "%rax");

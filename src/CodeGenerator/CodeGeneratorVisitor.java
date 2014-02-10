@@ -346,6 +346,7 @@ public class CodeGeneratorVisitor implements Visitor {
     for (int i = 0; i < n.el.size(); i++) {
       n.el.get(i).accept(this);
     }
+    cg.genCall(i.s);
   }
 
   // long i;
