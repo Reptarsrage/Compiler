@@ -395,8 +395,7 @@
       classname="TestParser"
       classpath="build/classes;lib/CUP.jar"
       fork="true"
-      input="SamplePrograms/SampleMiniJavaPrograms/Assignment4.java"
-      output="SamplePrograms/Assignment4.output"
+      input="SamplePrograms/ExampleConst.java"
       >
       <!--input="SamplePrograms/ExampleConst.java"-->
       <!--

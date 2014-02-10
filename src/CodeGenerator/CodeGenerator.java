@@ -92,6 +92,99 @@ public class CodeGenerator {
     printInsn("addq", "%rbx", "%rax");  // %rax += %rbx  (2nd operand is dst)
     printInsn("pushq", "%rax");
   }
+  
+  public void genMinus() {
+    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rax");  // left operand
+    printInsn("subq", "%rbx", "%rax");  // %rax -= %rbx  (2nd operand is dst)
+    printInsn("pushq", "%rax");
+  }
+  
+  public void genTimes() {
+    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rax");  // left operand
+    printInsn("imulq", "%rbx", "%rax");  // %rax *= %rbx  (2nd operand is dst)
+    printInsn("pushq", "%rax");
+  }
+  
+ public void genDivide() {
+    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rax");  // left operand
+    printInsn("cqto");			// gcc does this?
+	printInsn("idivq", "%rbx");  // %rax /= %rbx
+    printInsn("pushq", "%rax");
+  }
+  
+public void genMod() {
+    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rax");  // left operand
+    printInsn("cqto");			// gcc does this?
+	printInsn("idivq", "%rbx");  // %rax /= %rbx
+    printInsn("movq", "%rdx", "%rax"); // not sure what this does
+	printInsn("pushq", "%rax");
+}
+  
+ public void genGreaterThan() {
+    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rax");  // left operand
+	printInsn("cmpq", "%rbx", "%rax");  // %rax > %rbx
+	printInsn("setg", "%al");
+	printInsn("movzbq", "%al", "%rax");
+    printInsn("pushq", "%rax");
+}
+
+public void genLessThan() {
+    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rax");  // left operand
+	printInsn("cmpq", "%rbx", "%rax");  // %rax < %rbx
+	printInsn("setl", "%al");
+	printInsn("movzbq", "%al", "%rax");
+    printInsn("pushq", "%rax");
+}
+
+public void genGreaterThanOrEqualTo() {
+    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rax");  // left operand
+	printInsn("cmpq", "%rbx", "%rax");  // %rax >= %rbx
+	printInsn("setge", "%al");
+	printInsn("movzbq", "%al", "%rax");
+    printInsn("pushq", "%rax");
+}
+
+public void genLessThanOrEqualTo() {
+    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rax");  // left operand
+	printInsn("cmpq", "%rbx", "%rax");  // %rax <= %rbx
+	printInsn("setle", "%al");
+	printInsn("movzbq", "%al", "%rax");
+    printInsn("pushq", "%rax");
+}
+
+public void genEqual() {
+    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rax");  // left operand
+	printInsn("cmpq", "%rbx", "%rax");  // %rax == %rbx
+	printInsn("sete", "%al");
+	printInsn("movzbq", "%al", "%rax");
+    printInsn("pushq", "%rax");
+}
+
+public void genNotEqual() {
+    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rax");  // left operand
+	printInsn("cmpq", "%rbx", "%rax");  // %rax != %rbx
+	printInsn("setne", "%al");
+	printInsn("movzbq", "%al", "%rax");
+    printInsn("pushq", "%rax");
+}
+
+public void genNot() {
+    printInsn("popq", "%rax");  // operand
+	printInsn("testq", "%rax", "%rax");  // !%rax
+	printInsn("sete", "%al");
+	printInsn("movzbq", "%al", "%rax");
+    printInsn("pushq", "%rax");
+}
 
   public void genDisplay() {
     printInsn("popq", "%rdi");  // single operand

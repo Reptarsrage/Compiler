@@ -245,42 +245,49 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(LessThan n) {
     n.e1.accept(this);
     n.e2.accept(this);
+	cg.genLessThan();
   }
   
   // Exp e1,e2;
   public void visit(LessThanOrEqualTo n) {
     n.e1.accept(this);
     n.e2.accept(this);
+	cg.genLessThanOrEqualTo();
   }
   
   // Exp e1,e2;
   public void visit(GreaterThanOrEqualTo n) {
     n.e1.accept(this);
     n.e2.accept(this);
+	cg.genGreaterThanOrEqualTo();
   }
   
   // Exp e1,e2;
   public void visit(GreaterThan n) {
     n.e1.accept(this);
     n.e2.accept(this);
+	cg.genGreaterThan();
   }
   
   // Exp e1,e2;
   public void visit(Equals n) {
     n.e1.accept(this);
     n.e2.accept(this);
+	cg.genEqual();
   }
   
   // Exp e1,e2;
   public void visit(NotEqual n) {
     n.e1.accept(this);
     n.e2.accept(this);
+	cg.genNotEqual();
   }
   
   // Exp e1,e2;
   public void visit(Mod n) {
     n.e1.accept(this);
     n.e2.accept(this);
+	cg.genMod();
   }
 
   // Exp e1,e2;
@@ -294,18 +301,21 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(Minus n) {
     n.e1.accept(this);
     n.e2.accept(this);
+	cg.genMinus();
   }
 
   // Exp e1,e2;
   public void visit(Times n) {
     n.e1.accept(this);
     n.e2.accept(this);
+	cg.genTimes();
   }
   
   // Exp e1,e2;
   public void visit(Divide n) {
     n.e1.accept(this);
     n.e2.accept(this);
+	cg.genDivide();
   }
 
   // Exp e1,e2;
@@ -366,6 +376,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e;
   public void visit(Not n) {
     n.e.accept(this);
+	cg.genNot();
   }
 
   // String s;
