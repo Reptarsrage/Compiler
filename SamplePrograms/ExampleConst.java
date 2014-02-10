@@ -13,5 +13,7 @@ class ExampleConst {
 	display(10 == 10);
 	display(11 != 10);
 	display(!(12 == 11));
+	display((12 == 12) && (5 > 2));
+	display((5 != 4) || (6 != 6));
   }
 }

@@ -233,12 +233,14 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(ShortCircuitAnd n) {
     n.e1.accept(this);
     n.e2.accept(this);
+	cg.genShortCircuitAnd();
   }
   
   // Exp e1,e2;
   public void visit(ShortCircuitOr n) {
     n.e1.accept(this);
     n.e2.accept(this);
+	cg.genShortCircuitOr();
   }
 
   // Exp e1,e2;

@@ -165,6 +165,27 @@ public void genLessThanOrEqualTo() {
     printInsn("pushq", "%rax");
 }
 
+public void genShortCircuitOr() { // TODO make short circuit
+    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rax");  // left operand
+	printInsn("orq", "%rbx", "%rax");  // %rax || %rbx
+	printInsn("setne", "%al");
+	printInsn("movzbq", "%al", "%rax");
+    printInsn("pushq", "%rax");
+}
+
+public void genShortCircuitAnd() { // TODO make short circuit
+    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rax");  // left operand
+	printInsn("testq", "%rax", "%rax");  // %rax && %rbx
+	printInsn("setne", "%al");
+	printInsn("testq", "%rbx", "%rbx");  // %rax && %rbx
+	printInsn("setne", "%dl");
+	printInsn("movzbq", "%dl", "%rdx");
+	printInsn("andq", "%rdx", "%rax");
+    printInsn("pushq", "%rax");
+}
+
 public void genEqual() {
     printInsn("popq", "%rbx");  // right operand
     printInsn("popq", "%rax");  // left operand
