@@ -156,6 +156,7 @@ public class CodeGeneratorVisitor implements Visitor {
       n.sl.get(i).accept(this);
     }
     n.e.accept(this);
+    cg.genFunctionExit(n.i.s);
   }
 
   // Type t;
