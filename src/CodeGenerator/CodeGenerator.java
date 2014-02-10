@@ -44,16 +44,22 @@ public class CodeGenerator {
     printInsn("ret");
   }
 
-    public void genCall(String functionName, int argc) { // TODO - only works with <= 6 arguments
-      //      printComment("method call for " + functionName + " from line ");
+  // currently only works with <= 6 args
+  public void genCall(String functionName, int argc) {
+    //  printComment("method call for " + functionName + " from line ");
     if (argc > 6) exit(1); // too many params passed
 
     String[] registers = {"%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"};
     for (int i = 0; i < argc; i ++) {
-        printInsn("popq", registers[argc - 1 - i]); // have to pop args in reverse order
+      // have to pop args in reverse order
+      printInsn("popq", registers[argc - 1 - i]);
     }
     printInsn("call", functionName);
-    printInsn("push", "%rax");
+    printInsn("pushq", "%rax");
+  }
+ 
+  public void genFormal(String register) {
+      printInsn("pushq", register);
   }
 
   public void genConstant(int value) {

@@ -142,8 +142,12 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(MethodDecl n) {
     n.t.accept(this);
     n.i.accept(this);
+    cg.genFunctionEntry(n.i.s);
+    String[] registers = {"%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"};
+    if (fl.size() > 6) exit(1); // more than 6 params is illegal (at the moment)
     for (int i = 0; i < n.fl.size(); i++) {
       n.fl.get(i).accept(this);
+      gc.genFormal(registers[i]);
     }
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
@@ -346,7 +350,7 @@ public class CodeGeneratorVisitor implements Visitor {
     for (int i = 0; i < n.el.size(); i++) {
       n.el.get(i).accept(this);
     }
-    cg.genCall(i.s);
+    cg.genCall(n.i.s, n.el.size());
   }
 
   // long i;
