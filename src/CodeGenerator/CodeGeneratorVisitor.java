@@ -87,12 +87,11 @@ public class CodeGeneratorVisitor implements Visitor {
   }
 
   // Identifier i1,i2;
-  // Statement s;
+  // StatementList s;
   public void visit(MainClass n) {
     cg.genFunctionEntry("asm_main");
     n.i1.accept(this);
     n.i2.accept(this);
-    //    n.s.accept(this);
     for (int i = 0; i < n.s.size(); i ++) {
         n.s.get(i).accept(this);
     }
@@ -212,6 +211,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e;
   public void visit(Print n) {
     n.e.accept(this);
+	cg.genDisplay();
   }
 
   // Identifier i;

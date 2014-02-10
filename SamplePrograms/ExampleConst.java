@@ -1,5 +1,5 @@
 class ExampleConst {
   public static void main(String[] a) {
-    System.out.println(1);
+    display(1);
   }
 }
