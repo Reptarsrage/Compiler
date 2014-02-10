@@ -5,11 +5,13 @@ import java.io.PrintStream;
 
 public class CodeGenerator {
 
+  private int labelCount;
   private PrintStream outputStream;
   public String assemblerPrefixName;
 
   public CodeGenerator(String outputFileName) {
-    if (outputFileName != null && outputFileName != "stdout") {
+    labelCount = 0;
+	if (outputFileName != null && outputFileName != "stdout") {
       try {
         outputStream = new PrintStream(outputFileName);
       } catch (FileNotFoundException e) {
@@ -90,7 +92,23 @@ public class CodeGenerator {
   public void printComment(String comment) {
     outputStream.println("# " + comment);
   }
-
+  
+  public int genIfBeg() {
+    printInsn("popq", "%rax"); // expression
+	printInsn("cmpq", "$0", "%rax");
+	printInsn("je", "L" + labelCount); // jump to L0 when false
+	labelCount += 2;
+	return labelCount;
+  }
+  
+  public void genIfMid(int labelCount) {
+	printInsn("jmp", "L" + (labelCount - 1)); // jump to L1 when done
+	printLabel("L" + (labelCount - 2)); // create L0
+  }
+  
+  public void genIfEnd(int labelCount) {
+	printLabel("L" + (labelCount - 1)); // create L1
+  }
   public void genAdd() {
     printInsn("popq", "%rbx");  // right operand
     printInsn("popq", "%rax");  // left operand
@@ -178,17 +196,17 @@ public void genShortCircuitAnd() { // TODO make short circuit - DONE
     printInsn("popq", "%rbx");  // right operand
     printInsn("popq", "%rax");  // left operand
     printInsn("cmpq", "$0", "%rax");
-    printInsn("je", ".L" + labelCount);
+    printInsn("je", "L" + labelCount);
     printInsn("cmpq", "$0", "%rbx");
-    printInsn("je", ".L" + labelCount);
-    printInsn("movzbq", "$1", "%rax");
+    printInsn("je", "L" + labelCount);
+    printInsn("movq", "$1", "%rax");
     printInsn("jmp", "L" + (labelCount + 1));
     printLabel("L" + labelCount);
-    printInsn("movzbq", "$0", "%rax");
+    printInsn("movq", "$0", "%rax");
     printLabel("L" + (labelCount + 1));
-    printLabel("pushq", "%rax");
+    printInsn("pushq", "%rax");
+	labelCount += 2;
     
-
     /*	printInsn("testq", "%rax", "%rax");  // %rax && %rbx
 	printInsn("setne", "%al");
 	printInsn("testq", "%rbx", "%rbx");  // %rax && %rbx
