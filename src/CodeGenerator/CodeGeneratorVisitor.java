@@ -205,10 +205,13 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e;
   // StatementList s;
   public void visit(While n) {
-    n.e.accept(this);
-    for (int i = 0; i < n.s.size(); i++) {
+    int label = cg.genWhileBeg();
+	for (int i = 0; i < n.s.size(); i++) {
       n.s.get(i).accept(this);
     }
+	cg.genWhileMid(label);
+	n.e.accept(this);
+	cg.genWhileEnd(label);
   }
 
   // Exp e;

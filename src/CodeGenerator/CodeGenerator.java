@@ -108,7 +108,25 @@ public class CodeGenerator {
   
   public void genIfEnd(int labelCount) {
 	printLabel("L" + (labelCount - 1)); // create L1
+  } 
+  
+   public int genWhileBeg() {
+	printInsn("jmp", "L" + (labelCount + 1)); // jump to L1
+	printLabel("L" + labelCount); // create L0
+	labelCount += 2;
+	return labelCount;
   }
+  
+  public void genWhileMid(int labelCount) {
+	printLabel("L" + (labelCount - 1)); // create L1
+  } 
+  
+  public void genWhileEnd(int labelCount) {
+	printInsn("popq", "%rax");  // right operand
+	printInsn("cmpq", "$0", "%rax");  // right operand
+	printInsn("jne", "L" + (labelCount - 2));  // right operand
+  } 
+  
   public void genAdd() {
     printInsn("popq", "%rbx");  // right operand
     printInsn("popq", "%rax");  // left operand
