@@ -174,16 +174,28 @@ public void genShortCircuitOr() { // TODO make short circuit
     printInsn("pushq", "%rax");
 }
 
-public void genShortCircuitAnd() { // TODO make short circuit
+public void genShortCircuitAnd() { // TODO make short circuit - DONE
     printInsn("popq", "%rbx");  // right operand
     printInsn("popq", "%rax");  // left operand
-	printInsn("testq", "%rax", "%rax");  // %rax && %rbx
+    printInsn("cmpq", "$0", "%rax");
+    printInsn("je", ".L" + labelCount);
+    printInsn("cmpq", "$0", "%rbx");
+    printInsn("je", ".L" + labelCount);
+    printInsn("movzbq", "$1", "%rax");
+    printInsn("jmp", "L" + (labelCount + 1));
+    printLabel("L" + labelCount);
+    printInsn("movzbq", "$0", "%rax");
+    printLabel("L" + (labelCount + 1));
+    printLabel("pushq", "%rax");
+    
+
+    /*	printInsn("testq", "%rax", "%rax");  // %rax && %rbx
 	printInsn("setne", "%al");
 	printInsn("testq", "%rbx", "%rbx");  // %rax && %rbx
 	printInsn("setne", "%dl");
 	printInsn("movzbq", "%dl", "%rdx");
 	printInsn("andq", "%rdx", "%rax");
-    printInsn("pushq", "%rax");
+    printInsn("pushq", "%rax");*/
 }
 
 public void genEqual() {
