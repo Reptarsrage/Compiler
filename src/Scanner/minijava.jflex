@@ -185,7 +185,7 @@ white = {eol}|[ \t]
 "&&" { return symbol(sym.AND); }
 "||" { return symbol(sym.OR); }
 "==" { return symbol(sym.EQ); }
-"!=" { return symbol(sym.EQ); }
+"!=" { return symbol(sym.NOTEQ); }
 "<=" { return symbol(sym.LESSEQ); }
 ">=" { return symbol(sym.GREATEREQ); }
 "<" { return symbol(sym.LESS); }

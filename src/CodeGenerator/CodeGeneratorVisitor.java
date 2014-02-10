@@ -342,6 +342,7 @@ public class CodeGeneratorVisitor implements Visitor {
 
   // long i;
   public void visit(IntegerLiteral n) {
+     cg.genIntegerLiteral(n.i);
   }
   
   // double i;

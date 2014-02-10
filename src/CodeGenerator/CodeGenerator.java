@@ -46,7 +46,12 @@ public class CodeGenerator {
     printInsn("movq", String.format("$%d", value), "%rax");
     printInsn("pushq", "%rax");
   }
-
+  
+  public void genIntegerLiteral(long value) {
+    printInsn("movq", String.format("$%d", value), "%rax"); // should be %l??
+    printInsn("pushq", "%rax");
+  }
+  
   private void printLabel(String labelName) {
     outputStream.println(assemblerPrefixName + labelName + ":");
   }
