@@ -1,6 +1,6 @@
-//
-// Test basics of code generation
-//
+
+//Test basics of code generation
+
 class Assignment5 {
 
   public static void main (String [ ] args) {
@@ -74,7 +74,7 @@ class Assignment5 {
       System.out.println (999);
 
       System.out.println (3);
-      // Ignore allocation semantics of new, call three(1, 2, 3);
+      //Ignore allocation semantics of new, call three(1, 2, 3);
       System.out.println (new Dog().three(1, 2, 3));
       System.out.println (999);
 

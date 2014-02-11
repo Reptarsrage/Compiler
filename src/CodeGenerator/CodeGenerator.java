@@ -48,6 +48,14 @@ public class CodeGenerator {
     printInsn("movq", "%rsp", "%rbp");
   }
 
+  public void genTrue() {
+    printInsn("pushq", "$1");
+  }
+  
+  public void genFalse() {
+    printInsn("pushq", "$0");
+  }
+  
   public void genFunctionExit(String functionName) {
 	 printInsn("popq", "%rax");
 	 genMainExit(functionName);
