@@ -154,94 +154,94 @@ public class CodeGenerator {
   } 
   
   public void genAdd() {
-    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-    printInsn("addq", "%rbx", "%rax");  // %rax += %rbx  (2nd operand is dst)
+    printInsn("addq", "%rcx", "%rax");  // %rax += %rcx  (2nd operand is dst)
     printInsn("pushq", "%rax");
   }
   
   public void genMinus() {
-    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-    printInsn("subq", "%rbx", "%rax");  // %rax -= %rbx  (2nd operand is dst)
+    printInsn("subq", "%rcx", "%rax");  // %rax -= %rcx  (2nd operand is dst)
     printInsn("pushq", "%rax");
   }
   
   public void genTimes() {
-    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-    printInsn("imulq", "%rbx", "%rax");  // %rax *= %rbx  (2nd operand is dst)
+    printInsn("imulq", "%rcx", "%rax");  // %rax *= %rcx  (2nd operand is dst)
     printInsn("pushq", "%rax");
   }
   
  public void genDivide() {
-    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
     printInsn("cqto");			// gcc does this?
-	printInsn("idivq", "%rbx");  // %rax /= %rbx
+	printInsn("idivq", "%rcx");  // %rax /= %rcx
     printInsn("pushq", "%rax");
   }
   
 public void genMod() {
-    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
     printInsn("cqto");			// gcc does this?
-	printInsn("idivq", "%rbx");  // %rax /= %rbx
+	printInsn("idivq", "%rcx");  // %rax /= %rcx
     printInsn("movq", "%rdx", "%rax"); // not sure what this does
 	printInsn("pushq", "%rax");
 }
   
  public void genGreaterThan() {
-    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-	printInsn("cmpq", "%rbx", "%rax");  // %rax > %rbx
+	printInsn("cmpq", "%rcx", "%rax");  // %rax > %rcx
 	printInsn("setg", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
 }
 
 public void genLessThan() {
-    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-	printInsn("cmpq", "%rbx", "%rax");  // %rax < %rbx
+	printInsn("cmpq", "%rcx", "%rax");  // %rax < %rcx
 	printInsn("setl", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
 }
 
 public void genGreaterThanOrEqualTo() {
-    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-	printInsn("cmpq", "%rbx", "%rax");  // %rax >= %rbx
+	printInsn("cmpq", "%rcx", "%rax");  // %rax >= %rcx
 	printInsn("setge", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
 }
 
 public void genLessThanOrEqualTo() {
-    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-	printInsn("cmpq", "%rbx", "%rax");  // %rax <= %rbx
+	printInsn("cmpq", "%rcx", "%rax");  // %rax <= %rcx
 	printInsn("setle", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
 }
 
 public void genShortCircuitOr() { // TODO make short circuit
-    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-	printInsn("orq", "%rbx", "%rax");  // %rax || %rbx
+	printInsn("orq", "%rcx", "%rax");  // %rax || %rcx
 	printInsn("setne", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
 }
 
 public void genShortCircuitAnd() { // TODO make short circuit - DONE
-    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
     printInsn("cmpq", "$0", "%rax");
     printInsn("je", "L" + labelCount);
-    printInsn("cmpq", "$0", "%rbx");
+    printInsn("cmpq", "$0", "%rcx");
     printInsn("je", "L" + labelCount);
     printInsn("movq", "$1", "%rax");
     printInsn("jmp", "L" + (labelCount + 1));
@@ -251,9 +251,9 @@ public void genShortCircuitAnd() { // TODO make short circuit - DONE
     printInsn("pushq", "%rax");
 	labelCount += 2;
     
-    /*	printInsn("testq", "%rax", "%rax");  // %rax && %rbx
+    /*	printInsn("testq", "%rax", "%rax");  // %rax && %rcx
 	printInsn("setne", "%al");
-	printInsn("testq", "%rbx", "%rbx");  // %rax && %rbx
+	printInsn("testq", "%rcx", "%rcx");  // %rax && %rcx
 	printInsn("setne", "%dl");
 	printInsn("movzbq", "%dl", "%rdx");
 	printInsn("andq", "%rdx", "%rax");
@@ -261,18 +261,18 @@ public void genShortCircuitAnd() { // TODO make short circuit - DONE
 }
 
 public void genEqual() {
-    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-	printInsn("cmpq", "%rbx", "%rax");  // %rax == %rbx
+	printInsn("cmpq", "%rcx", "%rax");  // %rax == %rcx
 	printInsn("sete", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
 }
 
 public void genNotEqual() {
-    printInsn("popq", "%rbx");  // right operand
+    printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-	printInsn("cmpq", "%rbx", "%rax");  // %rax != %rbx
+	printInsn("cmpq", "%rcx", "%rax");  // %rax != %rcx
 	printInsn("setne", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
