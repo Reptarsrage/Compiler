@@ -332,8 +332,7 @@ ClassDeclaration ::=
 
 MainClass ::=
 		  CLASS:c Identifier:i1 LCURLYBRACE PUBLIC STATIC VOID MAIN LPAREN
-		  STRING LBRACKET RBRACKET Identifier:i2 RPAREN LCURLYBRACE Block:b 
-		  RCURLYBRACE RCURLYBRACE
+		  STRING LBRACKET RBRACKET Identifier:i2 RPAREN Block:b RCURLYBRACE
 		     {: RESULT = new MainClass(i1, i2, b, cleft); :}
 		;
 		
