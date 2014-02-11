@@ -94,10 +94,10 @@ public class PrettyPrintVisitor implements Visitor {
     System.out.print("  public static void main (String [] ");
     n.i2.accept(this);
     System.out.println(") {");
-    for (int i = 0; i < n.s.size(); i++) {
+    for (int i = 0; i < n.b.sl.size(); i++) {
       System.out.print("    ");
-      n.s.get(i).accept(this);
-      if (i+1 <= n.s.size()) { System.out.println(); }
+      n.b.sl.get(i).accept(this);
+      if (i+1 <= n.b.sl.size()) { System.out.println(); }
     }
     //n.s.accept(this);
     System.out.println("  }");

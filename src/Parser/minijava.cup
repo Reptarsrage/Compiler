@@ -151,6 +151,7 @@ nonterminal FormalList FormalList;
 nonterminal Type Type;
 nonterminal Statement Statement;
 nonterminal StatementList StatementList;
+nonterminal Block Block;
 nonterminal Assign AssignStatement;
 nonterminal Display DisplayStatement;
 nonterminal ArrayAssign ArrayAssignStatement;
@@ -331,9 +332,9 @@ ClassDeclaration ::=
 
 MainClass ::=
 		  CLASS:c Identifier:i1 LCURLYBRACE PUBLIC STATIC VOID MAIN LPAREN
-		  STRING LBRACKET RBRACKET Identifier:i2 RPAREN LCURLYBRACE StatementList:s 
+		  STRING LBRACKET RBRACKET Identifier:i2 RPAREN LCURLYBRACE Block:b 
 		  RCURLYBRACE RCURLYBRACE
-		     {: RESULT = new MainClass(i1, i2, s, cleft); :}
+		     {: RESULT = new MainClass(i1, i2, b, cleft); :}
 		;
 		
 DisplayStatement ::=
@@ -544,8 +545,15 @@ VariableDeclarationList ::=
                 RESULT = list; :}
           ;
 
+Block ::=
+             LCURLYBRACE Block:block RCURLYBRACE
+             {: RESULT = block; :}
+             | LCURLYBRACE StatementList:list RCURLYBRACE
+             {: RESULT = new Block(list, listleft); :}
+          ;
+
 StatementList ::=
-			 Statement:smnt
+			       Statement:smnt
              {: StatementList list = new StatementList(smntleft);
                 list.add(smnt);
                 RESULT = list; :}

@@ -87,13 +87,13 @@ public class CodeGeneratorVisitor implements Visitor {
   }
 
   // Identifier i1,i2;
-  // StatementList s;
+  // Block b;
   public void visit(MainClass n) {
     cg.genMainEntry("asm_main");
     n.i1.accept(this);
     n.i2.accept(this);
-    for (int i = 0; i < n.s.size(); i ++) {
-        n.s.get(i).accept(this);
+    for (int i = 0; i < n.b.sl.size(); i ++) {
+        n.b.sl.get(i).accept(this);
     }
     cg.genMainExit("asm_main");
   }
