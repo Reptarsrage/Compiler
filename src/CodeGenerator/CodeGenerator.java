@@ -29,8 +29,18 @@ public class CodeGenerator {
     }
   }
 
+   public void genMainEntry(String functionName) {
+		printSection(".text");
+		genFunctionEntry(functionName);
+   }
+   
+   public void genMainExit(String functionName) {
+    printComment("return point for " + assemblerPrefixName + functionName);
+    printInsn("popq", "%rbp");
+    printInsn("ret");
+   }
+  
   public void genFunctionEntry(String functionName) {
-    printSection(".text");
     printGlobalName(functionName);
     printLabel(functionName);
 
@@ -39,15 +49,14 @@ public class CodeGenerator {
   }
 
   public void genFunctionExit(String functionName) {
-    printComment("return point for " + assemblerPrefixName + functionName);
-    printInsn("popq", "%rbp");
-    printInsn("ret");
+	 printInsn("popq", "%rax");
+	 genMainExit(functionName);
   }
 
   // currently only works with <= 6 args
   public void genCall(String functionName, int argc) {
     //  printComment("method call for " + functionName + " from line ");
-    if (argc > 6) exit(1); // too many params passed
+	if (argc > 6) System.exit(1); // too many params passed
 
     String[] registers = {"%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"};
     for (int i = 0; i < argc; i ++) {
@@ -57,7 +66,6 @@ public class CodeGenerator {
     printInsn("call", functionName);
     printInsn("pushq", "%rax");
   }
- 
   public void genFormal(String register) {
       printInsn("pushq", register);
   }

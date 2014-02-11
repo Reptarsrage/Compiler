@@ -89,13 +89,13 @@ public class CodeGeneratorVisitor implements Visitor {
   // Identifier i1,i2;
   // StatementList s;
   public void visit(MainClass n) {
-    cg.genFunctionEntry("asm_main");
+    cg.genMainEntry("asm_main");
     n.i1.accept(this);
     n.i2.accept(this);
     for (int i = 0; i < n.s.size(); i ++) {
         n.s.get(i).accept(this);
     }
-    cg.genFunctionExit("asm_main");
+    cg.genMainExit("asm_main");
   }
 
   // Identifier i;
@@ -140,14 +140,14 @@ public class CodeGeneratorVisitor implements Visitor {
   // StatementList sl;
   // Exp e;
   public void visit(MethodDecl n) {
-    n.t.accept(this);
+	n.t.accept(this);
     n.i.accept(this);
     cg.genFunctionEntry(n.i.s);
     String[] registers = {"%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"};
-    if (fl.size() > 6) exit(1); // more than 6 params is illegal (at the moment)
+    if (n.fl.size() > 6) System.exit(1); // more than 6 params is illegal (at the moment)
     for (int i = 0; i < n.fl.size(); i++) {
       n.fl.get(i).accept(this);
-      gc.genFormal(registers[i]);
+      cg.genFormal(registers[i]);
     }
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
