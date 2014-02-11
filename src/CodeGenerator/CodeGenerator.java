@@ -227,21 +227,38 @@ public void genLessThanOrEqualTo() {
     printInsn("pushq", "%rax");
 }
 
-public void genShortCircuitOr() { // TODO make short circuit
-    printInsn("popq", "%rcx");  // right operand
+public int genShortCircuitOrMid() { // TODO make short circuit - DONE
     printInsn("popq", "%rax");  // left operand
-	printInsn("orq", "%rcx", "%rax");  // %rax || %rcx
-	printInsn("setne", "%al");
-	printInsn("movzbq", "%al", "%rax");
-    printInsn("pushq", "%rax");
+    printInsn("cmpq", "$0", "%rax");
+    printInsn("jne", "L" + labelCount);
+	labelCount += 2;
+	return (labelCount - 2);
 }
 
-public void genShortCircuitAnd() { // TODO make short circuit - DONE
-    printInsn("popq", "%rcx");  // right operand
+public void genShortCircuitOrEnd(int labelCount) { // TODO make short circuit - DONE
+    printInsn("popq", "%rax");  // right operand
+    printInsn("cmpq", "$0", "%rax");
+    printInsn("jne", "L" + labelCount);
+    printInsn("movq", "$0", "%rax");
+    printInsn("jmp", "L" + (labelCount + 1));
+    printLabel("L" + labelCount);
+    printInsn("movq", "$1", "%rax");
+    printLabel("L" + (labelCount + 1));
+    printInsn("pushq", "%rax");
+	labelCount += 2;
+}
+
+public int genShortCircuitAndMid() { // TODO make short circuit - DONE
     printInsn("popq", "%rax");  // left operand
     printInsn("cmpq", "$0", "%rax");
     printInsn("je", "L" + labelCount);
-    printInsn("cmpq", "$0", "%rcx");
+	labelCount += 2;
+	return (labelCount - 2);
+}
+
+public void genShortCircuitAndEnd(int labelCount) { // TODO make short circuit - DONE
+    printInsn("popq", "%rax");  // right operand
+    printInsn("cmpq", "$0", "%rax");
     printInsn("je", "L" + labelCount);
     printInsn("movq", "$1", "%rax");
     printInsn("jmp", "L" + (labelCount + 1));
@@ -250,14 +267,6 @@ public void genShortCircuitAnd() { // TODO make short circuit - DONE
     printLabel("L" + (labelCount + 1));
     printInsn("pushq", "%rax");
 	labelCount += 2;
-    
-    /*	printInsn("testq", "%rax", "%rax");  // %rax && %rcx
-	printInsn("setne", "%al");
-	printInsn("testq", "%rcx", "%rcx");  // %rax && %rcx
-	printInsn("setne", "%dl");
-	printInsn("movzbq", "%dl", "%rdx");
-	printInsn("andq", "%rdx", "%rax");
-    printInsn("pushq", "%rax");*/
 }
 
 public void genEqual() {
