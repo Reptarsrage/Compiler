@@ -145,7 +145,7 @@ public class CodeGeneratorVisitor implements Visitor {
     cg.genFunctionEntry(n.i.s);
     String[] registers = {"%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"};
     if (n.fl.size() > 6) System.exit(1); // more than 6 params is illegal (at the moment)
-    for (int i = 0; i < n.fl.size(); i++) {
+    for (int i = n.fl.size() - 1; i >= 0; i--) {
       n.fl.get(i).accept(this);
       cg.genFormal(registers[i]);
     }
@@ -243,15 +243,17 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e1,e2;
   public void visit(ShortCircuitAnd n) {
     n.e1.accept(this);
+	int label = cg.genShortCircuitAndMid();
     n.e2.accept(this);
-	cg.genShortCircuitAnd();
+	cg.genShortCircuitAndEnd(label);
   }
   
   // Exp e1,e2;
   public void visit(ShortCircuitOr n) {
     n.e1.accept(this);
+	int label = cg.genShortCircuitOrMid();
     n.e2.accept(this);
-	cg.genShortCircuitOr();
+	cg.genShortCircuitOrEnd(label);
   }
 
   // Exp e1,e2;
