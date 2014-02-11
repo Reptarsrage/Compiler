@@ -18,11 +18,11 @@ class ExampleConst {
 	// display((5 <= 4) || (6 == 6));
 	display(Methods.test());
 	display(Methods.test1(2));
-	display(Methods.test2(2,3));
-	display(Methods.test3(2,3,4));
-	display(Methods.test4(2,3,4,5));
-	display(Methods.test5(2,3,4,5,6));
-	display(Methods.test6(2,3,4,5,6,7));
+	display(Methods.test2(4,5));
+	display(Methods.test3(7,8,9));
+	display(Methods.test4(11,12,13,14));
+	display(Methods.test5(16,17,18,19,20));
+	display(Methods.test6(22,23,24,25,26,27));
 	// display(Methods.test7(2,3,4,5,6,7,8));
   }
 }
@@ -34,20 +34,20 @@ class ExampleConst {
   
   public int test1(int a){
 	display(a);
-	return 1;
+	return 3;
   }
   
     public int test2(int a, int b){
 	display(a);
 	display(b);
-	return 1;
+	return 6;
   }
   
     public int test3(int a, int b, int c){
 	display(a);
 	display(b);
 	display(c);
-	return 1;
+	return 10;
   }
   
     public int test4(int a, int b, int c, int d){
@@ -55,7 +55,7 @@ class ExampleConst {
 	display(b);
 	display(c);
 	display(d);
-	return 1;
+	return 15;
   }
   
     public int test5(int a, int b, int c, int d, int e){
@@ -64,7 +64,7 @@ class ExampleConst {
 	display(c);
 	display(d);
 	display(e);
-	return 1;
+	return 21;
   }
   
     public int test6(int a, int b, int c, int d, int e, int f){
@@ -74,7 +74,7 @@ class ExampleConst {
 	display(d);
 	display(e);
 	display(f);
-	return 1;
+	return 28;
   }
   
     // public int test7(int a, int b, int c, int d, int e, int f, int g){
