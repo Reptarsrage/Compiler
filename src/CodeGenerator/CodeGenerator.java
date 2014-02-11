@@ -54,9 +54,9 @@ public class CodeGenerator {
   }
 
   // currently only works with <= 6 args
-  public void genCall(String functionName, int argc) {
-    //  printComment("method call for " + functionName + " from line ");
-	if (argc > 6) System.exit(1); // too many params passed
+  public void genCall(String functionName, int argc, int linenum) {
+    printComment("method call for " + functionName + " from line " + linenum);
+	  if (argc > 6) System.exit(1); // too many params passed
 
     String[] registers = {"%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"};
     for (int i = 0; i < argc; i ++) {
@@ -66,8 +66,10 @@ public class CodeGenerator {
     printInsn("call", functionName);
     printInsn("pushq", "%rax");
   }
-  public void genFormal(String register) {
+  public void genFormal(String register, int linenum) {
+      printComment("Formal from line " + linenum);
       printInsn("pushq", register);
+      printComment("-- end formal --");
   }
 
   public void genConstant(int value) {
@@ -119,8 +121,9 @@ public class CodeGenerator {
     outputStream.println("# " + comment);
   }
   
-  public int genIfBeg() {
-    printInsn("popq", "%rax"); // expression
+  public int genIfBeg(int linenum) {
+  printComment("-- if from line " + linenum + " --");
+  printInsn("popq", "%rax"); // expression
 	printInsn("cmpq", "$0", "%rax");
 	printInsn("je", "L" + labelCount); // jump to L0 when false
 	labelCount += 2;
@@ -134,9 +137,11 @@ public class CodeGenerator {
   
   public void genIfEnd(int labelCount) {
 	printLabel("L" + (labelCount - 1)); // create L1
+  printComment("-- end if --");
   } 
   
-   public int genWhileBeg() {
+   public int genWhileBeg(int linenum) {
+  printComment("-- while from line " + linenum + " --");
 	printInsn("jmp", "L" + (labelCount + 1)); // jump to L1
 	printLabel("L" + labelCount); // create L0
 	labelCount += 2;
@@ -151,83 +156,103 @@ public class CodeGenerator {
 	printInsn("popq", "%rax");  // right operand
 	printInsn("cmpq", "$0", "%rax");  // right operand
 	printInsn("jne", "L" + (labelCount - 2));  // right operand
+  printComment("-- end while --");
   } 
   
-  public void genAdd() {
+  public void genAdd(int linenum) {
+    printComment("-- add from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
     printInsn("addq", "%rcx", "%rax");  // %rax += %rcx  (2nd operand is dst)
     printInsn("pushq", "%rax");
+    printComment("-- end add --");
   }
   
-  public void genMinus() {
+  public void genMinus(int linenum) {
+    printComment("-- subtract from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
     printInsn("subq", "%rcx", "%rax");  // %rax -= %rcx  (2nd operand is dst)
     printInsn("pushq", "%rax");
+    printComment("-- end subtract --");
   }
   
-  public void genTimes() {
+  public void genTimes(int linenum) {
+    printComment("-- multiply from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
     printInsn("imulq", "%rcx", "%rax");  // %rax *= %rcx  (2nd operand is dst)
     printInsn("pushq", "%rax");
+    printComment("-- end multiply --");
   }
   
- public void genDivide() {
+ public void genDivide(int linenum) {
+    printComment("-- div from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
     printInsn("cqto");			// gcc does this?
 	printInsn("idivq", "%rcx");  // %rax /= %rcx
     printInsn("pushq", "%rax");
+    printComment("-- end divide --");
   }
   
-public void genMod() {
+public void genMod(int linenum) {
+    printComment("-- mod from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
     printInsn("cqto");			// gcc does this?
 	printInsn("idivq", "%rcx");  // %rax /= %rcx
     printInsn("movq", "%rdx", "%rax"); // not sure what this does
 	printInsn("pushq", "%rax");
+    printComment("-- end mod --");
 }
   
- public void genGreaterThan() {
+ public void genGreaterThan(int linenum) {
+    printComment("-- greater than from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
 	printInsn("cmpq", "%rcx", "%rax");  // %rax > %rcx
 	printInsn("setg", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
+    printComment("-- end greater than --");
 }
 
-public void genLessThan() {
+public void genLessThan(int linenum) {
+    printComment("-- less than from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
 	printInsn("cmpq", "%rcx", "%rax");  // %rax < %rcx
 	printInsn("setl", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
+    printComment("-- end less than --");
 }
 
-public void genGreaterThanOrEqualTo() {
+public void genGreaterThanOrEqualTo(int linenum) {
+    printComment("-- greater or equal from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
 	printInsn("cmpq", "%rcx", "%rax");  // %rax >= %rcx
 	printInsn("setge", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
+    printComment("-- end greater or equal --");
 }
 
-public void genLessThanOrEqualTo() {
+public void genLessThanOrEqualTo(int linenum) {
+    printComment("-- less or equal from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
 	printInsn("cmpq", "%rcx", "%rax");  // %rax <= %rcx
 	printInsn("setle", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
+    printComment("-- end less or equal --");
 }
 
-public int genShortCircuitOrMid() { // TODO make short circuit - DONE
+public int genShortCircuitOrMid(int linenum) { // TODO make short circuit - DONE
+    printComment("-- or from line " + linenum + " --");
     printInsn("popq", "%rax");  // left operand
     printInsn("cmpq", "$0", "%rax");
     printInsn("jne", "L" + labelCount);
@@ -235,7 +260,7 @@ public int genShortCircuitOrMid() { // TODO make short circuit - DONE
 	return (labelCount - 2);
 }
 
-public void genShortCircuitOrEnd(int labelCount) { // TODO make short circuit - DONE
+public void genShortCircuitOrEnd(int labelCount) {
     printInsn("popq", "%rax");  // right operand
     printInsn("cmpq", "$0", "%rax");
     printInsn("jne", "L" + labelCount);
@@ -246,9 +271,11 @@ public void genShortCircuitOrEnd(int labelCount) { // TODO make short circuit - 
     printLabel("L" + (labelCount + 1));
     printInsn("pushq", "%rax");
 	labelCount += 2;
+  printComment("-- end or --");
 }
 
-public int genShortCircuitAndMid() { // TODO make short circuit - DONE
+public int genShortCircuitAndMid(int linenum) { // TODO make short circuit - DONE
+    printComment("-- and from line " + linenum + " --");
     printInsn("popq", "%rax");  // left operand
     printInsn("cmpq", "$0", "%rax");
     printInsn("je", "L" + labelCount);
@@ -266,38 +293,47 @@ public void genShortCircuitAndEnd(int labelCount) { // TODO make short circuit -
     printInsn("movq", "$0", "%rax");
     printLabel("L" + (labelCount + 1));
     printInsn("pushq", "%rax");
-	labelCount += 2;
+    labelCount += 2;
+    printComment("-- end and --");
 }
 
-public void genEqual() {
+public void genEqual(int linenum) {
+    printComment("-- equal from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
 	printInsn("cmpq", "%rcx", "%rax");  // %rax == %rcx
 	printInsn("sete", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
+    printComment("-- end equal --");
 }
 
-public void genNotEqual() {
+public void genNotEqual(int linenum) {
+    printComment("-- not equal from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
 	printInsn("cmpq", "%rcx", "%rax");  // %rax != %rcx
 	printInsn("setne", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
+    printComment("-- end not equal --");
 }
 
-public void genNot() {
+public void genNot(int linenum) {
+    printComment("-- not from line " + linenum + " --");
     printInsn("popq", "%rax");  // operand
 	printInsn("testq", "%rax", "%rax");  // !%rax
 	printInsn("sete", "%al");
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
+    printComment("-- end not --");
 }
 
-  public void genDisplay() {
+  public void genDisplay(int linenum) {
+    printComment("-- display/print from line " + linenum + " --");
     printInsn("popq", "%rdi");  // single operand
     printInsn("call", assemblerPrefixName + "put");
+    printComment("-- end display/print --");
   }
 
 }

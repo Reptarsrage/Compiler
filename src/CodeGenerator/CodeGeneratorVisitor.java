@@ -74,7 +74,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Display added for toy example language.  Not used in regular MiniJava
   public void visit(Display n) {
     n.e.accept(this);
-    cg.genDisplay();
+    cg.genDisplay(n.line_number);
   }
 
   // MainClass m;
@@ -147,7 +147,7 @@ public class CodeGeneratorVisitor implements Visitor {
     if (n.fl.size() > 6) System.exit(1); // more than 6 params is illegal (at the moment)
     for (int i = n.fl.size() - 1; i >= 0; i--) {
       n.fl.get(i).accept(this);
-      cg.genFormal(registers[i]);
+      //cg.genFormal(registers[i]);
     }
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
@@ -196,7 +196,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Statement s1,s2;
   public void visit(If n) {
     n.e.accept(this);
-    int label = cg.genIfBeg();
+    int label = cg.genIfBeg(n.line_number);
 	for (int i = 0; i < n.s1.size(); i++) {
       n.s1.get(i).accept(this);
     }
@@ -210,7 +210,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e;
   // StatementList s;
   public void visit(While n) {
-    int label = cg.genWhileBeg();
+    int label = cg.genWhileBeg(n.line_number);
 	for (int i = 0; i < n.s.size(); i++) {
       n.s.get(i).accept(this);
     }
@@ -222,7 +222,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e;
   public void visit(Print n) {
     n.e.accept(this);
-	cg.genDisplay();
+	cg.genDisplay(n.line_number);
   }
 
   // Identifier i;
@@ -243,7 +243,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e1,e2;
   public void visit(ShortCircuitAnd n) {
     n.e1.accept(this);
-	int label = cg.genShortCircuitAndMid();
+	int label = cg.genShortCircuitAndMid(n.line_number);
     n.e2.accept(this);
 	cg.genShortCircuitAndEnd(label);
   }
@@ -251,7 +251,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e1,e2;
   public void visit(ShortCircuitOr n) {
     n.e1.accept(this);
-	int label = cg.genShortCircuitOrMid();
+	int label = cg.genShortCircuitOrMid(n.line_number);
     n.e2.accept(this);
 	cg.genShortCircuitOrEnd(label);
   }
@@ -260,77 +260,77 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(LessThan n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genLessThan();
+	cg.genLessThan(n.line_number);
   }
   
   // Exp e1,e2;
   public void visit(LessThanOrEqualTo n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genLessThanOrEqualTo();
+	cg.genLessThanOrEqualTo(n.line_number);
   }
   
   // Exp e1,e2;
   public void visit(GreaterThanOrEqualTo n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genGreaterThanOrEqualTo();
+	cg.genGreaterThanOrEqualTo(n.line_number);
   }
   
   // Exp e1,e2;
   public void visit(GreaterThan n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genGreaterThan();
+	cg.genGreaterThan(n.line_number);
   }
   
   // Exp e1,e2;
   public void visit(Equals n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genEqual();
+	cg.genEqual(n.line_number);
   }
   
   // Exp e1,e2;
   public void visit(NotEqual n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genNotEqual();
+	cg.genNotEqual(n.line_number);
   }
   
   // Exp e1,e2;
   public void visit(Mod n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genMod();
+	cg.genMod(n.line_number);
   }
 
   // Exp e1,e2;
   public void visit(Plus n) {
     n.e1.accept(this);
     n.e2.accept(this);
-    cg.genAdd();
+    cg.genAdd(n.line_number);
   }
 
   // Exp e1,e2;
   public void visit(Minus n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genMinus();
+	cg.genMinus(n.line_number);
   }
 
   // Exp e1,e2;
   public void visit(Times n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genTimes();
+	cg.genTimes(n.line_number);
   }
   
   // Exp e1,e2;
   public void visit(Divide n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genDivide();
+	cg.genDivide(n.line_number);
   }
 
   // Exp e1,e2;
@@ -353,12 +353,12 @@ public class CodeGeneratorVisitor implements Visitor {
     for (int i = 0; i < n.el.size(); i++) {
       n.el.get(i).accept(this);
     }
-    cg.genCall(n.i.s, n.el.size());
+    cg.genCall(n.i.s, n.el.size(), n.line_number);
   }
 
   // long i;
   public void visit(IntegerLiteral n) {
-     cg.genIntegerLiteral(n.i);
+      cg.genIntegerLiteral(n.i);
   }
   
   // double i;
@@ -375,7 +375,7 @@ public class CodeGeneratorVisitor implements Visitor {
   }
 
   public void visit(ConstantExp n) {
-    cg.genConstant(n.value);
+      cg.genConstant(n.value);
   }
 
   public void visit(This n) {
@@ -393,7 +393,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e;
   public void visit(Not n) {
     n.e.accept(this);
-	cg.genNot();
+	cg.genNot(n.line_number);
   }
 
   // String s;
