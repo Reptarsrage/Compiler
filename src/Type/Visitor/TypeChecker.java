@@ -46,9 +46,22 @@ public class TypeChecker {
 		m.return_type = GetType(ret);
 		while (!(nest.peek() instanceof ClassTypeNode))
 			nest.pop();
-		ClassTypeNode c = (ClassTypeNode)nest.peek(); // TODO, chack classtype fail if incorrect
+		ClassTypeNode c = (ClassTypeNode)nest.peek(); // TODO, check classtype fail if incorrect
 		c.methods.put(name, m);
 		nest.push(m);
+		BlockTypeNode block = new BlockTypeNode(0);
+		nest.push(block); // The block for inside the method
+	}
+	
+	public void AddVariable(String name, Type t) {
+		if (nest.peek() instanceof ClassTypeNode) {
+			ClassTypeNode c = (ClassTypeNode)nest.peek();
+			c.fields.put(name, GetType(t));
+		} else if (nest.peek() instanceof BlockTypeNode){
+			BlockTypeNode c = (BlockTypeNode)nest.peek();
+			c.locals.put(name, GetType(t));
+		} else
+			System.exit(1); // Fail
 	}
 	
 	private TypeNode GetType(Type t){
@@ -58,7 +71,11 @@ public class TypeChecker {
 			return double_type;
 		if (t instanceof BooleanType)
 			return boolean_type;
-		
+		if (t instanceof IdentifierType){
+			IdentifierTypeNode id = new IdentifierTypeNode(
+				program.classes.get(((IdentifierType)t).s), ((IdentifierType)t).s, 0);
+			return id;
+		}
 		return undef_type;
 	}
 	

@@ -125,7 +125,9 @@ public class SecondaryTypeVisitor implements Visitor {
   // Type t;
   // Identifier i;
   public void visit(VarDecl n) {
-	// tc.AddVariable(n.t, n.i.toString());
+	tc.AddVariable(n.i.toString(), n.t);
+	n.t.accept(this);
+    n.i.accept(this);
   }
 
   // Type t;
@@ -136,6 +138,18 @@ public class SecondaryTypeVisitor implements Visitor {
   // Exp e;
   public void visit(MethodDecl n) {
 	tc.AddMethod(n.t, n.i.toString());
+	n.t.accept(this);
+    n.i.accept(this);
+    for (int i = n.fl.size() - 1; i >= 0; i--) {
+      n.fl.get(i).accept(this);
+    }
+    for (int i = 0; i < n.vl.size(); i++) {
+      n.vl.get(i).accept(this);
+    }
+    for (int i = 0; i < n.sl.size(); i++) {
+      n.sl.get(i).accept(this);
+    }
+    n.e.accept(this);
   }
 
   // Type t;
