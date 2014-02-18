@@ -1,0 +1,6 @@
+we maintain a graph which holds as fields (1) the primitive type nodes and
+(2) a package node. We then do our first pass and fill that package node in with
+the basic class information before diving in and doing our second pass where we
+fill in each class in the graph with its methods, create the method nodes, etc.
+Simultaneously, we build the symbol table stack to allow for identifier type
+checking later on.
