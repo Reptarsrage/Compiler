@@ -232,10 +232,16 @@ public class TypeChecker {
       }
       MethodTypeNode method = (MethodTypeNode) nest.pop();
 
+      if (!(nest.peek() instanceof ClassTypeNode) ) {
+          // something went wrong - top of nest stack should always be the target class here
+          System.err.println("Internal error - problem with nest stack in semantic analysis");
+          System.exit(1);
+      }
       ClassTypeNode c = (ClassTypeNode) nest.pop();
       // if our class is extending another class
       if ( !c.base_type.name.equals("UNDIFINED") ) {
-          ClassTypeNode parent = ((ClassTypeNode) nest.peek());
+          //          ClassTypeNode parent = ((ClassTypeNode) nest.peek());
+          ClassTypeNode parent = c.base_type.c;
           // check to see if parent class has method of same name
           if ( parent.methods.get(id) != null ) {
               MethodTypeNode parent_method = parent.methods.get(id);
@@ -266,5 +272,8 @@ public class TypeChecker {
               }
           }
       }
+      nest.push(c);
+      nest.push(method);
+      nest.push(popped);
   }
 }
