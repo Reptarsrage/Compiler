@@ -168,6 +168,14 @@ public class TypeChecker {
 			return double_type;
 		if (t instanceof BooleanType)
 			return boolean_type;
+		if (t instanceof IntArrayType){
+			ArrayTypeNode a = new ArrayTypeNode(int_type);
+			return a;
+		}
+		if (t instanceof DoubleArrayType){
+			ArrayTypeNode a = new ArrayTypeNode(double_type);
+			return a;
+		}
 		if (t instanceof IdentifierType){
 			IdentifierTypeNode id = new IdentifierTypeNode(
 				program.classes.get(((IdentifierType)t).s), ((IdentifierType)t).s);
