@@ -112,6 +112,7 @@ public class TestParser {
       root = p.parse();
       Program program = (Program)root.value;
 	  program.accept(new InitialTypeVisitor(tc));
+	  program.accept(new SecondaryTypeVisitor(tc));
 	  tc.print();
       //program.accept(new PrettyPrintVisitor());
       //

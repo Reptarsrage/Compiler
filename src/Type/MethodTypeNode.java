@@ -2,16 +2,19 @@ package Type;
 import java.util.*;
 
 
-public class MethodTypeNode extends Type {
-  public Type return_type;
-  public Map<String, Type> args;
+public class MethodTypeNode extends TypeNode {
+  public TypeNode return_type;
+  public Map<String, TypeNode> args;
 
-  public MethodTypeNode(int lineNumber) {
+  public MethodTypeNode(TypeNode return_type, int lineNumber) {
     super(lineNumber);
-	args = new LinkedHashMap<String, Type>();
+	args = new LinkedHashMap<String, TypeNode>();
+	this.return_type = return_type;
   }
   public void print(String ind){
-	System.out.println(ind + "Return Type: " + return_type);
+	System.out.print(ind + "Return Type: ");
+	return_type.print(ind + "   ");
+	System.out.print('\n');
 	Iterator<String> it = args.keySet().iterator();
 	while (it.hasNext()){
 		String elt = it.next();

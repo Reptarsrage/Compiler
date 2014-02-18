@@ -1,7 +1,7 @@
 package Type;
 import java.util.*;
 
-public class PackageTypeNode extends Type {
+public class PackageTypeNode extends TypeNode {
   public Map<String, ClassTypeNode> classes;
 
   public PackageTypeNode(int lineNumber) {

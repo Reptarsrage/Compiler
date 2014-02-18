@@ -1,5 +1,4 @@
 package Type;
-import Type.Visitor.Visitor;
 
 abstract public class TypeNode {
   //
@@ -10,5 +9,9 @@ abstract public class TypeNode {
 
   public TypeNode(int lineNumber) {
     this.line_number = lineNumber;
+  }
+  
+  public void print(String ind){
+	System.out.print("TYPE");
   }
 }

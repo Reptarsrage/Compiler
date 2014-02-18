@@ -1,6 +1,6 @@
 package Type;
 
-public class UndefTypeNode extends Type {
+public class UndefTypeNode extends TypeNode {
 
   public UndefTypeNode(int lineNumber) {
     super(lineNumber);

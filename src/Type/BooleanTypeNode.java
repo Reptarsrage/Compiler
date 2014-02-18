@@ -1,6 +1,6 @@
 package Type;
 
-public class BooleanTypeNode extends Type {
+public class BooleanTypeNode extends TypeNode {
 
   public BooleanTypeNode(int lineNumber) {
     super(lineNumber);

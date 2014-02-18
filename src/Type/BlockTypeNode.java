@@ -1,12 +1,12 @@
 package Type;
 import java.util.*;
 
-public class BlockTypeNode extends Type {
-	public Map<String, Type> locals;
+public class BlockTypeNode extends TypeNode {
+	public Map<String, TypeNode> locals;
 
 	public BlockTypeNode(int lineNumber) {
 	super(lineNumber);
-	locals = new HashMap<String, Type>();
+	locals = new HashMap<String, TypeNode>();
 	}
 	
 	public void print(String ind){

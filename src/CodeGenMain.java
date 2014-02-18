@@ -32,7 +32,6 @@ public class CodeGenMain {
       root = p.parse();
       Program program = (Program) root.value;
 	  program.accept(new InitialTypeVisitor(tc));
-	  tc.print();
       program.accept(new CodeGeneratorVisitor(cg));
 	  //
       // System.out.print("\n" + "Parsing completed");

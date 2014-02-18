@@ -1,6 +1,6 @@
 package Type;
 
-public class DoubleTypeNode extends Type {
+public class DoubleTypeNode extends TypeNode {
 
   public DoubleTypeNode(int lineNumber) {
     super(lineNumber);
