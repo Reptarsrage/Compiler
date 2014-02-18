@@ -1,9 +1,15 @@
+/* Justin Robb, xreptarx
+ * Adam Croissant, adamc41
+ * 2-18-14
+ * Type representing booleans
+*/
+
 package Type;
 
 public class BooleanTypeNode extends TypeNode {
 
-  public BooleanTypeNode(int lineNumber) {
-    super(lineNumber);
+  public BooleanTypeNode() {
+    super();
   }
   
   public void print(String ind){

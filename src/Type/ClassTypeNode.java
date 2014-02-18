@@ -1,13 +1,19 @@
+/* Justin Robb, xreptarx
+ * Adam Croissant, adamc41
+ * 2-18-14
+ * The type representing classes
+*/
+
 package Type;
 import java.util.*;
 
 public class ClassTypeNode extends TypeNode {
-  public IdentifierTypeNode base_type;
-  public Map<String, TypeNode> fields;
-  public Map<String, MethodTypeNode> methods;
+  public IdentifierTypeNode base_type;			// extends base_type
+  public Map<String, TypeNode> fields;			// local variable list name->object
+  public Map<String, MethodTypeNode> methods;	// method list name->object
 
-  public ClassTypeNode(IdentifierTypeNode base_type, int lineNumber) {
-    super(lineNumber);
+  public ClassTypeNode(IdentifierTypeNode base_type) {
+    super();
 	fields = new HashMap<String, TypeNode>();
 	methods = new HashMap<String, MethodTypeNode>();
 	this.base_type = base_type;

@@ -1,16 +1,16 @@
+/* Justin Robb, xreptarx
+ * Adam Croissant, adamc41
+ * 2-18-14
+ * General Type
+*/
 package Type;
 
 abstract public class TypeNode {
-  //
-  // The line number where the node is in the source file, for use
-  // in printing error messages about this Type node
-  //
-  public int line_number;
 
-  public TypeNode(int lineNumber) {
-    this.line_number = lineNumber;
+  public TypeNode() {
   }
   
+  // Used for debugging, prints info about this node in the graph.
   public void print(String ind){
 	System.out.print("TYPE");
   }

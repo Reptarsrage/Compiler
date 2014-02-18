@@ -1,10 +1,17 @@
+/* Justin Robb, xreptarx
+ * Adam Croissant, adamc41
+ * 2-18-14
+ * Type representing classes as identifiers
+*/
+
 package Type;
 
 public class IdentifierTypeNode extends TypeNode {
-	public ClassTypeNode c;
-	public String name;
-  public IdentifierTypeNode(ClassTypeNode c, String name, int lineNumber) {
-    super(lineNumber);
+	public ClassTypeNode c;	// represented class node
+	public String name;		// name of class
+	
+  public IdentifierTypeNode(ClassTypeNode c, String name) {
+    super();
 	this.c = c;
 	this.name = name;
   }

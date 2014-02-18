@@ -1,14 +1,20 @@
+/* Justin Robb, xreptarx
+ * Adam Croissant, adamc41
+ * 2-18-14
+ * Type representing a method
+*/
+
 package Type;
 import java.util.*;
 
 
 public class MethodTypeNode extends TypeNode {
-  public TypeNode return_type;
-  public Map<String, TypeNode> args;
-  public BlockTypeNode inside;
+  public TypeNode return_type;			// the return type
+  public Map<String, TypeNode> args;	// list of formal parameters name->type
+  public BlockTypeNode inside;			// nested block
 
-  public MethodTypeNode(TypeNode return_type, BlockTypeNode inside, int lineNumber) {
-    super(lineNumber);
+  public MethodTypeNode(TypeNode return_type, BlockTypeNode inside) {
+    super();
 	args = new LinkedHashMap<String, TypeNode>();
 	this.return_type = return_type;
 	this.inside = inside;

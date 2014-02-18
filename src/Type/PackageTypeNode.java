@@ -1,11 +1,17 @@
+/* Justin Robb, xreptarx
+ * Adam Croissant, adamc41
+ * 2-18-14
+ * Type representing Programs
+*/
+
 package Type;
 import java.util.*;
 
 public class PackageTypeNode extends TypeNode {
-  public Map<String, ClassTypeNode> classes;
+  public Map<String, ClassTypeNode> classes;	// class list name->object
 
-  public PackageTypeNode(int lineNumber) {
-    super(lineNumber);
+  public PackageTypeNode() {
+    super();
 	classes = new HashMap<String, ClassTypeNode>();
   }
   

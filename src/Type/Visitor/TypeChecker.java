@@ -1,30 +1,41 @@
+/* Justin Robb, xreptarx
+ * Adam Croissant, adamc41
+ * 2-18-14
+ * The graph representing our symbol tables
+*/
+
 package Type.Visitor;
 import Type.*;
 import AST.*;
 import java.util.*;
 
 public class TypeChecker {
-	PackageTypeNode program;
-	IntTypeNode int_type;
-	DoubleTypeNode double_type;
-	UndefTypeNode undef_type;
-	IdentifierTypeNode undef_id;
-	BooleanTypeNode boolean_type;
-	Stack<TypeNode> nest;
-
-  public enum TypeLevel { CLASS, METHOD, VARIABLE }
+	PackageTypeNode program;		// Contains a list of all classes
+	IntTypeNode int_type;			// Singleton integer type
+	DoubleTypeNode double_type;		// Singleton double type
+	UndefTypeNode undef_type;		// Singleton undefined type
+	IdentifierTypeNode undef_id;	// Singleton undifined class type (for non extended classes)
+	BooleanTypeNode boolean_type;	// Singleton boolean type
+	Stack<TypeNode> nest;			// a stack of symbol tables representing the current 
+									// scope and parent scopes of the program at any point
+									
+  // Holds values for what to check in the CheckSymbolTables method.
+  public enum TypeLevel { CLASS, METHOD, VARIABLE }  
 	
+	// Initializes Stack and program
+	// Prefills the graph with 1 node representing each of the fundamental scalar types
 	public TypeChecker() {
-		program = new PackageTypeNode(0);
-		int_type = new IntTypeNode(0);
-		double_type = new DoubleTypeNode(0);
-		undef_type = new UndefTypeNode(0);
-		boolean_type = new BooleanTypeNode(0);
-		undef_id = new IdentifierTypeNode(null, "UNDIFINED", 0);
+		program = new PackageTypeNode();
+		int_type = new IntTypeNode();
+		double_type = new DoubleTypeNode();
+		undef_type = new UndefTypeNode();
+		boolean_type = new BooleanTypeNode();
+		undef_id = new IdentifierTypeNode(null, "UNDIFINED");
 		nest = new Stack<TypeNode>();
 		nest.push(program);
 	}
 	
+	// Adds a class to our graph
 	public void AddClass(String name, int line_number){
 		if (CheckSymbolTables(name, TypeLevel.CLASS) != null){
 			// FAIL
@@ -32,13 +43,14 @@ public class TypeChecker {
 				+ ". Class " + name +" already declared.");
 			System.exit(1);
 		}
-		ClassTypeNode c = new ClassTypeNode(undef_id, 0);
+		ClassTypeNode c = new ClassTypeNode(undef_id);
 		program.classes.put(name, c);
 		while (nest.peek() != program)
 			nest.pop();
 		nest.push(c);
 	}
 	
+	// Adds an extended class to our graph
 	public void AddClassExtends(String name, String extending, int line_number){
 		if (CheckSymbolTables(name, TypeLevel.CLASS) != null){
 			// FAIL
@@ -51,9 +63,9 @@ public class TypeChecker {
 				+ ". Extended class " + extending +" not recognized.");
 			System.exit(1);
 		}
-		ClassTypeNode c = new ClassTypeNode(undef_id, 0);
+		ClassTypeNode c = new ClassTypeNode(undef_id);
 		IdentifierTypeNode e = new IdentifierTypeNode(
-			program.classes.get(extending), extending, 0);
+			program.classes.get(extending), extending);
 		c.base_type = e;
 		program.classes.put(name, c);
 		while (nest.peek() != program)
@@ -62,10 +74,11 @@ public class TypeChecker {
 		nest.push(c);
 	}
 	
+	// Adds a block (scope) to our graph
 	public void AddBlock(int line_number){
 		if (nest.peek() instanceof BlockTypeNode){
 			BlockTypeNode block = (BlockTypeNode) nest.peek();
-			BlockTypeNode block_in = new BlockTypeNode(0);
+			BlockTypeNode block_in = new BlockTypeNode();
 			block.inside = block_in;
 			nest.push(block_in);
 		} else {
@@ -75,6 +88,7 @@ public class TypeChecker {
 		}	
 	}
 	
+	// adds a method to the graph
 	public void AddMethod(Type ret, String name, int line_number){
     if (CheckSymbolTables(name, TypeLevel.METHOD) != null){
 			// FAIL
@@ -82,8 +96,8 @@ public class TypeChecker {
 				+ ". Method " + name +" already declared.");
 			System.exit(1);
     }
-		BlockTypeNode block = new BlockTypeNode(0);
-		MethodTypeNode m = new MethodTypeNode(undef_type, block, 0);
+		BlockTypeNode block = new BlockTypeNode();
+		MethodTypeNode m = new MethodTypeNode(undef_type, block);
 		m.return_type = GetType(ret);
 		m.inside = block;
 		while (!(nest.peek() instanceof ClassTypeNode)){
@@ -100,6 +114,8 @@ public class TypeChecker {
 		nest.push(block); // The block for inside the method
 	}
 	
+	// Adds a argument to the formal list of the last method added to the stack
+	// Expects last addded method to be on stack above current position
 	public void AddFormal(String name, Type t, int line_number) {
 		// TODO check type of formal against what?
 		
@@ -117,6 +133,7 @@ public class TypeChecker {
 		}
 	}
 	
+	// Used on secondary sweep, pushes the already created (on first sweep) class onto the stack
 	public void PushClass(String name) {
 		ClassTypeNode c = program.classes.get(name);
 		while (!(nest.peek() instanceof PackageTypeNode))
@@ -124,6 +141,7 @@ public class TypeChecker {
 		nest.push(c);
 	}
 	
+	// Adds a local variable or field to the current scope
 	public void AddVariable(String name, Type t, int line_number) {
 		if (CheckSymbolTables(name, TypeLevel.VARIABLE) != null){
 			// FAIL
@@ -142,6 +160,7 @@ public class TypeChecker {
 		}
 	}
 	
+	// Takes the Type defined in AST and converts it to Type defined here
 	private TypeNode GetType(Type t){
 		if (t instanceof IntegerType)
 			return int_type;
@@ -151,12 +170,13 @@ public class TypeChecker {
 			return boolean_type;
 		if (t instanceof IdentifierType){
 			IdentifierTypeNode id = new IdentifierTypeNode(
-				program.classes.get(((IdentifierType)t).s), ((IdentifierType)t).s, 0);
+				program.classes.get(((IdentifierType)t).s), ((IdentifierType)t).s);
 			return id;
 		}
 		return undef_type;
 	}
 	
+	// Helpful for debugging, prints all symbol table information
 	public void print(){
 		program.print("");
 	}
@@ -224,6 +244,7 @@ public class TypeChecker {
     return ret;
   }
 
+  // Checks for the special case when a class extends another, and mthods can be overridden
   public void CheckMethodInheritance(String id, int line_number) {
     if (!(nest.peek() instanceof BlockTypeNode) ) {
       // something went wrong - top of nest stack should always be a single block here

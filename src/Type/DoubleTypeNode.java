@@ -1,9 +1,14 @@
+/* Justin Robb, xreptarx
+ * Adam Croissant, adamc41
+ * 2-18-14
+ * The type representing doubles
+*/
 package Type;
 
 public class DoubleTypeNode extends TypeNode {
 
-  public DoubleTypeNode(int lineNumber) {
-    super(lineNumber);
+  public DoubleTypeNode() {
+    super();
   }
   
   public void print(String ind){
