@@ -45,6 +45,11 @@ public class TypeChecker {
 			System.err.println("Failure at line: "+ line_number
 				+ ". Class " + name +" already declared.");
 			System.exit(1);
+		} else if (program.classes.get(extending) == null) {
+			// FAIL
+			System.err.println("Failure at line: "+ line_number
+				+ ". Extended class " + extending +" not recognized.");
+			System.exit(1);
 		}
 		ClassTypeNode c = new ClassTypeNode(undef_id, 0);
 		IdentifierTypeNode e = new IdentifierTypeNode(
@@ -53,7 +58,7 @@ public class TypeChecker {
 		program.classes.put(name, c);
 		while (nest.peek() != program)
 			nest.pop();
-		nest.push(e);
+		nest.push(e.c);
 		nest.push(c);
 	}
 	

@@ -1,8 +1,8 @@
 package Type;
 
 public class IdentifierTypeNode extends TypeNode {
-	ClassTypeNode c;
-	String name;
+	public ClassTypeNode c;
+	public String name;
   public IdentifierTypeNode(ClassTypeNode c, String name, int lineNumber) {
     super(lineNumber);
 	this.c = c;
