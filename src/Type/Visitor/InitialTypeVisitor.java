@@ -60,7 +60,6 @@ import AST.VarDeclList;
 import AST.While;
 
 import AST.Visitor.Visitor;
-import Type.*;
 
 public class InitialTypeVisitor implements Visitor {
 	private TypeChecker tc;

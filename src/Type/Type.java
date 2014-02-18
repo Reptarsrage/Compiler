@@ -10,4 +10,8 @@ abstract public class Type {
   public Type(int lineNumber) {
     this.line_number = lineNumber;
   }
+  
+  public void print(String ind){
+	System.out.print("TYPE");
+  }
 }

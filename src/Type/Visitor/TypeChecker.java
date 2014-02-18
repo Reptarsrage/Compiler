@@ -17,6 +17,11 @@ public class TypeChecker {
 	}
 	
 	public void AddClass(String name){
-		System.out.println("Added Class: " + name);
+		ClassTypeNode c = new ClassTypeNode(0);
+		program.classes.put(name, c);
+	}
+	
+	public void print(){
+		program.print("");
 	}
 }

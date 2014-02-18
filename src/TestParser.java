@@ -62,6 +62,7 @@ import CodeGenerator.CodeGenerator;
 import CodeGenerator.CodeGeneratorVisitor;
 import Parser.parser;
 import Scanner.scanner;
+import Type.Visitor.*;
 
 import java_cup.runtime.Symbol;
 
@@ -100,20 +101,23 @@ public class TestParser {
 	  scanner s = new scanner(System.in);
       parser p = new parser(s);
       CodeGenerator cg = new CodeGenerator(outputFileName);
+	  TypeChecker tc = new TypeChecker();
       Symbol root;
 
-      cg.genFunctionEntry("asm_main");
+      // cg.genFunctionEntry("asm_main");
       //
       // replace p.parse() with p.debug_parse() in next line to see trace of
       // parser shift/reduce actions during parse
       //
       root = p.parse();
       Program program = (Program)root.value;
-      program.accept(new PrettyPrintVisitor());
+	  program.accept(new InitialTypeVisitor(tc));
+	  tc.print();
+      //program.accept(new PrettyPrintVisitor());
       //
       // System.out.print("\n" + "Parsing completed");
       //
-      cg.genFunctionExit("asm_main");
+      //cg.genFunctionExit("asm_main");
     } catch (Exception e) {
       //
       // yuck: some kind of error in the compiler implementation
