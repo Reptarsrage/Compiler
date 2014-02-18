@@ -67,9 +67,6 @@ public class SecondaryTypeVisitor implements Visitor {
 	public SecondaryTypeVisitor(TypeChecker tc) {
 		this.tc = tc;
 	}
-	
-  public void visit(Display n) {
-  }
 
   // MainClass m;
   // ClassDeclList cl;
@@ -137,7 +134,7 @@ public class SecondaryTypeVisitor implements Visitor {
   // StatementList sl;
   // Exp e;
   public void visit(MethodDecl n) {
-	tc.AddMethod(n.t, n.i.toString());
+	tc.AddMethod(n.t, n.i.toString(), n.line_number);
 	n.t.accept(this);
     n.i.accept(this);
     for (int i = n.fl.size() - 1; i >= 0; i--) {
@@ -155,33 +152,14 @@ public class SecondaryTypeVisitor implements Visitor {
   // Type t;
   // Identifier i;
   public void visit(Formal n) {
-    tc.AddFormal(n.i.toString(), n.t);
+    tc.AddFormal(n.i.toString(), n.t, n.line_number);
 	n.t.accept(this);
     n.i.accept(this);
   }
 
-  public void visit(IntArrayType n) {
-  }
-  
-  public void visit(DoubleArrayType n) {
-  }
-
-  public void visit(BooleanType n) {
-  }
-
-  public void visit(IntegerType n) {
-  }
-  
-  public void visit(DoubleType n) {
-  }
-
-  // String s;
-  public void visit(IdentifierType n) {
-  }
-
   // StatementList sl;
   public void visit(Block n) {
-    tc.AddBlock();
+    tc.AddBlock(n.line_number);
 	for (int i = 0; i < n.sl.size(); i++) {
       n.sl.get(i).accept(this);
     }
@@ -209,7 +187,28 @@ public class SecondaryTypeVisitor implements Visitor {
     }
 	n.e.accept(this);
   }
+  
+  // METHODS BELOW DO NOT MODIFY OUR TYPE TREE
+  public void visit(Display n) {
+  }
+  public void visit(IntArrayType n) {
+  }
+  
+  public void visit(DoubleArrayType n) {
+  }
 
+  public void visit(BooleanType n) {
+  }
+
+  public void visit(IntegerType n) {
+  }
+  
+  public void visit(DoubleType n) {
+  }
+
+  // String s;
+  public void visit(IdentifierType n) {
+  }
   // Exp e;
   public void visit(Print n) {
   }
