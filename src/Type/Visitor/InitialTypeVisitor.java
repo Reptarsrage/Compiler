@@ -83,7 +83,7 @@ public class InitialTypeVisitor implements Visitor {
   // Identifier i1,i2;
   // Block b;
   public void visit(MainClass n) {
-    tc.AddClass("asm_main");
+    tc.AddClass("asm_main", n.line_number);
     n.i1.accept(this);
     n.i2.accept(this);
     for (int i = 0; i < n.b.sl.size(); i ++) {
@@ -95,7 +95,7 @@ public class InitialTypeVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclSimple n) {
-    tc.AddClass(n.i.toString());
+    tc.AddClass(n.i.toString(), n.line_number);
   }
 
   // Identifier i;
@@ -103,9 +103,11 @@ public class InitialTypeVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
-    tc.AddClass(n.i.toString());
+    tc.AddClassExtends(n.i.toString(), n.j.toString(), n.line_number);
   }
 
+  // METHODS BELOW DO NOT ADD ANYTHNG TO THE TREE
+  
   // Type t;
   // Identifier i;
   public void visit(VarDecl n) {

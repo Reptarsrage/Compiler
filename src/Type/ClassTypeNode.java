@@ -2,11 +2,11 @@ package Type;
 import java.util.*;
 
 public class ClassTypeNode extends TypeNode {
-  public TypeNode base_type;
+  public IdentifierTypeNode base_type;
   public Map<String, TypeNode> fields;
   public Map<String, MethodTypeNode> methods;
 
-  public ClassTypeNode(TypeNode base_type, int lineNumber) {
+  public ClassTypeNode(IdentifierTypeNode base_type, int lineNumber) {
     super(lineNumber);
 	fields = new HashMap<String, TypeNode>();
 	methods = new HashMap<String, MethodTypeNode>();

@@ -8,6 +8,7 @@ public class TypeChecker {
 	IntTypeNode int_type;
 	DoubleTypeNode double_type;
 	UndefTypeNode undef_type;
+	IdentifierTypeNode undef_id;
 	BooleanTypeNode boolean_type;
 	Stack<TypeNode> nest;
 
@@ -19,21 +20,35 @@ public class TypeChecker {
 		double_type = new DoubleTypeNode(0);
 		undef_type = new UndefTypeNode(0);
 		boolean_type = new BooleanTypeNode(0);
+		undef_id = new IdentifierTypeNode(null, "UNDIFINED", 0);
 		nest = new Stack<TypeNode>();
 		nest.push(program);
 	}
 	
-	public void AddClass(String name){
-		ClassTypeNode c = new ClassTypeNode(undef_type, 0);
+	public void AddClass(String name, int line_number){
+		if (CheckSymbolTables(name, TypeLevel.CLASS) != null){
+			// FAIL
+			System.err.println("Failure at line: "+ line_number
+				+ ". Class " + name +" already declared.");
+			System.exit(1);
+		}
+		ClassTypeNode c = new ClassTypeNode(undef_id, 0);
 		program.classes.put(name, c);
 		while (nest.peek() != program)
 			nest.pop();
 		nest.push(c);
 	}
 	
-	public void AddClassExtends(String name, String extending){
-		ClassTypeNode c = new ClassTypeNode(undef_type, 0);
-		ClassTypeNode e = program.classes.get(extending);
+	public void AddClassExtends(String name, String extending, int line_number){
+		if (CheckSymbolTables(name, TypeLevel.CLASS) != null){
+			// FAIL
+			System.err.println("Failure at line: "+ line_number
+				+ ". Class " + name +" already declared.");
+			System.exit(1);
+		}
+		ClassTypeNode c = new ClassTypeNode(undef_id, 0);
+		IdentifierTypeNode e = new IdentifierTypeNode(
+			program.classes.get(extending), extending, 0);
 		c.base_type = e;
 		program.classes.put(name, c);
 		while (nest.peek() != program)
@@ -56,6 +71,12 @@ public class TypeChecker {
 	}
 	
 	public void AddMethod(Type ret, String name, int line_number){
+		// if (CheckSymbolTables(name, TypeLevel.METHOD) != null){
+			// // FAIL
+			// System.err.println("Failure at line: "+ line_number
+				// + ". Method " + name +" already declared.");
+			// System.exit(1);
+		// }
 		BlockTypeNode block = new BlockTypeNode(0);
 		MethodTypeNode m = new MethodTypeNode(undef_type, block, 0);
 		m.return_type = GetType(ret);
@@ -75,6 +96,8 @@ public class TypeChecker {
 	}
 	
 	public void AddFormal(String name, Type t, int line_number) {
+		// TODO check type of formal against what?
+		
 		if (nest.peek() instanceof BlockTypeNode){
 			BlockTypeNode block = (BlockTypeNode) nest.pop();
 			AddFormal(name, t, line_number);
@@ -89,7 +112,13 @@ public class TypeChecker {
 		}
 	}
 	
-	public void AddVariable(String name, Type t) {
+	public void AddVariable(String name, Type t, int line_number) {
+		if (CheckSymbolTables(name, TypeLevel.VARIABLE) != null){
+			// FAIL
+			System.err.println("Failure at line: "+ line_number
+				+ ". Variable " + name +" already declared.");
+			System.exit(1);
+		}
 		if (nest.peek() instanceof ClassTypeNode) {
 			ClassTypeNode c = (ClassTypeNode)nest.peek();
 			c.fields.put(name, GetType(t));

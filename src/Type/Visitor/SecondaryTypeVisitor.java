@@ -80,7 +80,6 @@ public class SecondaryTypeVisitor implements Visitor {
   // Identifier i1,i2;
   // Block b;
   public void visit(MainClass n) {
-    tc.AddClass("asm_main");
     n.i1.accept(this);
     n.i2.accept(this);
     for (int i = 0; i < n.b.sl.size(); i ++) {
@@ -92,7 +91,6 @@ public class SecondaryTypeVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclSimple n) {
-    tc.AddClass(n.i.toString());
 	n.i.accept(this);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
@@ -107,8 +105,6 @@ public class SecondaryTypeVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
-    tc.AddClass(n.i.toString());
-	tc.AddClassExtends(n.i.toString(), n.j.toString());
 	n.i.accept(this);
     n.j.accept(this);
     for (int i = 0; i < n.vl.size(); i++) {
@@ -122,7 +118,7 @@ public class SecondaryTypeVisitor implements Visitor {
   // Type t;
   // Identifier i;
   public void visit(VarDecl n) {
-	tc.AddVariable(n.i.toString(), n.t);
+	tc.AddVariable(n.i.toString(), n.t, n.line_number);
 	n.t.accept(this);
     n.i.accept(this);
   }
