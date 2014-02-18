@@ -71,12 +71,12 @@ public class TypeChecker {
 	}
 	
 	public void AddMethod(Type ret, String name, int line_number){
-		// if (CheckSymbolTables(name, TypeLevel.METHOD) != null){
-			// // FAIL
-			// System.err.println("Failure at line: "+ line_number
-				// + ". Method " + name +" already declared.");
-			// System.exit(1);
-		// }
+		if (CheckSymbolTables(name, TypeLevel.METHOD) != null){
+			// FAIL
+			System.err.println("Failure at line: "+ line_number
+				+ ". Method " + name +" already declared.");
+			System.exit(1);
+		}
 		BlockTypeNode block = new BlockTypeNode(0);
 		MethodTypeNode m = new MethodTypeNode(undef_type, block, 0);
 		m.return_type = GetType(ret);
