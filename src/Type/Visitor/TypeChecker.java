@@ -114,6 +114,11 @@ public class TypeChecker {
 
   // checks current scope and recurses up the stack to check higher scopes for
   // identifier. If found, returns its type. If not, returns NULL
+  // @params
+  //   - id: the identifier to check for in the tables
+  //   - t: the TypeLevel of the thing you are looking for. TypeLevel enum is
+  //       defined at the top of this file as CLASS, METHOD, or VARIABLE. This method
+  //       expects one of those values
   public TypeNode CheckSymbolTables(String id, TypeLevel t) {
     switch (t)  {
       case CLASS:
@@ -124,52 +129,52 @@ public class TypeChecker {
         return CheckSymbolTablesVariable(id);
     }
 
-      // while (!current.map.contains(id) && current != NULL)
-      //   pop current off of nest, push on to checked_stack
-      // if (current != NULL)
-      //   Type ret = current.type
-      // else
-      //   Type ret = NULL;
-      // push all of checked_stack back on to nest
-      // return ret
     return null;
   }
 
+  // helper method for checking symbol tables when searching for a class
   private TypeNode CheckSymbolTablesClass(String id) {
     return program.classes.get(id);
   }
 
+  // helper method for checking symbol tables when searching for a method
   private TypeNode CheckSymbolTablesMethod(String id) {
-      TypeNode current;
-      Stack<TypeNode> checked = new Stack<TypeNode>();
+    TypeNode ret;
+    Stack<TypeNode> checked = new Stack<TypeNode>();
 
-      while ( !(nest.peek() instanceof ClassTypeNode) )
-          checked.push(nest.pop());
+    while ( !(nest.peek() instanceof ClassTypeNode) )
+      checked.push(nest.pop());
 
-      current = nest.peek();
-      return ((ClassTypeNode) current).methods.get(id);
+    ret = ((ClassTypeNode) nest.peek()).methods.get(id);
+    // restore nest stack
+    while ( !nest.empty() )
+      nest.push(checked.pop());
+
+    return ret;
   }
 
+  // helper method for checking symbol tables when searching for variable/parameter
   private TypeNode CheckSymbolTablesVariable(String id) {
-      TypeNode current;
-      TypeNode ret = null;
-      Stack<TypeNode> checked = new Stack<TypeNode>();
+    TypeNode current;
+    TypeNode ret = null;
+    Stack<TypeNode> checked = new Stack<TypeNode>();
 
-      while ( nest.peek() != program && ret == null) {
-          current = nest.pop();
-          checked.push(current);
-          if ( current instanceof ClassTypeNode ) {
-              ret = ((ClassTypeNode) current).fields.get(id);
-          } else if ( current instanceof BlockTypeNode ) {
-              ret = ((BlockTypeNode) current).locals.get(id);
-          } else if ( current instanceof MethodTypeNode ) {
-              ret = ((MethodTypeNode) current).args.get(id);
-          }
+    while ( nest.peek() != program && ret == null) {
+      current = nest.pop();
+      checked.push(current);
+      if ( current instanceof ClassTypeNode ) {
+        ret = ((ClassTypeNode) current).fields.get(id);
+      } else if ( current instanceof BlockTypeNode ) {
+        ret = ((BlockTypeNode) current).locals.get(id);
+      } else if ( current instanceof MethodTypeNode ) {
+        ret = ((MethodTypeNode) current).args.get(id);
       }
-      while ( !checked.empty() )
-          nest.push(checked.pop());
+    }
+    // restore the nest stack
+    while ( !checked.empty() )
+      nest.push(checked.pop());
 
-      return ret;
+    return ret;
   }
 
 }
