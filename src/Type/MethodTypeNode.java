@@ -19,7 +19,7 @@ public class MethodTypeNode extends TypeNode {
 	while (it.hasNext()){
 		String elt = it.next();
 		System.out.print(ind + "Argument: " + elt);
-		System.out.print(" of type: ");
+		System.out.print(", of type: ");
 		args.get(elt).print(ind + "   ");
 		System.out.print("\n");
 	}

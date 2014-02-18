@@ -155,6 +155,9 @@ public class SecondaryTypeVisitor implements Visitor {
   // Type t;
   // Identifier i;
   public void visit(Formal n) {
+    tc.AddFormal(n.i.toString(), n.t);
+	n.t.accept(this);
+    n.i.accept(this);
   }
 
   public void visit(IntArrayType n) {

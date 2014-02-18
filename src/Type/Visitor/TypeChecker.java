@@ -53,6 +53,20 @@ public class TypeChecker {
 		nest.push(block); // The block for inside the method
 	}
 	
+	public void AddFormal(String name, Type t) {
+		if (nest.peek() instanceof BlockTypeNode){
+			BlockTypeNode block = (BlockTypeNode) nest.pop();
+			AddFormal(name, t);
+			nest.push(block);
+		} else if (nest.peek() instanceof MethodTypeNode) {
+			MethodTypeNode m = (MethodTypeNode)nest.peek();
+			m.args.put(name, GetType(t));
+		} else {
+			System.out.println("FAILURE: actual=" + nest.peek() + ", expected=MethodYypeNode.");
+			System.exit(1); // Fail
+		}
+	}
+	
 	public void AddVariable(String name, Type t) {
 		if (nest.peek() instanceof ClassTypeNode) {
 			ClassTypeNode c = (ClassTypeNode)nest.peek();
@@ -60,8 +74,9 @@ public class TypeChecker {
 		} else if (nest.peek() instanceof BlockTypeNode){
 			BlockTypeNode c = (BlockTypeNode)nest.peek();
 			c.locals.put(name, GetType(t));
-		} else
+		} else{
 			System.exit(1); // Fail
+		}
 	}
 	
 	private TypeNode GetType(Type t){

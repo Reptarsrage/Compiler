@@ -21,7 +21,7 @@ public class ClassTypeNode extends TypeNode {
 	while (it.hasNext()){
 		String elt = it.next();
 		System.out.print(ind + "Field: " + elt);
-		System.out.print(" of type: ");
+		System.out.print(", of type: ");
 		fields.get(elt).print(ind + "   ");
 		System.out.print("\n");
 	}

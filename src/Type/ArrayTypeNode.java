@@ -13,7 +13,7 @@ public class ArrayTypeNode extends TypeNode {
   	public void print(String ind){
 		System.out.print(ind + "Array with base: ");
 		base.print(ind + "   ");
-		System.out.print(" and index: ");
+		System.out.print(", and index: ");
 		index.print(ind + "   ");
 		System.out.print('\n');
 	}
