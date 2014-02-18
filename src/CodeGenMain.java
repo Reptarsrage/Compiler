@@ -2,6 +2,7 @@ import AST.*;
 import CodeGenerator.*;
 import Parser.parser;
 import Scanner.scanner;
+import Type.*;
 
 import java_cup.runtime.Symbol;
 
@@ -21,6 +22,7 @@ public class CodeGenMain {
       parser p = new parser(s);
       // print to stdout
       CodeGenerator cg = new CodeGenerator(null);
+	  TypeChecker tc = new TypeChecker();
       Symbol root;
       //
       // replace p.parse() with p.debug_parse() in next line to see trace of
@@ -28,6 +30,7 @@ public class CodeGenMain {
       //
       root = p.parse();
       Program program = (Program) root.value;
+	  program.accept(new TypeVisitor(tc));
       program.accept(new CodeGeneratorVisitor(cg));
       //
       // System.out.print("\n" + "Parsing completed");
