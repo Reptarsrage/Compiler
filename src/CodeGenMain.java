@@ -2,7 +2,8 @@ import AST.*;
 import CodeGenerator.*;
 import Parser.parser;
 import Scanner.scanner;
-import Type.*;
+import Type.Visitor.TypeChecker;
+import Type.Visitor.InitialTypeVisitor;
 
 import java_cup.runtime.Symbol;
 
@@ -30,7 +31,7 @@ public class CodeGenMain {
       //
       root = p.parse();
       Program program = (Program) root.value;
-	  program.accept(new TypeVisitor(tc));
+	  program.accept(new InitialTypeVisitor(tc));
       program.accept(new CodeGeneratorVisitor(cg));
       //
       // System.out.print("\n" + "Parsing completed");

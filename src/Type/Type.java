@@ -1,5 +1,4 @@
 package Type;
-import Type.Visitor.Visitor;
 
 abstract public class Type {
   //
