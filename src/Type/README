@@ -3,4 +3,28 @@ we maintain a graph which holds as fields (1) the primitive type nodes and
 the basic class information before diving in and doing our second pass where we
 fill in each class in the graph with its methods, create the method nodes, etc.
 Simultaneously, we build the symbol table stack to allow for identifier type
-checking later on.
+checking later on. We utalize a stack in order to keep track of the nested symbol
+tables within our program. As Nodes are created and visited, the stack always 
+reflects the current scope.
+	In order to do all of this we needed to make two visitor classes called 
+InitialTypeVisitor and SecondaryTypeVisitor. We also needed a file to handle
+the stack and the graph; this is done in TypeChecker. The other eleven classes we
+added for this assignment are the nodes in the graph. There are four fundamental 
+scalar types which all implement an abstract Type class. Then there are the types for
+classes, methods, arrays, blocks and packages(programs) which also implement the abstract 
+class Type. The TypeChecker class uses these files as nodes when it builds up its graph
+and the two visitor classes are used as a means of going from the AST tree to our 
+new syntax tree.
+	One of the hardest problems we faced was how to implement the TypeChecker class.
+We first came up with the idea to use a visitor to hold the graph but soon realized
+that we needed a seperate file just for that task. We struggled to find a way to model
+the idea of scope while symultaneuously adding nodes to the graph. We ended up using a 
+stack containing the nodes that influence the scope of the program. For instance if
+the visitor was currently on a local variable in a method, the items on the stack would
+be a block for the method, the containing method, the contining class and finally the program.
+This allowed us to keep track of both the gloabal and local variables as well as our
+graph structure. Another issue with this setup was representing our graph. It made the 
+most sense to use one program object, and four scaler types, initialized with the TypeChecker,
+as a good basis for the syntax graph. By only keeping track of these we eliminated the need
+to hold on to all instances of classtypes and methodtypes, as those objects were contained within
+the origional packagetype object.
