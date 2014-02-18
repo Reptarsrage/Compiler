@@ -42,41 +42,49 @@ public class TypeChecker {
 		nest.push(c);
 	}
 	
-	public void AddBlock(){
+	public void AddBlock(int line_number){
 		if (nest.peek() instanceof BlockTypeNode){
 			BlockTypeNode block = (BlockTypeNode) nest.peek();
 			BlockTypeNode block_in = new BlockTypeNode(0);
 			block.inside = block_in;
 			nest.push(block_in);
 		} else {
-			System.err.println("FAILURE: actual=" + nest.peek() + ", expected=BlockTypeNode.");
+			System.err.println("Failure at line: "+line_number
+				+ ". Blocks must be declared within a valid block.");
 			System.exit(1); // Fail
 		}	
 	}
 	
-	public void AddMethod(Type ret, String name){
+	public void AddMethod(Type ret, String name, int line_number){
 		BlockTypeNode block = new BlockTypeNode(0);
 		MethodTypeNode m = new MethodTypeNode(undef_type, block, 0);
 		m.return_type = GetType(ret);
 		m.inside = block;
-		while (!(nest.peek() instanceof ClassTypeNode))
+		while (!(nest.peek() instanceof ClassTypeNode)){
+			if (nest.peek() instanceof PackageTypeNode){
+				System.err.println("Failure at line: "+line_number
+					+ ". Method " + name + " must be nested in a class.");
+				System.exit(1); // Fail
+			}
 			nest.pop();
-		ClassTypeNode c = (ClassTypeNode)nest.peek(); // TODO, check classtype fail if incorrect
+		}
+		ClassTypeNode c = (ClassTypeNode)nest.peek();
 		c.methods.put(name, m);
 		nest.push(m);
 		nest.push(block); // The block for inside the method
 	}
 	
-	public void AddFormal(String name, Type t) {
+	public void AddFormal(String name, Type t, int line_number) {
 		if (nest.peek() instanceof BlockTypeNode){
 			BlockTypeNode block = (BlockTypeNode) nest.pop();
-			AddFormal(name, t);
+			AddFormal(name, t, line_number);
 			nest.push(block);
 		} else if (nest.peek() instanceof MethodTypeNode) {
 			MethodTypeNode m = (MethodTypeNode)nest.peek();
 			m.args.put(name, GetType(t));
 		} else {
-			System.err.println("FAILURE: actual=" + nest.peek() + ", expected=MethodTypeNode.");
+			System.err.println("Failure at line: "+line_number
+				+ ". Formal argument " + name + " must be part of a method declaration.");
 			System.exit(1); // Fail
 		}
 	}
