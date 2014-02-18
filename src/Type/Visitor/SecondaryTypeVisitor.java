@@ -81,11 +81,6 @@ public class SecondaryTypeVisitor implements Visitor {
   // Block b;
   public void visit(MainClass n) {
     tc.PushClass("asm_main");
-	n.i1.accept(this);
-    n.i2.accept(this);
-    for (int i = 0; i < n.b.sl.size(); i ++) {
-        n.b.sl.get(i).accept(this);
-    }
   }
 
   // Identifier i;
@@ -93,7 +88,6 @@ public class SecondaryTypeVisitor implements Visitor {
   // MethodDeclList ml;
   public void visit(ClassDeclSimple n) {
 	tc.PushClass(n.i.toString());
-	n.i.accept(this);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
     }
@@ -108,8 +102,6 @@ public class SecondaryTypeVisitor implements Visitor {
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
     tc.PushClass(n.i.toString());
-	n.i.accept(this);
-    n.j.accept(this);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
     }
@@ -122,8 +114,6 @@ public class SecondaryTypeVisitor implements Visitor {
   // Identifier i;
   public void visit(VarDecl n) {
 	tc.AddVariable(n.i.toString(), n.t, n.line_number);
-	n.t.accept(this);
-    n.i.accept(this);
   }
 
   // Type t;
@@ -134,18 +124,12 @@ public class SecondaryTypeVisitor implements Visitor {
   // Exp e;
   public void visit(MethodDecl n) {
 	tc.AddMethod(n.t, n.i.toString(), n.line_number);
-	n.t.accept(this);
-    n.i.accept(this);
     for (int i = n.fl.size() - 1; i >= 0; i--) {
       n.fl.get(i).accept(this);
     }
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
     }
-    for (int i = 0; i < n.sl.size(); i++) {
-      n.sl.get(i).accept(this);
-    }
-    n.e.accept(this);
     tc.CheckMethodInheritance(n.i.toString(), n.line_number);
   }
 
@@ -153,42 +137,25 @@ public class SecondaryTypeVisitor implements Visitor {
   // Identifier i;
   public void visit(Formal n) {
     tc.AddFormal(n.i.toString(), n.t, n.line_number);
-	n.t.accept(this);
-    n.i.accept(this);
   }
 
   // StatementList sl;
   public void visit(Block n) {
     tc.AddBlock(n.line_number);
-	for (int i = 0; i < n.sl.size(); i++) {
-      n.sl.get(i).accept(this);
-    }
   }
-
+  
+  // METHODS BELOW DO NOT MODIFY OUR TYPE TREE
+  
   // Exp e;
   // Statement s1,s2;
   public void visit(If n) {
-    // TODO make sure that inside is handled by a block
-	n.e.accept(this);
-	for (int i = 0; i < n.s1.size(); i++) {
-      n.s1.get(i).accept(this);
-    }
-    for (int i = 0; i < n.s2.size(); i++) {
-      n.s2.get(i).accept(this);
-    }
   }
 
   // Exp e;
   // StatementList s;
   public void visit(While n) {
-	// TODO make sure that inside is handled by a block
-	for (int i = 0; i < n.s.size(); i++) {
-      n.s.get(i).accept(this);
-    }
-	n.e.accept(this);
   }
   
-  // METHODS BELOW DO NOT MODIFY OUR TYPE TREE
   public void visit(Display n) {
   }
   public void visit(IntArrayType n) {

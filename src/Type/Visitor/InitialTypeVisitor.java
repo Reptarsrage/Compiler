@@ -84,11 +84,6 @@ public class InitialTypeVisitor implements Visitor {
   // Block b;
   public void visit(MainClass n) {
     tc.AddClass("asm_main", n.line_number);
-    n.i1.accept(this);
-    n.i2.accept(this);
-    for (int i = 0; i < n.b.sl.size(); i ++) {
-        n.b.sl.get(i).accept(this);
-    }
   }
 
   // Identifier i;
