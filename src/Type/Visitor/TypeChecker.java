@@ -71,12 +71,12 @@ public class TypeChecker {
 	}
 	
 	public void AddMethod(Type ret, String name, int line_number){
-		if (CheckSymbolTables(name, TypeLevel.METHOD) != null){
+      /*		if (CheckSymbolTables(name, TypeLevel.METHOD) != null){
 			// FAIL
 			System.err.println("Failure at line: "+ line_number
 				+ ". Method " + name +" already declared.");
 			System.exit(1);
-		}
+      }*/
 		BlockTypeNode block = new BlockTypeNode(0);
 		MethodTypeNode m = new MethodTypeNode(undef_type, block, 0);
 		m.return_type = GetType(ret);
@@ -212,4 +212,54 @@ public class TypeChecker {
     return ret;
   }
 
+  public void CheckMethodInheritance(String id, int line_number) {
+      if (!(nest.peek() instanceof BlockTypeNode) ) {
+          // something went wrong - top of nest stack should always be a single block here
+          System.err.println("Internal error - problem with nest stack in semantic analysis");
+          System.exit(1);
+      }
+      BlockTypeNode popped = (BlockTypeNode) nest.pop();
+
+      if (!(nest.peek() instanceof MethodTypeNode) ) {
+          // something went wrong - top of nest stack should always be the target method here
+          System.err.println("Internal error - problem with nest stack in semantic analysis");
+          System.exit(1);
+      }
+      MethodTypeNode method = (MethodTypeNode) nest.pop();
+
+      ClassTypeNode c = (ClassTypeNode) nest.pop();
+      // if our class is extending another class
+      if ( !c.base_type.name.equals("UNDIFINED") ) {
+          ClassTypeNode parent = ((ClassTypeNode) nest.peek());
+          // check to see if parent class has method of same name
+          if ( parent.methods.get(id) != null ) {
+              MethodTypeNode parent_method = parent.methods.get(id);
+              // check to make sure return type is the same
+              if ( !(parent_method.return_type.getClass().equals(method.getClass())) ) {
+                  System.err.println("Error on line " + line_number + ". Return type of method " + id
+                                     + " doesn't match return type of same method in parent class.");
+                  System.exit(1);
+              }
+              // check to make sure number of args is same
+              if ( parent_method.args.size() != method.args.size() ) {
+                  System.err.println("Error on line " + line_number + ". Method " + id
+                                     + " has different number of arguments than same method in parent class.");
+                  System.exit(1);
+              }
+
+              // check to make sure types of all arguments are same
+              Iterator<Map.Entry<String, TypeNode>> this_itr = method.args.entrySet().iterator();
+              Iterator<Map.Entry<String, TypeNode>> parent_itr = parent_method.args.entrySet().iterator();
+              while ( this_itr.hasNext() ){
+                  //                  Map.Entry this_entry = this_itr.next();
+                  //                  Map.Entry par_entry = parent_itr.next();
+                  if ( !(this_itr.next().getValue().getClass().equals(parent_itr.next().getValue().getClass())) ) {
+                      System.err.println("Error on line " + line_number + ". Method " + id
+                                         + " has different parameter types than same method in parent class.");
+                      System.exit(1);
+                  }
+              }
+          }
+      }
+  }
 }

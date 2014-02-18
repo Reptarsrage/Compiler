@@ -143,6 +143,7 @@ public class SecondaryTypeVisitor implements Visitor {
       n.sl.get(i).accept(this);
     }
     n.e.accept(this);
+    tc.CheckMethodInheritance(n.i.toString(), n.line_number);
   }
 
   // Type t;
