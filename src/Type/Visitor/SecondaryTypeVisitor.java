@@ -181,16 +181,33 @@ public class SecondaryTypeVisitor implements Visitor {
 
   // StatementList sl;
   public void visit(Block n) {
+    tc.AddBlock();
+	for (int i = 0; i < n.sl.size(); i++) {
+      n.sl.get(i).accept(this);
+    }
   }
 
   // Exp e;
   // Statement s1,s2;
   public void visit(If n) {
+    // TODO make sure that inside is handled by a block
+	n.e.accept(this);
+	for (int i = 0; i < n.s1.size(); i++) {
+      n.s1.get(i).accept(this);
+    }
+    for (int i = 0; i < n.s2.size(); i++) {
+      n.s2.get(i).accept(this);
+    }
   }
 
   // Exp e;
   // StatementList s;
   public void visit(While n) {
+	// TODO make sure that inside is handled by a block
+	for (int i = 0; i < n.s.size(); i++) {
+      n.s.get(i).accept(this);
+    }
+	n.e.accept(this);
   }
 
   // Exp e;

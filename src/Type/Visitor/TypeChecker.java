@@ -41,15 +41,28 @@ public class TypeChecker {
 		nest.push(c);
 	}
 	
+	public void AddBlock(){
+		if (nest.peek() instanceof BlockTypeNode){
+			BlockTypeNode block = (BlockTypeNode) nest.peek();
+			BlockTypeNode block_in = new BlockTypeNode(0);
+			block.inside = block_in;
+			nest.push(block_in);
+		} else {
+			System.err.println("FAILURE: actual=" + nest.peek() + ", expected=BlockTypeNode.");
+			System.exit(1); // Fail
+		}	
+	}
+	
 	public void AddMethod(Type ret, String name){
-		MethodTypeNode m = new MethodTypeNode(undef_type, 0);
+		BlockTypeNode block = new BlockTypeNode(0);
+		MethodTypeNode m = new MethodTypeNode(undef_type, block, 0);
 		m.return_type = GetType(ret);
+		m.inside = block;
 		while (!(nest.peek() instanceof ClassTypeNode))
 			nest.pop();
 		ClassTypeNode c = (ClassTypeNode)nest.peek(); // TODO, check classtype fail if incorrect
 		c.methods.put(name, m);
 		nest.push(m);
-		BlockTypeNode block = new BlockTypeNode(0);
 		nest.push(block); // The block for inside the method
 	}
 	
@@ -62,7 +75,7 @@ public class TypeChecker {
 			MethodTypeNode m = (MethodTypeNode)nest.peek();
 			m.args.put(name, GetType(t));
 		} else {
-			System.out.println("FAILURE: actual=" + nest.peek() + ", expected=MethodYypeNode.");
+			System.err.println("FAILURE: actual=" + nest.peek() + ", expected=MethodTypeNode.");
 			System.exit(1); // Fail
 		}
 	}

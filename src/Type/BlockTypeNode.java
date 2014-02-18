@@ -3,6 +3,7 @@ import java.util.*;
 
 public class BlockTypeNode extends TypeNode {
 	public Map<String, TypeNode> locals;
+	public BlockTypeNode inside;
 
 	public BlockTypeNode(int lineNumber) {
 	super(lineNumber);
@@ -20,5 +21,7 @@ public class BlockTypeNode extends TypeNode {
 			locals.get(elt).print(ind + "   ");
 			System.out.print("\n");
 		}
+		if (inside != null)
+			inside.print(ind + "   ");
 	}
 }
