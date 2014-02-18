@@ -117,6 +117,13 @@ public class TypeChecker {
 		}
 	}
 	
+	public void PushClass(String name) {
+		ClassTypeNode c = program.classes.get(name);
+		while (!(nest.peek() instanceof PackageTypeNode))
+			nest.pop();
+		nest.push(c);
+	}
+	
 	public void AddVariable(String name, Type t, int line_number) {
 		if (CheckSymbolTables(name, TypeLevel.VARIABLE) != null){
 			// FAIL
