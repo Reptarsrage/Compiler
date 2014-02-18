@@ -184,7 +184,7 @@ public class TypeChecker {
 
     ret = ((ClassTypeNode) nest.peek()).methods.get(id);
     // restore nest stack
-    while ( !nest.empty() )
+    while ( !checked.empty() )
       nest.push(checked.pop());
 
     return ret;
