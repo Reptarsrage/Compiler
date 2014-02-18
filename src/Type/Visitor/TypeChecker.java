@@ -10,7 +10,8 @@ public class TypeChecker {
 	UndefTypeNode undef_type;
 	BooleanTypeNode boolean_type;
 	Stack<TypeNode> nest;
-	
+
+  public enum TypeLevel { CLASS, METHOD, VARIABLE }
 	
 	public TypeChecker() {
 		program = new PackageTypeNode(0);
@@ -110,4 +111,65 @@ public class TypeChecker {
 	public void print(){
 		program.print("");
 	}
+
+  // checks current scope and recurses up the stack to check higher scopes for
+  // identifier. If found, returns its type. If not, returns NULL
+  public TypeNode CheckSymbolTables(String id, TypeLevel t) {
+    switch (t)  {
+      case CLASS:
+        return CheckSymbolTablesClass(id);
+      case METHOD:
+        return CheckSymbolTablesMethod(id);
+      case VARIABLE:
+        return CheckSymbolTablesVariable(id);
+    }
+
+      // while (!current.map.contains(id) && current != NULL)
+      //   pop current off of nest, push on to checked_stack
+      // if (current != NULL)
+      //   Type ret = current.type
+      // else
+      //   Type ret = NULL;
+      // push all of checked_stack back on to nest
+      // return ret
+    return null;
+  }
+
+  private TypeNode CheckSymbolTablesClass(String id) {
+    return program.classes.get(id);
+  }
+
+  private TypeNode CheckSymbolTablesMethod(String id) {
+      TypeNode current;
+      Stack<TypeNode> checked = new Stack<TypeNode>();
+
+      while ( !(nest.peek() instanceof ClassTypeNode) )
+          checked.push(nest.pop());
+
+      current = nest.peek();
+      return ((ClassTypeNode) current).methods.get(id);
+  }
+
+  private TypeNode CheckSymbolTablesVariable(String id) {
+      TypeNode current;
+      TypeNode ret = null;
+      Stack<TypeNode> checked = new Stack<TypeNode>();
+
+      while ( nest.peek() != program && ret == null) {
+          current = nest.pop();
+          checked.push(current);
+          if ( current instanceof ClassTypeNode ) {
+              ret = ((ClassTypeNode) current).fields.get(id);
+          } else if ( current instanceof BlockTypeNode ) {
+              ret = ((BlockTypeNode) current).locals.get(id);
+          } else if ( current instanceof MethodTypeNode ) {
+              ret = ((MethodTypeNode) current).args.get(id);
+          }
+      }
+      while ( !checked.empty() )
+          nest.push(checked.pop());
+
+      return ret;
+  }
+
 }
