@@ -199,9 +199,7 @@ public class TypeChecker {
     while ( nest.peek() != program && ret == null) {
       current = nest.pop();
       checked.push(current);
-      if ( current instanceof ClassTypeNode ) {
-        ret = ((ClassTypeNode) current).fields.get(id);
-      } else if ( current instanceof BlockTypeNode ) {
+      if ( current instanceof BlockTypeNode ) {
         ret = ((BlockTypeNode) current).locals.get(id);
       } else if ( current instanceof MethodTypeNode ) {
         ret = ((MethodTypeNode) current).args.get(id);
