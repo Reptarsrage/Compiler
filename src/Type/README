@@ -1,7 +1,9 @@
-CSE 401 Group C - Assignment 6
-Adam Croissant (adamc41) and Justin Robb (xreptarx)
+Justin Robb, xreptarx
+Adam Croissant, adamc41
+2-18-14
+Assignment 6
 
-We maintain a graph which holds as fields (1) the primitive type nodes and
+ 	We maintain a graph which holds as fields (1) the primitive type nodes and
 (2) a package node. We then do our first pass and fill that package node in with
 the basic class information before diving in and doing our second pass where we
 fill in each class in the graph with its methods, create the method nodes, etc.
@@ -20,17 +22,17 @@ and the two visitor classes are used as a means of going from the AST tree to ou
 new type tree.
 	One of the hardest problems we faced was how to implement the TypeChecker class.
 We first came up with the idea to use a visitor to hold the graph but soon realized
-that we needed a seperate file just for that task. We struggled to find a way to model
-the idea of scope while symultaneuously adding nodes to the graph. We ended up using a 
+that we needed a separate file just for that task. We struggled to find a way to model
+the idea of scope while simultaneously adding nodes to the graph. We ended up using a 
 stack containing the nodes that influence the scope of the program. For instance if
 the visitor was currently on a local variable in a method, the items on the stack would
-be a block for the method, the containing method, the contining class and finally the program.
-This allowed us to keep track of both the gloabal and local variables as well as our
+be a block for the method, the containing method, the containing class and finally the program.
+This allowed us to keep track of both the global and local variables as well as our
 graph structure. Another issue with this setup was representing our graph. It made the 
-most sense to use one program object, and four scaler types, initialized with the TypeChecker,
+most sense to use one program object, and four scalar types, initialized with the TypeChecker,
 as a good basis for the syntax graph. By only keeping track of these we eliminated the need
-to hold on to all instances of classtypes and methodtypes, as those objects were contained within
-the original packagetype object.
+to hold on to all instances of ClassTypes and MethodTypes, as those objects were contained within
+the original PackageType object.
   Another difficulty was how to properly check overriding methods for valid inheritance. We do
 this step after all other checking of the method has been done since we need to examine return
 and formals, which are checked and updated after the method name in our implementation. The
@@ -38,9 +40,10 @@ strategy we ended up going with involves some unwinding of our node stack in ord
 ClassTypeNode which contains our current method, then examining its fields to see if it has a
 base class. If it does, this too is extracted from the field. We then compare each individual
 criteria for method inheritance. The most complicated of these is the type comparison for all
-of the formals, as it involves pulling out maps and iterating over their entrysets and comparing
+of the formals, as it involves pulling out maps and iterating over their entry-sets and comparing
 to check if they have the same class.
   All of these additions will be helpful for type checking, as we already have a basic method
 for tracking multiple levels of symbol tables (although we will need to add to it once we have
 to track across method calls) and can successfully type check pretty much everything necessary
-for classes, methods, etc. so just need to add expression/statement typechecking on top.
+for classes, methods, etc. so just need to add expression/statement type-checking on top.
+
