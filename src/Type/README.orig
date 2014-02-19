@@ -1,9 +1,16 @@
+<<<<<<< HEAD
+CSE 401 Group C - Assignment 6
+Adam Croissant (adamc41) and Justin Robb (xreptarx)
+
+We maintain a graph which holds as fields (1) the primitive type nodes and
+=======
 Justin Robb, xreptarx
 Adam Croissant, adamc41
 2-18-14
 Assignment 6
 
  	We maintain a graph which holds as fields (1) the primitive type nodes and
+>>>>>>> a1d3b6eb561d58b7f28aeac16d6f2e51d2093e62
 (2) a package node. We then do our first pass and fill that package node in with
 the basic class information before diving in and doing our second pass where we
 fill in each class in the graph with its methods, create the method nodes, etc.
@@ -46,3 +53,4 @@ to check if they have the same class.
 for tracking multiple levels of symbol tables (although we will need to add to it once we have
 to track across method calls) and can successfully type check pretty much everything necessary
 for classes, methods, etc. so just need to add expression/statement type-checking on top.
+
