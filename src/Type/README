@@ -1,9 +1,9 @@
-we maintain a graph which holds as fields (1) the primitive type nodes and
+We maintain a graph which holds as fields (1) the primitive type nodes and
 (2) a package node. We then do our first pass and fill that package node in with
 the basic class information before diving in and doing our second pass where we
 fill in each class in the graph with its methods, create the method nodes, etc.
 Simultaneously, we build the symbol table stack to allow for identifier type
-checking later on. We utalize a stack in order to keep track of the nested symbol
+checking later on. We utilize a stack in order to keep track of the nested symbol
 tables within our program. As Nodes are created and visited, the stack always 
 reflects the current scope.
 	In order to do all of this we needed to make two visitor classes called 
@@ -14,7 +14,7 @@ scalar types which all implement an abstract Type class. Then there are the type
 classes, methods, arrays, blocks and packages(programs) which also implement the abstract 
 class Type. The TypeChecker class uses these files as nodes when it builds up its graph
 and the two visitor classes are used as a means of going from the AST tree to our 
-new syntax tree.
+new type tree.
 	One of the hardest problems we faced was how to implement the TypeChecker class.
 We first came up with the idea to use a visitor to hold the graph but soon realized
 that we needed a seperate file just for that task. We struggled to find a way to model
@@ -27,4 +27,17 @@ graph structure. Another issue with this setup was representing our graph. It ma
 most sense to use one program object, and four scaler types, initialized with the TypeChecker,
 as a good basis for the syntax graph. By only keeping track of these we eliminated the need
 to hold on to all instances of classtypes and methodtypes, as those objects were contained within
-the origional packagetype object.
+the original packagetype object.
+  Another difficulty was how to properly check overriding methods for valid inheritance. We do
+this step after all other checking of the method has been done since we need to examine return
+and formals, which are checked and updated after the method name in our implementation. The
+strategy we ended up going with involves some unwinding of our node stack in order to get to the
+ClassTypeNode which contains our current method, then examining its fields to see if it has a
+base class. If it does, this too is extracted from the field. We then compare each individual
+criteria for method inheritance. The most complicated of these is the type comparison for all
+of the formals, as it involves pulling out maps and iterating over their entrysets and comparing
+to check if they have the same class.
+  All of these additions will be helpful for type checking, as we already have a basic method
+for tracking multiple levels of symbol tables (although we will need to add to it once we have
+to track across method calls) and can successfully type check pretty much everything necessary
+for classes, methods, etc. so just need to add expression/statement typechecking on top.
