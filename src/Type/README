@@ -1,3 +1,6 @@
+CSE 401 Group C - Assignment 6
+Adam Croissant (adamc41) and Justin Robb (xreptarx)
+
 We maintain a graph which holds as fields (1) the primitive type nodes and
 (2) a package node. We then do our first pass and fill that package node in with
 the basic class information before diving in and doing our second pass where we
