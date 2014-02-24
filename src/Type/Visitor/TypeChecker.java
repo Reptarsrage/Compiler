@@ -16,6 +16,8 @@ public class TypeChecker {
 	UndefTypeNode undef_type;		// Singleton undefined type
 	IdentifierTypeNode undef_id;	// Singleton undefined class type (for non extended classes)
 	BooleanTypeNode boolean_type;	// Singleton boolean type
+	IntArrayTypeNode int_array_type; 		// Singleton integer array type
+	DoubleArrayTypeNode double_array_type;  // Singleton double array type
 	Stack<TypeNode> nest;			// a stack of symbol tables representing the current 
 									// scope and parent scopes of the program at any point
 									
@@ -30,6 +32,8 @@ public class TypeChecker {
 		double_type = new DoubleTypeNode();
 		undef_type = new UndefTypeNode();
 		boolean_type = new BooleanTypeNode();
+		int_array_type = new IntArrayTypeNode();
+		double_array_type = new DoubleArrayTypeNode();
 		undef_id = new IdentifierTypeNode(null, "0");
 		nest = new Stack<TypeNode>();
 		nest.push(program);
@@ -187,14 +191,11 @@ public class TypeChecker {
 			return double_type;
 		if (t instanceof BooleanType)
 			return boolean_type;
-		if (t instanceof IntArrayType){
-			ArrayTypeNode a = new ArrayTypeNode(int_type);
-			return a;
-		}
-		if (t instanceof DoubleArrayType){
-			ArrayTypeNode a = new ArrayTypeNode(double_type);
-			return a;
-		}
+		if (t instanceof IntArrayType)
+			return int_array_type;
+		if (t instanceof DoubleArrayType)
+			return double_array_type;
+		
 		if (t instanceof IdentifierType){
 			IdentifierTypeNode id = new IdentifierTypeNode(
 				program.classes.get(((IdentifierType)t).s), ((IdentifierType)t).s);
