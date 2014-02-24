@@ -3,7 +3,7 @@
  * 2-18-14
  * Visitor for the second and final sweep of the AST
  * Adds methods and variables to classes, completes the graph.
-*/
+ */
 
 package Type.Visitor;
 
@@ -70,239 +70,239 @@ import AST.While;
 import AST.Visitor.Visitor;
 
 public class SecondaryTypeVisitor implements Visitor {
-	private TypeChecker tc;
+    private TypeChecker tc;
 	
-	public SecondaryTypeVisitor(TypeChecker tc) {
-		this.tc = tc;
-	}
-
-  // MainClass m;
-  // ClassDeclList cl;
-  public void visit(Program n) {
-    n.m.accept(this);
-    for (int i = 0; i < n.cl.size(); i++) {
-      n.cl.get(i).accept(this);
+    public SecondaryTypeVisitor(TypeChecker tc) {
+        this.tc = tc;
     }
-  }
 
-  // Identifier i1,i2;
-  // Block b;
-  public void visit(MainClass n) {
-    tc.PushClass("asm_main");
-  }
+    // MainClass m;
+    // ClassDeclList cl;
+    public void visit(Program n) {
+        n.m.accept(this);
+        for (int i = 0; i < n.cl.size(); i++) {
+            n.cl.get(i).accept(this);
+        }
+    }
 
-  // Identifier i;
-  // VarDeclList vl;
-  // MethodDeclList ml;
-  public void visit(ClassDeclSimple n) {
+    // Identifier i1,i2;
+    // Block b;
+    public void visit(MainClass n) {
+        tc.PushClass("asm_main");
+    }
+
+    // Identifier i;
+    // VarDeclList vl;
+    // MethodDeclList ml;
+    public void visit(ClassDeclSimple n) {
 	tc.PushClass(n.i.toString());
-    for (int i = 0; i < n.vl.size(); i++) {
-      n.vl.get(i).accept(this);
+        for (int i = 0; i < n.vl.size(); i++) {
+            n.vl.get(i).accept(this);
+        }
+        for (int i = 0; i < n.ml.size(); i++) {
+            n.ml.get(i).accept(this);
+        }
     }
-    for (int i = 0; i < n.ml.size(); i++) {
-      n.ml.get(i).accept(this);
-    }
-  }
 
-  // Identifier i;
-  // Identifier j;
-  // VarDeclList vl;
-  // MethodDeclList ml;
-  public void visit(ClassDeclExtends n) {
-    tc.UpdateClassExtends(n.i.toString(), n.j.toString(), n.line_number);
-    for (int i = 0; i < n.vl.size(); i++) {
-      n.vl.get(i).accept(this);
+    // Identifier i;
+    // Identifier j;
+    // VarDeclList vl;
+    // MethodDeclList ml;
+    public void visit(ClassDeclExtends n) {
+        tc.UpdateClassExtends(n.i.toString(), n.j.toString(), n.line_number);
+        for (int i = 0; i < n.vl.size(); i++) {
+            n.vl.get(i).accept(this);
+        }
+        for (int i = 0; i < n.ml.size(); i++) {
+            n.ml.get(i).accept(this);
+        }
     }
-    for (int i = 0; i < n.ml.size(); i++) {
-      n.ml.get(i).accept(this);
-    }
-  }
 
-  // Type t;
-  // Identifier i;
-  public void visit(VarDecl n) {
+    // Type t;
+    // Identifier i;
+    public void visit(VarDecl n) {
 	tc.AddVariable(n.i.toString(), n.t, n.line_number);
-  }
+    }
 
-  // Type t;
-  // Identifier i;
-  // FormalList fl;
-  // VarDeclList vl;
-  // StatementList sl;
-  // Exp e;
-  public void visit(MethodDecl n) {
+    // Type t;
+    // Identifier i;
+    // FormalList fl;
+    // VarDeclList vl;
+    // StatementList sl;
+    // Exp e;
+    public void visit(MethodDecl n) {
 	tc.AddMethod(n.t, n.i.toString(), n.line_number);
-    for (int i = 0; i < n.fl.size(); i++) {
-      n.fl.get(i).accept(this);
+        for (int i = 0; i < n.fl.size(); i++) {
+            n.fl.get(i).accept(this);
+        }
+        for (int i = 0; i < n.vl.size(); i++) {
+            n.vl.get(i).accept(this);
+        }
     }
-    for (int i = 0; i < n.vl.size(); i++) {
-      n.vl.get(i).accept(this);
+
+    // Type t;
+    // Identifier i;
+    public void visit(Formal n) {
+        tc.AddFormal(n.i.toString(), n.t, n.line_number);
     }
-  }
 
-  // Type t;
-  // Identifier i;
-  public void visit(Formal n) {
-    tc.AddFormal(n.i.toString(), n.t, n.line_number);
-  }
-
-  // StatementList sl;
-  public void visit(Block n) {
-    tc.AddBlock(n.line_number);
-  }
+    // StatementList sl;
+    public void visit(Block n) {
+        tc.AddBlock(n.line_number);
+    }
   
-  // METHODS BELOW DO NOT MODIFY OUR TYPE TREE
+    // METHODS BELOW DO NOT MODIFY OUR TYPE TREE
   
-  // Exp e;
-  // Statement s1,s2;
-  public void visit(If n) {
-  }
+    // Exp e;
+    // Statement s1,s2;
+    public void visit(If n) {
+    }
 
-  // Exp e;
-  // StatementList s;
-  public void visit(While n) {
-  }
+    // Exp e;
+    // StatementList s;
+    public void visit(While n) {
+    }
   
-  public void visit(Display n) {
-  }
-  public void visit(IntArrayType n) {
-  }
+    public void visit(Display n) {
+    }
+    public void visit(IntArrayType n) {
+    }
   
-  public void visit(DoubleArrayType n) {
-  }
+    public void visit(DoubleArrayType n) {
+    }
 
-  public void visit(BooleanType n) {
-  }
+    public void visit(BooleanType n) {
+    }
 
-  public void visit(IntegerType n) {
-  }
+    public void visit(IntegerType n) {
+    }
   
-  public void visit(DoubleType n) {
-  }
+    public void visit(DoubleType n) {
+    }
 
-  // String s;
-  public void visit(IdentifierType n) {
-  }
-  // Exp e;
-  public void visit(Print n) {
-  }
+    // String s;
+    public void visit(IdentifierType n) {
+    }
+    // Exp e;
+    public void visit(Print n) {
+    }
 
-  // Identifier i;
-  // Exp e;
-  public void visit(Assign n) {
-  }
+    // Identifier i;
+    // Exp e;
+    public void visit(Assign n) {
+    }
 
-  // Identifier i;
-  // Exp e1,e2;
-  public void visit(ArrayAssign n) {
-  }
+    // Identifier i;
+    // Exp e1,e2;
+    public void visit(ArrayAssign n) {
+    }
 
-  // Exp e1,e2;
-  public void visit(ShortCircuitAnd n) {
-  }
+    // Exp e1,e2;
+    public void visit(ShortCircuitAnd n) {
+    }
   
-  // Exp e1,e2;
-  public void visit(ShortCircuitOr n) {
-  }
+    // Exp e1,e2;
+    public void visit(ShortCircuitOr n) {
+    }
 
-  // Exp e1,e2;
-  public void visit(LessThan n) {
-  }
+    // Exp e1,e2;
+    public void visit(LessThan n) {
+    }
   
-  // Exp e1,e2;
-  public void visit(LessThanOrEqualTo n) {
-  }
+    // Exp e1,e2;
+    public void visit(LessThanOrEqualTo n) {
+    }
   
-  // Exp e1,e2;
-  public void visit(GreaterThanOrEqualTo n) {
-  }
+    // Exp e1,e2;
+    public void visit(GreaterThanOrEqualTo n) {
+    }
   
-  // Exp e1,e2;
-  public void visit(GreaterThan n) {
-  }
+    // Exp e1,e2;
+    public void visit(GreaterThan n) {
+    }
   
-  // Exp e1,e2;
-  public void visit(Equals n) {
-  }
+    // Exp e1,e2;
+    public void visit(Equals n) {
+    }
   
-  // Exp e1,e2;
-  public void visit(NotEqual n) {
-  }
+    // Exp e1,e2;
+    public void visit(NotEqual n) {
+    }
   
-  // Exp e1,e2;
-  public void visit(Mod n) {
-  }
+    // Exp e1,e2;
+    public void visit(Mod n) {
+    }
 
-  // Exp e1,e2;
-  public void visit(Plus n) {
-  }
+    // Exp e1,e2;
+    public void visit(Plus n) {
+    }
 
-  // Exp e1,e2;
-  public void visit(Minus n) {
-  }
+    // Exp e1,e2;
+    public void visit(Minus n) {
+    }
 
-  // Exp e1,e2;
-  public void visit(Times n) {
-  }
+    // Exp e1,e2;
+    public void visit(Times n) {
+    }
   
-  // Exp e1,e2;
-  public void visit(Divide n) {
-  }
+    // Exp e1,e2;
+    public void visit(Divide n) {
+    }
 
-  // Exp e1,e2;
-  public void visit(ArrayLookup n) {
-  }
+    // Exp e1,e2;
+    public void visit(ArrayLookup n) {
+    }
 
-  // Exp e;
-  public void visit(ArrayLength n) {
-  }
+    // Exp e;
+    public void visit(ArrayLength n) {
+    }
 
-  // Exp e;
-  // Identifier i;
-  // ExpList el;
-  public void visit(Call n) {
-  }
+    // Exp e;
+    // Identifier i;
+    // ExpList el;
+    public void visit(Call n) {
+    }
 
-  // long i;
-  public void visit(IntegerLiteral n) {
-  }
+    // long i;
+    public void visit(IntegerLiteral n) {
+    }
   
-  // double i;
-  public void visit(DoubleLiteral n) {
-  }
+    // double i;
+    public void visit(DoubleLiteral n) {
+    }
 
-  public void visit(True n) {
-  }
+    public void visit(True n) {
+    }
 
-  public void visit(False n) {
-  }
+    public void visit(False n) {
+    }
 
-  public void visit(IdentifierExp n) {
-  }
+    public void visit(IdentifierExp n) {
+    }
 
-  public void visit(ConstantExp n) {
-  }
+    public void visit(ConstantExp n) {
+    }
 
-  public void visit(This n) {
-  }
+    public void visit(This n) {
+    }
 
-  // Exp e;
-  public void visit(NewIntArray n) {
-  }
+    // Exp e;
+    public void visit(NewIntArray n) {
+    }
   
-  // Exp e;
-  public void visit(NewDoubleArray n) {
-  }
+    // Exp e;
+    public void visit(NewDoubleArray n) {
+    }
 
-  // Identifier i;
-  public void visit(NewObject n) {
-  }
+    // Identifier i;
+    public void visit(NewObject n) {
+    }
 
-  // Exp e;
-  public void visit(Not n) {
-  }
+    // Exp e;
+    public void visit(Not n) {
+    }
 
-  // String s;
-  public void visit(Identifier n) {
-  }
+    // String s;
+    public void visit(Identifier n) {
+    }
 }
