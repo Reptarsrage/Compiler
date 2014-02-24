@@ -55,17 +55,15 @@ public class TypeChecker {
 	}
 	
 	// Adds an extended class to our graph
-	public void AddClassExtends(String name, String extending, int line_number){
-		if (CheckSymbolTables(name, TypeLevel.CLASS) != null){
-			// FAIL
-			System.err.println("Failure at line: "+ line_number
-				+ ". Class " + name +" already declared.");
-			System.exit(1);
+	public void UpdateClassExtends(String name, String extending, int line_number){
+		if (program.classes.get(extending) == null){
+			System.out.println("Error at line " +line_number+". Class " + extending + " not recognized.");
+			System.exit(1);	
 		}
 		IdentifierTypeNode e = new IdentifierTypeNode(
 			program.classes.get(extending), extending);
-		ClassTypeNode c = new ClassTypeNode(e);
-		program.classes.put(name, c);
+		ClassTypeNode c = program.classes.get(name);
+		c.base_type = e;
 		while (nest.peek() != program)
 			nest.pop();
 		nest.push(e.c);
@@ -149,6 +147,11 @@ public class TypeChecker {
 		nest.push(m.inside);
 	}
 	
+	public void printStack(){
+		while (!nest.empty()){
+			System.err.println(nest.pop());
+		}
+	}
 	
 	// Used on secondary/tertiary sweep, pushes the already created (on second sweep) block onto the stack
 	public void PushBlock() {
@@ -204,6 +207,20 @@ public class TypeChecker {
 		return undef_type;
 	}
 	
+	public boolean CheckClassAssignability(IdentifierTypeNode lhs, IdentifierTypeNode rhs) {
+		ClassTypeNode rhs_class = rhs.c;
+		if (rhs_class == lhs.c)
+			return true;
+		
+		while (rhs_class.base_type != undef_id){
+			rhs_class = rhs_class.base_type.c;
+			if (lhs.c ==  rhs_class)
+				return true;
+		}
+		return false;
+	}
+	
+	
 	// Helpful for debugging, prints all symbol table information
 	public void print(){
 		program.print("");
@@ -237,7 +254,8 @@ public class TypeChecker {
 	ClassTypeNode c = (ClassTypeNode)nest.peek();
 	while (!popped.empty())
 		nest.push(popped.pop());
-	return new IdentifierTypeNode(c, "this");
+	IdentifierTypeNode id = new IdentifierTypeNode(c, "this");
+	return id;
   }
   
   // helper method for checking symbol tables when searching for a class
@@ -274,7 +292,16 @@ public class TypeChecker {
         ret = ((BlockTypeNode) current).locals.get(id);
       } else if ( current instanceof MethodTypeNode ) {
         ret = ((MethodTypeNode) current).args.get(id);
-      }
+      } else if ( current instanceof ClassTypeNode ) {
+		ClassTypeNode curr = (ClassTypeNode) current;
+		//System.out.println("Checking for "+id+" in " + curr);
+		ret = curr.fields.get(id);
+		while (ret == null && curr.base_type != undef_id){
+			curr = curr.base_type.c;
+			//System.out.println("Checking for "+id+" in " + curr);
+			ret = curr.fields.get(id);
+		}
+	  }
     }
     // restore the nest stack
     while ( !checked.empty() )

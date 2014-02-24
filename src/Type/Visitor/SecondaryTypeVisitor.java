@@ -108,7 +108,7 @@ public class SecondaryTypeVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
-    tc.PushClass(n.i.toString());
+    tc.UpdateClassExtends(n.i.toString(), n.j.toString(), n.line_number);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
     }

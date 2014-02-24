@@ -105,7 +105,7 @@ public class InitialTypeVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
-    tc.AddClassExtends(n.i.toString(), n.j.toString(), n.line_number);
+    tc.AddClass(n.i.toString(), n.line_number);
   }
 
   // METHODS BELOW DO NOT ADD ANYTHNG TO THE TREE

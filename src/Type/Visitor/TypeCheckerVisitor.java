@@ -146,8 +146,15 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Method "+n.i.toString()+" not recognized.");
 		System.exit(1);
 	}
-	
-	if (e != m.return_type) {
+	if (e instanceof IdentifierTypeNode ) {
+		IdentifierTypeNode rhs = ((IdentifierTypeNode)e);
+		IdentifierTypeNode lhs = (IdentifierTypeNode)m.return_type;
+		if (!tc.CheckClassAssignability((IdentifierTypeNode)lhs, rhs)) {
+			System.err.println("Error at line: "+n.line_number+". Can't assign a "+rhs+" to a "+lhs+".");
+			System.exit(1);
+		}
+		
+	} else if (e != m.return_type) {
 		System.err.println("Error at line: "+n.line_number+". Expression of type "+e+" does not match return type "+m.return_type+".");
 		System.exit(1);
 	}
@@ -180,23 +187,20 @@ public class TypeCheckerVisitor implements Visitor {
 
   // String s;
   public void visit(IdentifierType n) {
-	type_stack.push(tc.undef_id); // TODO 
+	//type_stack.push(tc.undef_id); // TODO 
   }
 
   // StatementList sl;
   public void visit(Block n) {
-    tc.PushBlock();
-	for (int i = 0; i < n.sl.size(); i++) {
-      n.sl.get(i).accept(this);
-    }
   }
 
   // Exp e;
   // Statement s1,s2;
   public void visit(If n) {
     n.e.accept(this);
-	if (type_stack.pop() != tc.boolean_type){
-		System.err.println("Error at line: "+n.line_number+". If expression must be a boolean.");
+	TypeNode elt = type_stack.pop();
+	if (elt != tc.boolean_type){
+		System.err.println("Error at line: "+n.line_number+". If expression must be a boolean, not a "+elt+".");
 		System.exit(1);
 	}
 	for (int i = 0; i < n.s1.size(); i++) {
@@ -231,8 +235,20 @@ public class TypeCheckerVisitor implements Visitor {
     n.i.accept(this);
     n.e.accept(this);
 	TypeNode exp = type_stack.pop();
-	TypeNode id = type_stack.pop();
-	if (exp != id){
+	TypeNode id = tc.CheckSymbolTables( n.i.s, TypeChecker.TypeLevel.VARIABLE);
+	if (id == null) {
+		tc.printStack();
+		System.err.println("Error at line: "+n.line_number+". Identifier "+ n.i.s +" not recognized.");
+		System.exit(1);
+	}
+	if (id instanceof IdentifierTypeNode ) {
+		IdentifierTypeNode rhs = ((IdentifierTypeNode)exp);
+		IdentifierTypeNode lhs = (IdentifierTypeNode)id;
+		if (!tc.CheckClassAssignability((IdentifierTypeNode)lhs, rhs)) {
+			System.err.println("Error at line: "+n.line_number+". Can't assign a "+rhs+" to a "+lhs+".");
+			System.exit(1);
+		}
+	} else if ((id == tc.double_type && (exp != tc.double_type && exp != tc.int_type)) || (exp != id)) {
 		System.err.println("Error at line: "+n.line_number+". Can't assign a "+exp+" to a "+id+".");
 		System.exit(1);
 	}
@@ -272,6 +288,7 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Oporator && takes two booleans, not "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	type_stack.push(tc.boolean_type);
   }
   
   // Exp e1,e2;
@@ -284,6 +301,7 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Oporator || takes two booleans, not "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	type_stack.push(tc.boolean_type);
   }
 
   // Exp e1,e2;
@@ -297,6 +315,7 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	type_stack.push(tc.boolean_type);
   }
   
   // Exp e1,e2;
@@ -310,6 +329,7 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	type_stack.push(tc.boolean_type);
   }
   
   // Exp e1,e2;
@@ -323,6 +343,7 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	type_stack.push(tc.boolean_type);
   }
   
   // Exp e1,e2;
@@ -338,6 +359,7 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	type_stack.push(tc.boolean_type);
   }
   
   // Exp e1,e2;
@@ -352,6 +374,7 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	type_stack.push(tc.boolean_type);
   }
   
   // Exp e1,e2;
@@ -366,6 +389,7 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	type_stack.push(tc.boolean_type);
   }
   
   // Exp e1,e2;
@@ -379,6 +403,10 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	if (e1 == tc.int_type)
+		type_stack.push(tc.int_type);
+	else
+		type_stack.push(tc.double_type);
   }
 
   // Exp e1,e2;
@@ -392,6 +420,10 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	if (e1 == tc.int_type)
+		type_stack.push(tc.int_type);
+	else
+		type_stack.push(tc.double_type);
   }
 
   // Exp e1,e2;
@@ -405,6 +437,10 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	if (e1 == tc.int_type)
+		type_stack.push(tc.int_type);
+	else
+		type_stack.push(tc.double_type);
   }
 
   // Exp e1,e2;
@@ -418,6 +454,10 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	if (e1 == tc.int_type)
+		type_stack.push(tc.int_type);
+	else
+		type_stack.push(tc.double_type);
   }
   
   // Exp e1,e2;
@@ -431,6 +471,10 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	if (e1 == tc.int_type)
+		type_stack.push(tc.int_type);
+	else
+		type_stack.push(tc.double_type);
   }
 
   // Exp e1,e2;
@@ -444,6 +488,10 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
 		System.exit(1);
 	}
+	if (e1 == tc.int_type)
+		type_stack.push(tc.int_type);
+	else
+		type_stack.push(tc.double_type);
   }
 
   // Exp e;
@@ -454,6 +502,7 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Length must be called on an array, not a "+e+".");
 		System.exit(1);
 	}
+	type_stack.push(tc.int_type);
   }
 
   // Exp e;
@@ -462,20 +511,26 @@ public class TypeCheckerVisitor implements Visitor {
   public void visit(Call n) {
     // TODO
 	n.e.accept(this);
-	if (!(type_stack.peek() instanceof ClassTypeNode)){
+	if (!(type_stack.peek() instanceof IdentifierTypeNode)){
 		System.err.println("Error at line: "+n.line_number+
-			". Internal stack error, expected: ClassTypeNode, actual: "+ type_stack.peek()+".");
+			". Internal stack error, expected: IdentifierTypeNode, actual: "+ type_stack.peek()+".");
 		System.exit(1);
 	}
-	ClassTypeNode class_i = (ClassTypeNode)type_stack.pop();
-    n.i.accept(this);
-	if (!(type_stack.peek() instanceof MethodTypeNode)){
-		System.err.println("Error at line: "+n.line_number+
-			". Internal stack error, expected: MethodTypeNode, actual: "+ type_stack.peek()+".");
+	ClassTypeNode class_i = ((IdentifierTypeNode)type_stack.pop()).c;
+	//n.i.accept(this);
+	// if (!(type_stack.peek() instanceof MethodTypeNode)){
+		// System.err.println("Error at line: "+n.line_number+
+			// ". Internal stack error, expected: MethodTypeNode, actual: "+ type_stack.peek()+".");
+		// System.exit(1);
+	// }
+	
+	MethodTypeNode m = class_i.methods.get(n.i.s);
+	if (m == null) {
+		System.err.println("Error at line: "+n.line_number+". Identifier "+ n.i.s +" not recognized.");
 		System.exit(1);
 	}
-	MethodTypeNode m = (MethodTypeNode)type_stack.pop();
-  MethodTypeNode dyn = new MethodTypeNode(null, null);
+	
+	MethodTypeNode dyn = new MethodTypeNode(null, null);
 	dyn.return_type = m.return_type;
 	
 	for (int i = 0; i < n.el.size(); i++) {
@@ -527,10 +582,12 @@ public class TypeCheckerVisitor implements Visitor {
   public void visit(NewArray n) {
     n.e.accept(this);
 	TypeNode e = type_stack.pop();
-	if  (e != tc.int_array_type && e != tc.double_array_type) {
-		System.err.println("Error at line: "+n.line_number+". A new array must be a double or int array, not a "+e+".");
+	if  (e != tc.int_type) {
+		System.err.println("Error at line: "+n.line_number+". A new array must have an int length, not a "+e+".");
 		System.exit(1);
 	}
+	
+	type_stack.push(e);
   }
 
   // Identifier i;
@@ -541,6 +598,7 @@ public class TypeCheckerVisitor implements Visitor {
       System.err.println("Error at line: "+n.line_number+". New "+ n.i.toString() +" not recognized.");
 		System.exit(1);
 	}
+	type_stack.push(new IdentifierTypeNode(c, n.i.s));
   }
 
   // Exp e;
@@ -551,10 +609,17 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". A not oporator must take a boolean argument, not a "+e+".");
 		System.exit(1);
 	}
+	type_stack.push(tc.boolean_type);
   }
 
   // String s;
   public void visit(Identifier n) {
 	// TODO
+	// TypeNode elt = tc.CheckSymbolTables(n.s, TypeChecker.TypeLevel.METHOD);
+	// if (elt == null){
+		// System.err.println("Error at line: "+n.line_number+". Identifier "+ n.s +" not recognized.");
+		// System.exit(1);
+	// }
+	// type_stack.push(elt);
   }
 }
