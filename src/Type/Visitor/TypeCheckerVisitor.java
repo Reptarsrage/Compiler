@@ -141,7 +141,7 @@ public class TypeCheckerVisitor implements Visitor {
     }
     n.e.accept(this);
 	TypeNode e = type_stack.pop();
-	MethodTypeNode m = tc.CheckSymbolTables(n.i.toString(), tc.TypeLevel.METHOD);
+	MethodTypeNode m = (MethodTypeNode) tc.CheckSymbolTables(n.i.toString(), TypeChecker.TypeLevel.METHOD);
 	if (m == null) {
 		System.err.println("Error at line: "+n.line_number+". Method "+n.i.toString()+" not recognized.");
 		System.exit(1);
@@ -475,14 +475,14 @@ public class TypeCheckerVisitor implements Visitor {
 		System.exit(1);
 	}
 	MethodTypeNode m = (MethodTypeNode)type_stack.pop();
-    MethodTypeNode dyn = new MethodTypeNode();
+  MethodTypeNode dyn = new MethodTypeNode(null, null);
 	dyn.return_type = m.return_type;
 	
 	for (int i = 0; i < n.el.size(); i++) {
       n.el.get(i).accept(this);
-	  dyn.args.put(i, type_stack.pop());
+      dyn.args.put("param" + i, type_stack.pop());
     }
-	tc.CompareMethods(dyn, m, n.line_nymber);
+	tc.CompareMethods(dyn, n.i.s, m, n.i.s, n.line_number);
 	type_stack.push(m.return_type);
   }
 
@@ -506,7 +506,7 @@ public class TypeCheckerVisitor implements Visitor {
 
   public void visit(IdentifierExp n) {
 	// TODO
-	TypeNode t = tc.CheckSymbolTables(n.s, tc.TypeLevel.VARIABLE);
+	TypeNode t = tc.CheckSymbolTables(n.s, TypeChecker.TypeLevel.VARIABLE);
 	if (t == null) {
 		System.err.println("Error at line: "+n.line_number+". Expression "+n.s+" not recognized.");
 		System.exit(1);
@@ -536,9 +536,9 @@ public class TypeCheckerVisitor implements Visitor {
   // Identifier i;
   public void visit(NewObject n) {
     // TODO
-	ClassTypeNode c = tc.CheckSymbolTables(n.i.toString(), tc.TypeLevel.CLASS);
+      ClassTypeNode c = (ClassTypeNode) tc.CheckSymbolTables(n.i.toString(), TypeChecker.TypeLevel.CLASS);
 	if (c == null) {
-		System.err.println("Error at line: "+n.line_number+". New "+e+" not recognized.");
+      System.err.println("Error at line: "+n.line_number+". New "+ n.i.toString() +" not recognized.");
 		System.exit(1);
 	}
   }

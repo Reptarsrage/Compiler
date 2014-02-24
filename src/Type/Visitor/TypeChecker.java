@@ -318,7 +318,7 @@ public class TypeChecker {
 	  
       if ( parent != null && parent.methods.get(id) != null ) {	
 		MethodTypeNode parent_method = parent.methods.get(id);
-		CompareMethods(parent_method, method, line_number);
+		CompareMethods(method, id, method, id, line_number);
       }
     }
     nest.push(c);
@@ -326,30 +326,31 @@ public class TypeChecker {
     nest.push(popped);
   }
   
-  public void CompareMethods(MethodTypeNode method_1, MethodTypeNode method, int line_number) {
+    public void CompareMethods(MethodTypeNode method1, String id1, MethodTypeNode method2, String id2, int line_number) {
         // check to make sure return type is the same
-        if ( !(method_1.return_type.getClass().equals(method.return_type.getClass())) ) {
-          System.err.println("Error on line " + line_number + ". Return type of method " + id
-                             + " doesn't match return type of same method in parent class.");
+        if ( !(method1.return_type.getClass().equals(method2.return_type.getClass())) ) {
+            // can only happen in extends cases, not calls
+          System.err.println("Error on line " + line_number + ". Return type of method " + id1
+                             + " doesn't match return type of same method in parent class");
           System.exit(1);
         }
 		
 		// check to make sure number of args is same
-        if ( method_1.args.size() != method.args.size() ) {
-          System.err.println("Error on line " + line_number + ". Method " + id
-                             + " has different number of arguments than same method in parent class.");
+        if ( method1.args.size() != method2.args.size() ) {
+          System.err.println("Error on line " + line_number + ". Method " + id1
+                             + " has wrong number of arguments. Expected: " + method1.args.size() + ", Actual: " + method2.args.size());
           System.exit(1);
         }
 
         // check to make sure types of all arguments are same
-        Iterator<Map.Entry<String, TypeNode>> this_itr = method.args.entrySet().iterator();
-        Iterator<Map.Entry<String, TypeNode>> parent_itr = method_1.args.entrySet().iterator();
-        while ( this_itr.hasNext() ){
+        Iterator<Map.Entry<String, TypeNode>> itr1 = method1.args.entrySet().iterator();
+        Iterator<Map.Entry<String, TypeNode>> itr2 = method2.args.entrySet().iterator();
+        while ( itr1.hasNext() ){
             //                  Map.Entry this_entry = this_itr.next();
             //                  Map.Entry par_entry = parent_itr.next();
-            if ( !(this_itr.next().getValue().getClass().equals(parent_itr.next().getValue().getClass())) ) {
-                System.err.println("Error on line " + line_number + ". Method " + id
-                                   + " has different parameter types than same method in parent class.");
+            if ( !(itr1.next().getValue().getClass().equals(itr2.next().getValue().getClass())) ) {
+                System.err.println("Error on line " + line_number + ". Method " + id1
+                                   + " has incorrect parameter types (comparing to method " + id2 + ")");
                 System.exit(1);
             }
         }
