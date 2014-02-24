@@ -819,6 +819,16 @@
 	</java>
   </target>
   
+  <target name="typecheck" depends="compile">
+    <java
+      classname="TypeCheckerMain"
+      classpath="build/classes;lib/CUP.jar"
+      fork="true"
+      input="SamplePrograms/ExampleConst.java"
+      >
+    </java>
+  </target>
+
   <target name="codegen" depends="compile">
     <java
       classname="CodeGenMain"

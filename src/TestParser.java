@@ -112,12 +112,7 @@ public class TestParser {
       //
       root = p.parse();
       Program program = (Program)root.value;
-	  program.accept(new InitialTypeVisitor(tc));
-	  program.accept(new SecondaryTypeVisitor(tc));
-	  program.accept(new TertiaryTypeVisitor(tc));
-	  program.accept(new TypeCheckerVisitor(tc));
-          //          tc.print();
-      //program.accept(new PrettyPrintVisitor());
+      program.accept(new PrettyPrintVisitor());
       //
       // System.out.print("\n" + "Parsing completed");
       //
