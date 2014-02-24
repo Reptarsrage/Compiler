@@ -112,7 +112,11 @@ public class TestParser {
       root = p.parse();
       Program program = (Program)root.value;
 	  program.accept(new InitialTypeVisitor(tc));
+	  System.out.println("Done with first sweep");
 	  program.accept(new SecondaryTypeVisitor(tc));
+	  System.out.println("Done with second sweep");
+	  program.accept(new TertiaryTypeVisitor(tc));
+	  System.out.println("Done with third sweep");
 	  tc.print();
       //program.accept(new PrettyPrintVisitor());
       //

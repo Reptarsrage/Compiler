@@ -14,7 +14,7 @@ public class TypeChecker {
 	IntTypeNode int_type;			// Singleton integer type
 	DoubleTypeNode double_type;		// Singleton double type
 	UndefTypeNode undef_type;		// Singleton undefined type
-	IdentifierTypeNode undef_id;	// Singleton undifined class type (for non extended classes)
+	IdentifierTypeNode undef_id;	// Singleton undefined class type (for non extended classes)
 	BooleanTypeNode boolean_type;	// Singleton boolean type
 	Stack<TypeNode> nest;			// a stack of symbol tables representing the current 
 									// scope and parent scopes of the program at any point
@@ -30,7 +30,7 @@ public class TypeChecker {
 		double_type = new DoubleTypeNode();
 		undef_type = new UndefTypeNode();
 		boolean_type = new BooleanTypeNode();
-		undef_id = new IdentifierTypeNode(null, "UNDIFINED");
+		undef_id = new IdentifierTypeNode(null, "0");
 		nest = new Stack<TypeNode>();
 		nest.push(program);
 	}
@@ -57,16 +57,10 @@ public class TypeChecker {
 			System.err.println("Failure at line: "+ line_number
 				+ ". Class " + name +" already declared.");
 			System.exit(1);
-		} else if (program.classes.get(extending) == null) {
-			// FAIL
-			System.err.println("Failure at line: "+ line_number
-				+ ". Extended class " + extending +" not recognized.");
-			System.exit(1);
 		}
-		ClassTypeNode c = new ClassTypeNode(undef_id);
 		IdentifierTypeNode e = new IdentifierTypeNode(
 			program.classes.get(extending), extending);
-		c.base_type = e;
+		ClassTypeNode c = new ClassTypeNode(e);
 		program.classes.put(name, c);
 		while (nest.peek() != program)
 			nest.pop();
@@ -90,12 +84,12 @@ public class TypeChecker {
 	
 	// adds a method to the graph
 	public void AddMethod(Type ret, String name, int line_number){
-    if (CheckSymbolTables(name, TypeLevel.METHOD) != null){
-			// FAIL
-			System.err.println("Failure at line: "+ line_number
-				+ ". Method " + name +" already declared.");
-			System.exit(1);
-    }
+		if (CheckSymbolTables(name, TypeLevel.METHOD) != null){
+				// FAIL
+				System.err.println("Failure at line: "+ line_number
+					+ ". Method " + name +" already declared.");
+				System.exit(1);
+		}
 		BlockTypeNode block = new BlockTypeNode();
 		MethodTypeNode m = new MethodTypeNode(undef_type, block);
 		m.return_type = GetType(ret);
@@ -133,12 +127,37 @@ public class TypeChecker {
 		}
 	}
 	
-	// Used on secondary sweep, pushes the already created (on first sweep) class onto the stack
+	// Used on secondary/tertiary sweep, pushes the already created (on first sweep) class onto the stack
 	public void PushClass(String name) {
 		ClassTypeNode c = program.classes.get(name);
 		while (!(nest.peek() instanceof PackageTypeNode))
 			nest.pop();
 		nest.push(c);
+	}
+	
+	// Used on secondary/tertiary sweep, pushes the already created (on second sweep) method onto the stack
+	public void PushMethod(String name) {
+		while (!(nest.peek() instanceof ClassTypeNode))
+			nest.pop();
+		ClassTypeNode c = (ClassTypeNode)nest.peek();
+		MethodTypeNode m = c.methods.get(name);
+		nest.push(m);
+		nest.push(m.inside);
+	}
+	
+	
+	// Used on secondary/tertiary sweep, pushes the already created (on second sweep) block onto the stack
+	public void PushBlock() {
+		if (!(nest.peek() instanceof BlockTypeNode)){
+			// FAIL
+			System.err.println("Internal error, attempting to push a block" +
+								" statement with a " + nest.peek() + " on top of stack.");
+			System.exit(1);
+		}
+			
+		BlockTypeNode b = (BlockTypeNode)nest.peek();
+		BlockTypeNode b_i = b.inside;
+		nest.push(b_i);
 	}
 	
 	// Adds a local variable or field to the current scope
@@ -275,12 +294,18 @@ public class TypeChecker {
     }
     ClassTypeNode c = (ClassTypeNode) nest.pop();
     // if our class is extending another class
-    if ( !c.base_type.name.equals("UNDIFINED") ) {
-      //          ClassTypeNode parent = ((ClassTypeNode) nest.peek());
-      ClassTypeNode parent = c.base_type.c;
+    if ( !c.base_type.name.equals("0") ) {
+	  if (program.classes.get(c.base_type.name) == null) {
+			// FAIL
+			System.err.println("Failure at line: "+ line_number
+				+ ". Extended class " + c.base_type.name +" not recognized.");
+			System.exit(1);
+		}
+	  ClassTypeNode parent = c.base_type.c;
       // check to see if parent class has method of same name
-      if ( parent.methods.get(id) != null ) {
-        MethodTypeNode parent_method = parent.methods.get(id);
+	  
+      if ( parent != null && parent.methods.get(id) != null ) {	
+		MethodTypeNode parent_method = parent.methods.get(id);
         // check to make sure return type is the same
         if ( !(parent_method.return_type.getClass().equals(method.return_type.getClass())) ) {
           System.err.println("Error on line " + line_number + ". Return type of method " + id

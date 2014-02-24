@@ -2,7 +2,7 @@
  * Adam Croissant, adamc41
  * 2-18-14
  * Visitor for the second and final sweep of the AST
- * Adds methods and variables to classes, completes the graph.
+ * Checks to make sure overridden methods are done so correctly
 */
 
 package Type.Visitor;
@@ -68,10 +68,10 @@ import AST.While;
 
 import AST.Visitor.Visitor;
 
-public class SecondaryTypeVisitor implements Visitor {
+public class TertiaryTypeVisitor implements Visitor {
 	private TypeChecker tc;
 	
-	public SecondaryTypeVisitor(TypeChecker tc) {
+	public TertiaryTypeVisitor(TypeChecker tc) {
 		this.tc = tc;
 	}
 
@@ -95,9 +95,6 @@ public class SecondaryTypeVisitor implements Visitor {
   // MethodDeclList ml;
   public void visit(ClassDeclSimple n) {
 	tc.PushClass(n.i.toString());
-    for (int i = 0; i < n.vl.size(); i++) {
-      n.vl.get(i).accept(this);
-    }
     for (int i = 0; i < n.ml.size(); i++) {
       n.ml.get(i).accept(this);
     }
@@ -109,18 +106,9 @@ public class SecondaryTypeVisitor implements Visitor {
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
     tc.PushClass(n.i.toString());
-    for (int i = 0; i < n.vl.size(); i++) {
-      n.vl.get(i).accept(this);
-    }
     for (int i = 0; i < n.ml.size(); i++) {
       n.ml.get(i).accept(this);
     }
-  }
-
-  // Type t;
-  // Identifier i;
-  public void visit(VarDecl n) {
-	tc.AddVariable(n.i.toString(), n.t, n.line_number);
   }
 
   // Type t;
@@ -130,27 +118,25 @@ public class SecondaryTypeVisitor implements Visitor {
   // StatementList sl;
   // Exp e;
   public void visit(MethodDecl n) {
-	tc.AddMethod(n.t, n.i.toString(), n.line_number);
-    for (int i = n.fl.size() - 1; i >= 0; i--) {
-      n.fl.get(i).accept(this);
-    }
-    for (int i = 0; i < n.vl.size(); i++) {
-      n.vl.get(i).accept(this);
-    }
+	tc.PushMethod(n.i.toString());
+    tc.CheckMethodInheritance(n.i.toString(), n.line_number);
   }
 
+  // METHODS BELOW DO NOT MODIFY OUR TYPE TREE
+  
   // Type t;
   // Identifier i;
   public void visit(Formal n) {
-    tc.AddFormal(n.i.toString(), n.t, n.line_number);
   }
 
   // StatementList sl;
   public void visit(Block n) {
-    tc.AddBlock(n.line_number);
   }
   
-  // METHODS BELOW DO NOT MODIFY OUR TYPE TREE
+    // Type t;
+  // Identifier i;
+  public void visit(VarDecl n) {
+  }
   
   // Exp e;
   // Statement s1,s2;
