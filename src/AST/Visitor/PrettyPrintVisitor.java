@@ -40,7 +40,8 @@ import AST.MethodDecl;
 import AST.MethodDeclList;
 import AST.Minus;
 import AST.Mod;
-import AST.NewArray;
+import AST.NewIntArray;
+import AST.NewDoubleArray;
 import AST.NewObject;
 import AST.Not;
 import AST.NotEqual;
@@ -476,8 +477,15 @@ public class PrettyPrintVisitor implements Visitor {
   }
 
   // Exp e;
-  public void visit(NewArray n) {
-    System.out.print("new int [");
+  public void visit(NewIntArray n) {
+    System.out.print("new int[");
+    n.e.accept(this);
+    System.out.print("]");
+  }
+  
+   // Exp e;
+  public void visit(NewDoubleArray n) {
+    System.out.print("new double[");
     n.e.accept(this);
     System.out.print("]");
   }

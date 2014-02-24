@@ -1,4 +1,4 @@
-// test to make sure a runtime failure exists
+// test to make sure a runtime failure exists (array out of bounds)
 
 class cse401c_rtfail_12 {
 	public static void main(String[] args) {
@@ -10,7 +10,7 @@ class TestUnin {
     public int init() {
         int[] arr;
         arr = new int[1];
-        return this.test(arg);
+        return this.test(arr);
     }
 
 	public int test(int[] i) {

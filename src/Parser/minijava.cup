@@ -50,7 +50,8 @@ import AST.MethodDecl;
 import AST.MethodDeclList;
 import AST.Minus;
 import AST.Mod;
-import AST.NewArray;
+import AST.NewDoubleArray;
+import AST.NewIntArray;
 import AST.NewObject;
 import AST.Not;
 import AST.NotEqual;
@@ -475,10 +476,10 @@ Expression    ::=
             {: RESULT = new This(tleft); :}
 		
 		| NEW:n INT LBRACKET Expression:exp RBRACKET
-            {: RESULT = new NewArray(exp, nleft); :}
+            {: RESULT = new NewIntArray(exp, nleft); :}
 			
 		| NEW:n DOUBLE LBRACKET Expression:exp RBRACKET
-            {: RESULT = new NewArray(exp, nleft); :}
+            {: RESULT = new NewDoubleArray(exp, nleft); :}
 			
 		| NEW:n Identifier:name LPAREN RPAREN
             {: RESULT = new NewObject(name, nleft); :}

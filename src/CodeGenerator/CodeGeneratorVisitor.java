@@ -40,7 +40,8 @@ import AST.MethodDecl;
 import AST.MethodDeclList;
 import AST.Minus;
 import AST.Mod;
-import AST.NewArray;
+import AST.NewIntArray;
+import AST.NewDoubleArray;
 import AST.NewObject;
 import AST.Not;
 import AST.NotEqual;
@@ -384,10 +385,15 @@ public class CodeGeneratorVisitor implements Visitor {
   }
 
   // Exp e;
-  public void visit(NewArray n) {
+  public void visit(NewIntArray n) {
     n.e.accept(this);
   }
 
+  // Exp e;
+  public void visit(NewDoubleArray n) {
+    n.e.accept(this);
+  }
+  
   // Identifier i;
   public void visit(NewObject n) {
   }

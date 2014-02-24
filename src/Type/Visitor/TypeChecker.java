@@ -175,6 +175,12 @@ public class TypeChecker {
 				+ ". Variable " + name +" already declared.");
 			System.exit(1);
 		}
+		
+		if (GetType(t) == undef_type || GetType(t) == undef_id) {
+			System.err.println("Failure at line: "+ line_number
+				+ ". Variable " + name +" has invalid type "+t+".");
+			System.exit(1);
+		}
 		if (nest.peek() instanceof ClassTypeNode) {
 			ClassTypeNode c = (ClassTypeNode)nest.peek();
 			c.fields.put(name, GetType(t));
@@ -198,10 +204,11 @@ public class TypeChecker {
 			return int_array_type;
 		if (t instanceof DoubleArrayType)
 			return double_array_type;
-		
 		if (t instanceof IdentifierType){
+			if (program.classes.get(((IdentifierType)t).s) == null)
+				return undef_id;
 			IdentifierTypeNode id = new IdentifierTypeNode(
-				program.classes.get(((IdentifierType)t).s), ((IdentifierType)t).s);
+				program.classes.get(((IdentifierType)t).s), ((IdentifierType)t).s);	
 			return id;
 		}
 		return undef_type;
@@ -375,10 +382,19 @@ public class TypeChecker {
         while ( itr1.hasNext() ){
             //                  Map.Entry this_entry = this_itr.next();
             //                  Map.Entry par_entry = parent_itr.next();
-            if ( !(itr1.next().getValue().getClass().equals(itr2.next().getValue().getClass())) ) {
-                System.err.println("Error on line " + line_number + ". Method " + id1
-                                   + " has incorrect parameter types (comparing to method " + id2 + ")");
-                System.exit(1);
+			
+			TypeNode el1 = itr1.next().getValue();
+			TypeNode el2 = itr2.next().getValue();
+            if (el1 instanceof IdentifierTypeNode && el2 instanceof IdentifierTypeNode){
+				if (((IdentifierTypeNode)el1).c != ((IdentifierTypeNode)el1).c) {
+					System.err.println("Error on line " + line_number + ". Method " + id1
+                        + " has incorrect parameter types (comparing to method " + id2 + ")");
+					System.exit(1);
+				} 
+			} else if (el1 != el2) {		
+				System.err.println("Error on line " + line_number + ". Method " + id1
+                                   + " has non matching parameter types (comparing to method " + id2 + ")");
+				System.exit(1);
             }
         }
 	}

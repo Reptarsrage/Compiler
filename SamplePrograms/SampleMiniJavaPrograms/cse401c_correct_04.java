@@ -6,7 +6,7 @@ class cse401c_correct_04 {
 }
 
 class TestObjects {
-    public boolean run(int v) {
+    public int run(int v) {
         Obj o;
         int res;
         o = new Obj();

@@ -18,116 +18,105 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/cse401c_correct_07.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/ExerciseDouble.java------------
-     [java] Error at line: 20. Can't assign a Type.DoubleTypeNode@5549f0e to a Type.DoubleTypeNode@5549f0e.
      [java] 
      [java] ------------Parsing SamplePrograms/BinaryTree.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/QuickSort.java------------
-     [java] Error at line: 42. Can't assign a Type.DoubleTypeNode@2a8f5fc2 to a Type.IntTypeNode@2ad7cf62.
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_13.java------------
      [java] Error at line: 5. Identifier test not recognized.
      [java] 
      [java] ------------Parsing SamplePrograms/LinearSearch.java------------
-     [java] Error at line: 59. Can't assign a Type.DoubleTypeNode@2ad7cf62 to a Type.IntTypeNode@3e7040e7.
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_17.java------------
      [java] Syntax error at line 12 of input
      [java] Couldn't repair and continue parse at line 12 of input
-     [java] ------------Parsing SamplePrograms/cse401c_ctfail_17.java------------
-     [java] 
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:112)
+     [java] 	at TestParser.main(TestParser.java:113)
      [java] 
      [java] ------------Parsing SamplePrograms/BinarySearch.java------------
-     [java] Error at line: 62. Can't assign a Type.DoubleTypeNode@3e7040e7 to a Type.IntTypeNode@3bb51db7.
      [java] 
      [java] ------------Parsing SamplePrograms/DoubleOutput.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/Factorial.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/Pi.java------------
-     [java] Error at line: 39. A new array must be a double or int array, not a Type.IntTypeNode@d11014a.
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_16.java------------
      [java] Failure at line: 15. Method a already declared.
      [java] 
      [java] ------------Parsing SamplePrograms/Sqrt.java------------
-     [java] Error at line: 26. Can't assign a Type.DoubleTypeNode@5cebc2a2 to a Type.DoubleTypeNode@5cebc2a2.
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_02.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_06.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/Asin.java------------
-     [java] Error at line: 39. Can't assign a Type.DoubleTypeNode@75f9eba0 to a Type.DoubleTypeNode@75f9eba0.
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_10.java------------
-     [java] Error at line: 15. Can't assign a Type.DoubleTypeNode@694a4639 to a Type.DoubleTypeNode@694a4639.
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_08.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_21.java------------
+     [java] Failure at line: 11. Variable i has invalid type AST.IdentifierType@39673d71.
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_14.java------------
      [java] Failure at line: 12. Variable i already declared.
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_rtfail_12.java------------
-     [java] Error at line: 12. A new array must be a double or int array, not a Type.IntTypeNode@456e3eb3.
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_00.java------------
-     [java] 
-     [java] ------------Parsing SamplePrograms/cse401c_ctfail_18.java------------
      [java] Syntax error at line 12 of input
      [java] Couldn't repair and continue parse at line 12 of input
-     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_18.java------------Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
+     [java] 
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:112)
+     [java] 	at TestParser.main(TestParser.java:113)
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_04.java------------
-     [java] Error at line: 9. Expression of type Type.IntTypeNode@22f42d53 does not match return type Type.BooleanTypeNode@4ccbb612.
      [java] 
      [java] ------------Parsing SamplePrograms/BubbleSort.java------------
-     [java] Error at line: 47. Can't assign a Type.DoubleTypeNode@116dd645 to a Type.IntTypeNode@420e54f3.
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_01.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/TreeVisitor.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_19.java------------
-     [java] Error at line: 13. A new array must be a double or int array, not a Type.IntTypeNode@521e7f21.
+     [java] Error at line: 15. Illegal types, Type.IntArrayTypeNode@116dd645 and Type.IntArrayTypeNode@116dd645.
      [java] 
      [java] ------------Parsing SamplePrograms/LinkedList.java------------
-     [java] Error on line 100. Method InitNew has incorrect parameter types (comparing to method InitNew)
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_05.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_20.java------------
-     [java] Error at line: 10. Expression of type Type.IntTypeNode@37eed0fb does not match return type Type.DoubleTypeNode@1fda2b6d.
+     [java] Error at line: 10. Expression of type Type.IntTypeNode@4ccbb612 does not match return type Type.DoubleTypeNode@521e7f21.
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_09.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_11.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_15.java------------
-     [java] Error on line 4. Method test has incorrect parameter types (comparing to method test)
+     [java] Error at line: 9. Expression of type Type.DoubleTypeNode@5cebc2a2 does not match return type Type.IntTypeNode@7a374956.
      [java] 
      [java] ------------Parsing SamplePrograms/ExampleConst.java------------
      [java] 
-     [java] ------------Parsing SamplePrograms/Example.java------------
-     [java] Syntax error at line 1 of input
+     [java] ------------Parsing SamplePrograms/Example.java------------Syntax error at line 1 of input
+     [java] 
      [java] Couldn't repair and continue parse at line 1 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
      [java] 	at java_cup.runtime.lr_parser.parse(lr_parser.java:616)
-     [java] 	at TestParser.main(TestParser.java:112)
+     [java] 	at TestParser.main(TestParser.java:113)
 
 BUILD SUCCESSFUL
-Total time: 21 seconds
+Total time: 20 seconds

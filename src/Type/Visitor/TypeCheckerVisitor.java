@@ -49,7 +49,8 @@ import AST.MethodDecl;
 import AST.MethodDeclList;
 import AST.Minus;
 import AST.Mod;
-import AST.NewArray;
+import AST.NewDoubleArray;
+import AST.NewIntArray;
 import AST.NewObject;
 import AST.Not;
 import AST.NotEqual;
@@ -82,6 +83,11 @@ public class TypeCheckerVisitor implements Visitor {
   // Display added for toy example language.  Not used in regular MiniJava
   public void visit(Display n) {
     n.e.accept(this);
+	TypeNode elt = type_stack.pop();
+	if (elt != tc.int_type && elt != tc.double_type) {
+		System.err.println("Error at line: "+n.line_number+". WPrint expression cannot print type "+elt+".");
+		System.exit(1);
+	}
   }
 
   // MainClass m;
@@ -227,6 +233,11 @@ public class TypeCheckerVisitor implements Visitor {
   // Exp e;
   public void visit(Print n) {
     n.e.accept(this);
+	TypeNode elt = type_stack.pop();
+	if (elt != tc.int_type && elt != tc.double_type) {
+		System.err.println("Error at line: "+n.line_number+". WPrint expression cannot print type "+elt+".");
+		System.exit(1);
+	}
   }
 
   // Identifier i;
@@ -257,25 +268,24 @@ public class TypeCheckerVisitor implements Visitor {
   // Identifier i;
   // Exp e1,e2;
   public void visit(ArrayAssign n) {
-    n.i.accept(this);
     n.e1.accept(this);
     n.e2.accept(this);
 	TypeNode e2 = type_stack.pop();
 	TypeNode e1 = type_stack.pop();
-	TypeNode id = type_stack.pop();
+	TypeNode id = tc.CheckSymbolTables(n.i.s, TypeChecker.TypeLevel.VARIABLE);
+	if (id == null) {
+		System.err.println("Error at line: "+n.line_number+". Array type "+id+" not recognized.");
+		System.exit(1);
+	}
 	if (e1 != tc.int_type){
 		System.err.println("Error at line: "+n.line_number+". Array index must be an integer.");
 		System.exit(1);
 	}
 	if ((id == tc.int_array_type && e2 != tc.int_type) ||
-		(id == tc.double_array_type && e2 != tc.double_type))	{
+		(id == tc.double_array_type && e2 != tc.double_type && e2 != tc.int_type))	{
 		System.err.println("Error at line: "+n.line_number+". Can't assign a "+e2+" to a "+id+".");
 		System.exit(1);
-	} else {
-		System.err.println("Error at line: "+n.line_number+". Array type "+id+" not recognized.");
-		System.exit(1);
 	}
-	
   }
 
   // Exp e1,e2;
@@ -398,12 +408,12 @@ public class TypeCheckerVisitor implements Visitor {
     n.e2.accept(this);
 	TypeNode e2 = type_stack.pop();
 	TypeNode e1 = type_stack.pop();
-	if  ((e1 == tc.int_type && e2 != tc.int_type) ||
-		(e1 == tc.double_type && e2 != tc.double_type)) {
-		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
+	if  (e1 != tc.int_type && e2 != tc.int_type &&
+		e1 != tc.double_type && e2 != tc.double_type) {
+		System.err.println("Error at line: "+n.line_number+". Illegal types, "+e1+" and "+e2+".");
 		System.exit(1);
 	}
-	if (e1 == tc.int_type)
+	if (e1 == tc.int_type && e2 == tc.int_type)
 		type_stack.push(tc.int_type);
 	else
 		type_stack.push(tc.double_type);
@@ -415,12 +425,12 @@ public class TypeCheckerVisitor implements Visitor {
     n.e2.accept(this);
 	TypeNode e2 = type_stack.pop();
 	TypeNode e1 = type_stack.pop();
-	if  ((e1 == tc.int_type && e2 != tc.int_type) ||
-		(e1 == tc.double_type && e2 != tc.double_type)) {
-		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
+	if  (e1 != tc.int_type && e2 != tc.int_type &&
+		e1 != tc.double_type && e2 != tc.double_type) {
+		System.err.println("Error at line: "+n.line_number+". Illegal types, "+e1+" and "+e2+".");
 		System.exit(1);
 	}
-	if (e1 == tc.int_type)
+	if (e1 == tc.int_type && e2 == tc.int_type)
 		type_stack.push(tc.int_type);
 	else
 		type_stack.push(tc.double_type);
@@ -432,12 +442,12 @@ public class TypeCheckerVisitor implements Visitor {
     n.e2.accept(this);
 	TypeNode e2 = type_stack.pop();
 	TypeNode e1 = type_stack.pop();
-	if  ((e1 == tc.int_type && e2 != tc.int_type) ||
-		(e1 == tc.double_type && e2 != tc.double_type)) {
-		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
+	if  (e1 != tc.int_type && e2 != tc.int_type &&
+		e1 != tc.double_type && e2 != tc.double_type) {
+		System.err.println("Error at line: "+n.line_number+". Illegal types, "+e1+" and "+e2+".");
 		System.exit(1);
 	}
-	if (e1 == tc.int_type)
+	if (e1 == tc.int_type && e2 == tc.int_type)
 		type_stack.push(tc.int_type);
 	else
 		type_stack.push(tc.double_type);
@@ -449,12 +459,12 @@ public class TypeCheckerVisitor implements Visitor {
     n.e2.accept(this);
 	TypeNode e2 = type_stack.pop();
 	TypeNode e1 = type_stack.pop();
-	if  ((e1 == tc.int_type && e2 != tc.int_type) ||
-		(e1 == tc.double_type && e2 != tc.double_type)) {
-		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
+	if  (e1 != tc.int_type && e2 != tc.int_type &&
+		e1 != tc.double_type && e2 != tc.double_type) {
+		System.err.println("Error at line: "+n.line_number+". Illegal types, "+e1+" and "+e2+".");
 		System.exit(1);
 	}
-	if (e1 == tc.int_type)
+	if (e1 == tc.int_type && e2 == tc.int_type)
 		type_stack.push(tc.int_type);
 	else
 		type_stack.push(tc.double_type);
@@ -466,12 +476,12 @@ public class TypeCheckerVisitor implements Visitor {
     n.e2.accept(this);
 	TypeNode e2 = type_stack.pop();
 	TypeNode e1 = type_stack.pop();
-	if  ((e1 == tc.int_type && e2 != tc.int_type) ||
-		(e1 == tc.double_type && e2 != tc.double_type)) {
-		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
+	if  (e1 != tc.int_type && e2 != tc.int_type &&
+		e1 != tc.double_type && e2 != tc.double_type) {
+		System.err.println("Error at line: "+n.line_number+". Illegal types, "+e1+" and "+e2+".");
 		System.exit(1);
 	}
-	if (e1 == tc.int_type)
+	if (e1 == tc.int_type && e2 == tc.int_type)
 		type_stack.push(tc.int_type);
 	else
 		type_stack.push(tc.double_type);
@@ -488,7 +498,7 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
 		System.exit(1);
 	}
-	if (e1 == tc.int_type)
+	if (e1 == tc.int_array_type)
 		type_stack.push(tc.int_type);
 	else
 		type_stack.push(tc.double_type);
@@ -517,12 +527,6 @@ public class TypeCheckerVisitor implements Visitor {
 		System.exit(1);
 	}
 	ClassTypeNode class_i = ((IdentifierTypeNode)type_stack.pop()).c;
-	//n.i.accept(this);
-	// if (!(type_stack.peek() instanceof MethodTypeNode)){
-		// System.err.println("Error at line: "+n.line_number+
-			// ". Internal stack error, expected: MethodTypeNode, actual: "+ type_stack.peek()+".");
-		// System.exit(1);
-	// }
 	
 	MethodTypeNode m = class_i.methods.get(n.i.s);
 	if (m == null) {
@@ -579,15 +583,27 @@ public class TypeCheckerVisitor implements Visitor {
   }
 
   // Exp e;
-  public void visit(NewArray n) {
+  public void visit(NewDoubleArray n) {
     n.e.accept(this);
 	TypeNode e = type_stack.pop();
 	if  (e != tc.int_type) {
-		System.err.println("Error at line: "+n.line_number+". A new array must have an int length, not a "+e+".");
+		System.err.println("Error at line: "+n.line_number+". A new array must have an int array, not a "+e+".");
 		System.exit(1);
 	}
 	
-	type_stack.push(e);
+	type_stack.push(tc.double_array_type);
+  }
+  
+  // Exp e;
+  public void visit(NewIntArray n) {
+    n.e.accept(this);
+	TypeNode e = type_stack.pop();
+	if  (e != tc.int_type) {
+		System.err.println("Error at line: "+n.line_number+". A new array must have an int array, not a "+e+".");
+		System.exit(1);
+	}
+	
+	type_stack.push(tc.int_array_type);
   }
 
   // Identifier i;

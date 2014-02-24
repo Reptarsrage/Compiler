@@ -47,7 +47,8 @@ import AST.MethodDecl;
 import AST.MethodDeclList;
 import AST.Minus;
 import AST.Mod;
-import AST.NewArray;
+import AST.NewIntArray;
+import AST.NewDoubleArray;
 import AST.NewObject;
 import AST.Not;
 import AST.NotEqual;
@@ -272,7 +273,11 @@ public class TertiaryTypeVisitor implements Visitor {
   }
 
   // Exp e;
-  public void visit(NewArray n) {
+  public void visit(NewIntArray n) {
+  }
+  
+    // Exp e;
+  public void visit(NewDoubleArray n) {
   }
 
   // Identifier i;

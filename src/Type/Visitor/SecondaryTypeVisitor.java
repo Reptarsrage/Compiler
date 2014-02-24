@@ -47,7 +47,8 @@ import AST.MethodDecl;
 import AST.MethodDeclList;
 import AST.Minus;
 import AST.Mod;
-import AST.NewArray;
+import AST.NewIntArray;
+import AST.NewDoubleArray;
 import AST.NewObject;
 import AST.Not;
 import AST.NotEqual;
@@ -131,7 +132,7 @@ public class SecondaryTypeVisitor implements Visitor {
   // Exp e;
   public void visit(MethodDecl n) {
 	tc.AddMethod(n.t, n.i.toString(), n.line_number);
-    for (int i = n.fl.size() - 1; i >= 0; i--) {
+    for (int i = 0; i < n.fl.size(); i++) {
       n.fl.get(i).accept(this);
     }
     for (int i = 0; i < n.vl.size(); i++) {
@@ -286,7 +287,11 @@ public class SecondaryTypeVisitor implements Visitor {
   }
 
   // Exp e;
-  public void visit(NewArray n) {
+  public void visit(NewIntArray n) {
+  }
+  
+  // Exp e;
+  public void visit(NewDoubleArray n) {
   }
 
   // Identifier i;
