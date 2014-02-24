@@ -11,13 +11,13 @@ import java.util.*;
 
 public class TypeChecker {
 	PackageTypeNode program;		// Contains a list of all classes
-	IntTypeNode int_type;			// Singleton integer type
-	DoubleTypeNode double_type;		// Singleton double type
-	UndefTypeNode undef_type;		// Singleton undefined type
-	IdentifierTypeNode undef_id;	// Singleton undefined class type (for non extended classes)
-	BooleanTypeNode boolean_type;	// Singleton boolean type
-	IntArrayTypeNode int_array_type; 		// Singleton integer array type
-	DoubleArrayTypeNode double_array_type;  // Singleton double array type
+	public IntTypeNode int_type;			// Singleton integer type
+	public DoubleTypeNode double_type;		// Singleton double type
+	public UndefTypeNode undef_type;		// Singleton undefined type
+	public IdentifierTypeNode undef_id;	// Singleton undefined class type (for non extended classes)
+	public BooleanTypeNode boolean_type;	// Singleton boolean type
+	public IntArrayTypeNode int_array_type; 		// Singleton integer array type
+	public DoubleArrayTypeNode double_array_type;  // Singleton double array type
 	Stack<TypeNode> nest;			// a stack of symbol tables representing the current 
 									// scope and parent scopes of the program at any point
 									
@@ -229,6 +229,17 @@ public class TypeChecker {
     return null;
   }
 
+  public IdentifierTypeNode GetThis() {
+	Stack<TypeNode> popped = new Stack<TypeNode>();
+	while (!(nest.peek() instanceof ClassTypeNode)){
+		popped.push(nest.pop());
+	}
+	ClassTypeNode c = (ClassTypeNode)nest.peek();
+	while (!popped.empty())
+		nest.push(popped.pop());
+	return new IdentifierTypeNode(c, "this");
+  }
+  
   // helper method for checking symbol tables when searching for a class
   private TypeNode CheckSymbolTablesClass(String id) {
     return program.classes.get(id);
@@ -307,14 +318,24 @@ public class TypeChecker {
 	  
       if ( parent != null && parent.methods.get(id) != null ) {	
 		MethodTypeNode parent_method = parent.methods.get(id);
+		CompareMethods(parent_method, method, line_number);
+      }
+    }
+    nest.push(c);
+    nest.push(method);
+    nest.push(popped);
+  }
+  
+  public void CompareMethods(MethodTypeNode method_1, MethodTypeNode method, int line_number) {
         // check to make sure return type is the same
-        if ( !(parent_method.return_type.getClass().equals(method.return_type.getClass())) ) {
+        if ( !(method_1.return_type.getClass().equals(method.return_type.getClass())) ) {
           System.err.println("Error on line " + line_number + ". Return type of method " + id
                              + " doesn't match return type of same method in parent class.");
           System.exit(1);
         }
-        // check to make sure number of args is same
-        if ( parent_method.args.size() != method.args.size() ) {
+		
+		// check to make sure number of args is same
+        if ( method_1.args.size() != method.args.size() ) {
           System.err.println("Error on line " + line_number + ". Method " + id
                              + " has different number of arguments than same method in parent class.");
           System.exit(1);
@@ -322,7 +343,7 @@ public class TypeChecker {
 
         // check to make sure types of all arguments are same
         Iterator<Map.Entry<String, TypeNode>> this_itr = method.args.entrySet().iterator();
-        Iterator<Map.Entry<String, TypeNode>> parent_itr = parent_method.args.entrySet().iterator();
+        Iterator<Map.Entry<String, TypeNode>> parent_itr = method_1.args.entrySet().iterator();
         while ( this_itr.hasNext() ){
             //                  Map.Entry this_entry = this_itr.next();
             //                  Map.Entry par_entry = parent_itr.next();
@@ -332,10 +353,5 @@ public class TypeChecker {
                 System.exit(1);
             }
         }
-      }
-    }
-    nest.push(c);
-    nest.push(method);
-    nest.push(popped);
-  }
+	}
 }
