@@ -121,7 +121,9 @@ public class TypeChecker {
 			nest.push(block);
 		} else if (nest.peek() instanceof MethodTypeNode) {
 			MethodTypeNode m = (MethodTypeNode)nest.peek();
-			m.args.put(name, GetType(t));
+                        TypeNode formal = GetType(t);
+                        formal.initialized = true;
+			m.args.put(name, formal);
 		} else {
 			System.err.println("Failure at line: "+line_number
 				+ ". Formal argument " + name + " must be part of a method declaration.");
@@ -183,7 +185,9 @@ public class TypeChecker {
 		}
 		if (nest.peek() instanceof ClassTypeNode) {
 			ClassTypeNode c = (ClassTypeNode)nest.peek();
-			c.fields.put(name, GetType(t));
+                        TypeNode elt = GetType(t);
+                        elt.initialized = true; // must assume class fields to be initialized
+			c.fields.put(name, elt);
 		} else if (nest.peek() instanceof BlockTypeNode){
 			BlockTypeNode c = (BlockTypeNode)nest.peek();
 			c.locals.put(name, GetType(t));

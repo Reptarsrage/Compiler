@@ -1,4 +1,4 @@
-Buildfile: /homes/iws/xreptarx/cse401/401_project/build.xml
+Buildfile: /home/adam/Documents/School/cse401/401_project/build.xml
 
 init:
 
@@ -9,7 +9,7 @@ gen-parser:
 gen-scanner:
 
 compile:
-    [javac] Compiling 1 source file to /homes/iws/xreptarx/cse401/401_project/build/classes
+    [javac] Compiling 1 source file to /home/adam/Documents/School/cse401/401_project/build/classes
 
 test-parser-all:
      [java] 
@@ -62,7 +62,7 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/cse401c_correct_08.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_21.java------------
-     [java] Failure at line: 11. Variable i has invalid type AST.IdentifierType@39673d71.
+     [java] Failure at line: 11. Variable i has invalid type AST.IdentifierType@6770526a.
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_14.java------------
      [java] Failure at line: 12. Variable i already declared.
@@ -70,11 +70,11 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/cse401c_rtfail_12.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_00.java------------
+     [java] 
+     [java] ------------Parsing SamplePrograms/cse401c_ctfail_18.java------------
      [java] Syntax error at line 12 of input
      [java] Couldn't repair and continue parse at line 12 of input
-     [java] 
-     [java] ------------Parsing SamplePrograms/cse401c_ctfail_18.java------------Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
-     [java] 
+     [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
      [java] 	at java_cup.runtime.lr_parser.report_fatal_error(lr_parser.java:375)
      [java] 	at java_cup.runtime.lr_parser.unrecovered_syntax_error(lr_parser.java:424)
@@ -90,26 +90,28 @@ test-parser-all:
      [java] ------------Parsing SamplePrograms/TreeVisitor.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_19.java------------
-     [java] Error at line: 15. Illegal types, Type.IntArrayTypeNode@116dd645 and Type.IntArrayTypeNode@116dd645.
+     [java] Error at line: 15. Illegal types, Type.IntArrayTypeNode@7565a43b and Type.IntArrayTypeNode@7565a43b.
      [java] 
      [java] ------------Parsing SamplePrograms/LinkedList.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_05.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_20.java------------
-     [java] Error at line: 10. Expression of type Type.IntTypeNode@4ccbb612 does not match return type Type.DoubleTypeNode@521e7f21.
+     [java] Error at line: 10. Expression of type Type.IntTypeNode@7287c801 does not match return type Type.DoubleTypeNode@305bf465.
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_correct_09.java------------
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_11.java------------
+     [java] Error at line: 12. Variable unin is used when uninitialized.
      [java] 
      [java] ------------Parsing SamplePrograms/cse401c_ctfail_15.java------------
-     [java] Error at line: 9. Expression of type Type.DoubleTypeNode@5cebc2a2 does not match return type Type.IntTypeNode@7a374956.
+     [java] Error at line: 9. Expression of type Type.DoubleTypeNode@fd6f84a does not match return type Type.IntTypeNode@6a46ca65.
      [java] 
      [java] ------------Parsing SamplePrograms/ExampleConst.java------------
+     [java] Error at line: 12. Variable unin is used when uninitialized.
      [java] 
-     [java] ------------Parsing SamplePrograms/Example.java------------Syntax error at line 1 of input
-     [java] 
+     [java] ------------Parsing SamplePrograms/Example.java------------
+     [java] Syntax error at line 1 of input
      [java] Couldn't repair and continue parse at line 1 of input
      [java] Unexpected internal compiler error: java.lang.Exception: Can't recover from previous error(s)
      [java] java.lang.Exception: Can't recover from previous error(s)
@@ -119,4 +121,4 @@ test-parser-all:
      [java] 	at TestParser.main(TestParser.java:113)
 
 BUILD SUCCESSFUL
-Total time: 20 seconds
+Total time: 19 seconds

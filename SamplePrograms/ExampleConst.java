@@ -1,12 +1,15 @@
-class Test {
+// test to make sure a uninitiated variable fails
+
+class cse401c_ctfail_11 {
 	public static void main(String[] args) {
-		System.out.println(new List().InitNew(1, 2.0, true));
+		System.out.println(new Test().test());
 	}
 }
 
-class List {
-    // Initialize the values of a new node
-    public int InitNew(int v_elem, double v_next, boolean v_end) {
-        return 1;
+class Test {
+    public int test() {
+        int unin;
+        unin = unin + 1;
+        return unin;
     }
 }

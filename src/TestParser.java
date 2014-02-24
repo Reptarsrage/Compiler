@@ -115,8 +115,8 @@ public class TestParser {
 	  program.accept(new InitialTypeVisitor(tc));
 	  program.accept(new SecondaryTypeVisitor(tc));
 	  program.accept(new TertiaryTypeVisitor(tc));
-	  //tc.print();
 	  program.accept(new TypeCheckerVisitor(tc));
+          //          tc.print();
       //program.accept(new PrettyPrintVisitor());
       //
       // System.out.print("\n" + "Parsing completed");

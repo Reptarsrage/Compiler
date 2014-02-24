@@ -85,7 +85,7 @@ public class TypeCheckerVisitor implements Visitor {
     n.e.accept(this);
 	TypeNode elt = type_stack.pop();
 	if (elt != tc.int_type && elt != tc.double_type) {
-		System.err.println("Error at line: "+n.line_number+". WPrint expression cannot print type "+elt+".");
+		System.err.println("Error at line: "+n.line_number+". Print expression cannot print type "+elt+".");
 		System.exit(1);
 	}
   }
@@ -243,15 +243,16 @@ public class TypeCheckerVisitor implements Visitor {
   // Identifier i;
   // Exp e;
   public void visit(Assign n) {
-    n.i.accept(this);
-    n.e.accept(this);
+      TypeNode id = tc.CheckSymbolTables( n.i.s, TypeChecker.TypeLevel.VARIABLE);
+      if (id == null) {
+          tc.printStack();
+          System.err.println("Error at line: "+n.line_number+". Identifier "+ n.i.s +" not recognized.");
+          System.exit(1);
+      }
+      //id.initialized = true;
+      //n.i.accept(this);
+      n.e.accept(this);
 	TypeNode exp = type_stack.pop();
-	TypeNode id = tc.CheckSymbolTables( n.i.s, TypeChecker.TypeLevel.VARIABLE);
-	if (id == null) {
-		tc.printStack();
-		System.err.println("Error at line: "+n.line_number+". Identifier "+ n.i.s +" not recognized.");
-		System.exit(1);
-	}
 	if (id instanceof IdentifierTypeNode ) {
 		IdentifierTypeNode rhs = ((IdentifierTypeNode)exp);
 		IdentifierTypeNode lhs = (IdentifierTypeNode)id;
@@ -263,6 +264,7 @@ public class TypeCheckerVisitor implements Visitor {
 		System.err.println("Error at line: "+n.line_number+". Can't assign a "+exp+" to a "+id+".");
 		System.exit(1);
 	}
+        id.initialized = true;
   }
 
   // Identifier i;
@@ -563,14 +565,15 @@ public class TypeCheckerVisitor implements Visitor {
     type_stack.push(tc.boolean_type);
   }
 
-  public void visit(IdentifierExp n) {
+  public void visit(Identifier n) {
 	// TODO
+      /*
 	TypeNode t = tc.CheckSymbolTables(n.s, TypeChecker.TypeLevel.VARIABLE);
 	if (t == null) {
 		System.err.println("Error at line: "+n.line_number+". Expression "+n.s+" not recognized.");
 		System.exit(1);
 	}
-	type_stack.push(t);
+	type_stack.push(t);*/
   }
 
   public void visit(ConstantExp n) {
@@ -629,13 +632,20 @@ public class TypeCheckerVisitor implements Visitor {
   }
 
   // String s;
-  public void visit(Identifier n) {
+  public void visit(IdentifierExp n) {
+      TypeNode elt = tc.CheckSymbolTables(n.s, TypeChecker.TypeLevel.VARIABLE);
+
+      if (elt != null && !(elt.initialized)) {
+          System.err.println("Error at line: "+n.line_number+". Variable " + n.s + " is used when uninitialized.");
+          System.exit(1);
+      }
+
 	// TODO
 	// TypeNode elt = tc.CheckSymbolTables(n.s, TypeChecker.TypeLevel.METHOD);
 	// if (elt == null){
 		// System.err.println("Error at line: "+n.line_number+". Identifier "+ n.s +" not recognized.");
 		// System.exit(1);
 	// }
-	// type_stack.push(elt);
+       type_stack.push(elt);
   }
 }

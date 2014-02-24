@@ -6,8 +6,10 @@
 package Type;
 
 abstract public class TypeNode {
+    public boolean initialized; // for the nodes that can represent variables
 
   public TypeNode() {
+      initialized = false;
   }
   
   // Used for debugging, prints info about this node in the graph.
