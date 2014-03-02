@@ -68,8 +68,11 @@ import AST.Visitor.Visitor;
 public class CodeGeneratorVisitor implements Visitor {
 
   private CodeGenerator cg;
+  private String callee;
+ 
   public CodeGeneratorVisitor(CodeGenerator cg) {
     this.cg = cg;
+	callee = "NULL";
   }
 
   // Display added for toy example language.  Not used in regular MiniJava
@@ -90,7 +93,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Identifier i1,i2;
   // Block b;
   public void visit(MainClass n) {
-    cg.genMainEntry("asm_main");
+	cg.genMainEntry("asm_main");
     n.i1.accept(this);
     n.i2.accept(this);
     for (int i = 0; i < n.b.sl.size(); i ++) {
@@ -103,7 +106,8 @@ public class CodeGeneratorVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclSimple n) {
-    n.i.accept(this);
+    cg.setClass(n.i.s);
+	n.i.accept(this);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
     }
@@ -117,7 +121,8 @@ public class CodeGeneratorVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
-    n.i.accept(this);
+    cg.setClass(n.i.s);
+	n.i.accept(this);
     n.j.accept(this);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
@@ -350,11 +355,12 @@ public class CodeGeneratorVisitor implements Visitor {
   // ExpList el;
   public void visit(Call n) {
     n.e.accept(this);
+	String className = callee;
     n.i.accept(this);
     for (int i = 0; i < n.el.size(); i++) {
       n.el.get(i).accept(this);
     }
-    cg.genCall(n.i.s, n.el.size(), n.line_number);
+    cg.genCall(className, n.i.s, n.el.size(), n.line_number);
   }
 
   // long i;
@@ -375,6 +381,7 @@ public class CodeGeneratorVisitor implements Visitor {
   }
 
   public void visit(IdentifierExp n) {
+	callee = n.s;
   }
 
   public void visit(ConstantExp n) {
@@ -396,6 +403,7 @@ public class CodeGeneratorVisitor implements Visitor {
   
   // Identifier i;
   public void visit(NewObject n) {
+	callee = n.i.s;
   }
 
   // Exp e;
@@ -406,5 +414,6 @@ public class CodeGeneratorVisitor implements Visitor {
 
   // String s;
   public void visit(Identifier n) {
+	callee = n.s;
   }
 }

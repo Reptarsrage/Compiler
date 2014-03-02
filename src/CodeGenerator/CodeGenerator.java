@@ -8,6 +8,7 @@ public class CodeGenerator {
   private int labelCount;
   private PrintStream outputStream;
   public String assemblerPrefixName;
+  private String current_class;
 
   public CodeGenerator(String outputFileName) {
     labelCount = 0;
@@ -29,21 +30,32 @@ public class CodeGenerator {
     }
   }
 
+  public void setClass(String name) {
+	current_class = name;
+  }
+  
    public void genMainEntry(String functionName) {
 		printSection(".text");
 		genFunctionEntry(functionName);
    }
    
    public void genMainExit(String functionName) {
-    printComment("return point for " + assemblerPrefixName + functionName);
+	String label = functionName;
+	if (current_class != null) {
+		label = current_class + "$" + label;
+	}
+	printComment("return point for " + assemblerPrefixName + label);
     printInsn("popq", "%rbp");
     printInsn("ret");
    }
   
   public void genFunctionEntry(String functionName) {
-    printGlobalName(functionName);
-    printLabel(functionName);
-
+    String label = functionName;
+	if (current_class != null) {
+		label = current_class + "$" + label;
+	}
+	printGlobalName(label);
+    printLabel(label);
     printInsn("pushq", "%rbp");
     printInsn("movq", "%rsp", "%rbp");
   }
@@ -58,12 +70,12 @@ public class CodeGenerator {
   
   public void genFunctionExit(String functionName) {
 	 printInsn("popq", "%rax");
-	 genMainExit(functionName);
+	 genMainExit(functionName );
   }
 
   // currently only works with <= 6 args
-  public void genCall(String functionName, int argc, int linenum) {
-    printComment("method call for " + functionName + " from line " + linenum);
+  public void genCall(String className, String functionName, int argc, int linenum) {
+    printComment("method call for " + className +"."+functionName + " from line " + linenum);
 	  if (argc > 6) System.exit(1); // too many params passed
 
     String[] registers = {"%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"};
@@ -71,7 +83,8 @@ public class CodeGenerator {
       // have to pop args in reverse order
       printInsn("popq", registers[argc - 1 - i]);
     }
-    printInsn("call", functionName);
+    String label = className + "$" + functionName;	
+	printInsn("call", label);
     printInsn("pushq", "%rax");
   }
   public void genFormal(String register, int linenum) {
