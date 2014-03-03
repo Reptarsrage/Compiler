@@ -55,9 +55,27 @@ public class CodeGenerator {
 	}
   }
   
+  public void loadNonLocal(int offset) {
+	printInsn("popq", "%r14");
+	printInsn("pushq", "*" +offset + "(%r14)");
+  }
+  
+  public void storeNonLocal(int offset) {
+	printInsn("popq", "%r14");
+	printInsn("popq", "*" +offset + "(%r14)");
+  }
   
   public void loadLocal(int offset) {
 	printInsn("pushq", offset + "(%rbp)");
+  }
+  
+  public void genNewObj(String name, TypeChecker tc) {
+	ClassTypeNode c = tc.program.classes.get(name);
+	int size = (c.fields.size() + c.methods.size() + 1) * 8;
+	//System.out.println("Created new object " + name + ", with size " + size);
+	printInsn("movq", "$" + size, "%rdi"); // RDI the first parameter?
+	printInsn("call", "mjmalloc");
+	printInsn("pushq", "%rax"); // push location
   }
   
   public void storeLocal(int offset) {
@@ -121,7 +139,7 @@ public class CodeGenerator {
   }
 
   // currently only works with <= 6 args
-  public void genCall(String className, String functionName, int argc, int linenum) {
+  public void genCall(String className, String functionName, int offset, int argc, int linenum) {
     printComment("method call for " + className +"."+functionName + " from line " + linenum);
 	  if (argc > 6) System.exit(1); // too many params passed
 
@@ -130,8 +148,10 @@ public class CodeGenerator {
       // have to pop args in reverse order
       printInsn("popq", registers[argc - 1 - i]);
     }
-    String label = className + "$" + functionName;	
-	printInsn("call", label);
+	
+    printInsn("popq", "%r14"); // addr of class
+	printInsn("movq", "Dog$$", "%r14");
+	printInsn("call", "*8(%r14)");
     printInsn("pushq", "%rax");
   }
   public void genFormal(String register, int linenum) {

@@ -39,35 +39,74 @@ public class TypeChecker {
         nest.push(program);
     }
 	
-	public void AddMemOffset(String var_name, int offset) {
-		if (nest.peek() instanceof BlockTypeNode){
-			BlockTypeNode block = (BlockTypeNode) nest.peek();
-			if (block.locals.get(var_name) == null){
-				System.err.println("Internal error, trying to add a memory offset to an unrecognized local: " +
-								   var_name + ".");
-				System.exit(1);
-			
+	public void AddGlobalMemOffSet(String id_name, int offset) {
+		if (nest.peek() instanceof ClassTypeNode){
+			// set a global's offset (or possibly a methods)
+			ClassTypeNode c = (ClassTypeNode)nest.peek();
+			if (c.fields.get(id_name) != null || c.methods.get(id_name) != null){
+				c.mem_offset.put(id_name, offset);  
+				//System.out.println("Set " + id_name + ", with offset " + offset);
+			} else {
+				// fail
+				System.err.println("Internal error, trying to set a memory offset to an unrecognized identifier: " +
+							   id_name + ".");
+				System.exit(1);	
 			}
-			
-			block.mem_offset.put(var_name, offset); 
-		}		
+		} else {
+			System.err.println("Internal error, expected a ClassTypeNode on the stack but found a " + nest.peek());
+			System.exit(1);
+		}
 	}
 	
-	public int GetMemOffset(String var_name) {
+	public boolean topOfStackIsClass() {
+		return nest.peek() instanceof ClassTypeNode;
+	}
+	
+	public void AddMemOffSet(String var_name, int offset) {
 		if (nest.peek() instanceof BlockTypeNode){
-			// retrieve a local
 			BlockTypeNode block = (BlockTypeNode) nest.peek();
-			if (block.locals.get(var_name) == null){
-				System.err.println("Internal error, trying to get a memory offset to an unrecognized local: " +
-								   var_name + ".");
-				System.exit(1);
-			
+			if (block.locals.get(var_name) != null){
+				// set a local's offset
+				block.mem_offset.put(var_name, offset); 
+				//System.out.println("Set " + var_name + ", with offset " + offset);
+			} else {
+				// fail
+				System.err.println("Internal error, trying to set a memory offset to an unrecognized variable: " +
+							   var_name + ".");
+				System.exit(1);	
 			}
-			return block.mem_offset.get(var_name);  
 		} else {
-			// TODO retireve a global
-			return 0;
+			System.err.println("Internal error, expected a BlockTypeNode on the stack but found a " + nest.peek());
+			System.exit(1);
+		}	
+	}
+	
+	public int GetMemOffSet(String var_name) {
+		if (nest.peek() instanceof BlockTypeNode){
+			BlockTypeNode block = (BlockTypeNode) nest.peek();
+			if (block.locals.get(var_name) != null){
+				// retrieve a local's offset
+				return block.mem_offset.get(var_name); 
+			} else {
+				return 0;
+			}
+		} else {
+			System.err.println("Internal error, expected a BlockTypeNode on the stack but found a " + nest.peek());
+			System.exit(1);
 		}
+		return 0;
+	}
+	
+	public int GetGlobalMemOffSet(String id_name) {
+		// retrieve a global's offset (or possibly a methods)
+		for (ClassTypeNode c : program.classes.values()) {
+			if (c.mem_offset.get(id_name) != null)
+				return c.mem_offset.get(id_name);  
+		}
+		System.err.println("Internal error, trying to get a memory offset to an unrecognized identifier: " +
+							   id_name + ".");
+		System.exit(1);
+		return 0;
 	}
 	
     // Adds a class to our graph

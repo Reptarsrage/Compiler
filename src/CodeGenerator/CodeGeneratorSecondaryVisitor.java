@@ -63,24 +63,25 @@ import AST.Visitor.Visitor;
 import Type.Visitor.TypeChecker;
 import Type.*;
 
-// ONLY BUILDS UP VTABLES AND OFFSETS
+// Sample code generation visitor.
+// Robert R. Henry 2013-11-12
 
-public class CodeGeneratorVisitor implements Visitor {
+public class CodeGeneratorSecondaryVisitor implements Visitor {
 
   private CodeGenerator cg;
+  private String callee;
   private TypeChecker tc;
-  private int stack_offset;
-  private int vtble_offset;
   
-  public CodeGeneratorVisitor(CodeGenerator cg, TypeChecker tc) {
+  public CodeGeneratorSecondaryVisitor(CodeGenerator cg, TypeChecker tc) {
     this.cg = cg;
+	callee = "NULL";
 	this.tc = tc;
-	stack_offset = 0;
-	vtble_offset = 0;
   }
 
   // Display added for toy example language.  Not used in regular MiniJava
   public void visit(Display n) {
+    n.e.accept(this);
+    cg.genDisplay(n.line_number);
   }
 
   // MainClass m;
@@ -90,20 +91,29 @@ public class CodeGeneratorVisitor implements Visitor {
     for (int i = 0; i < n.cl.size(); i++) {
       n.cl.get(i).accept(this);
     }
+	cg.genVtbles(tc);
   }
 
   // Identifier i1,i2;
   // Block b;
   public void visit(MainClass n) {
-	vtble_offset = 0;
+	tc.PushClass("asm_main");
+	cg.genMainEntry("asm_main");
+    n.i1.accept(this);
+    n.i2.accept(this);
+    for (int i = 0; i < n.b.sl.size(); i ++) {
+        n.b.sl.get(i).accept(this);
+    }
+    cg.genMainExit("asm_main");
   }
 
   // Identifier i;
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclSimple n) {
-    vtble_offset = 0;
 	tc.PushClass(n.i.s);
+	cg.setClass(n.i.s);
+	n.i.accept(this);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
     }
@@ -117,8 +127,10 @@ public class CodeGeneratorVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
-    vtble_offset = 0;
 	tc.PushClass(n.i.s);
+	cg.setClass(n.i.s);
+	n.i.accept(this);
+    n.j.accept(this);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
     }
@@ -130,15 +142,8 @@ public class CodeGeneratorVisitor implements Visitor {
   // Type t;
   // Identifier i;
   public void visit(VarDecl n) {
-	if (tc.topOfStackIsClass()) {
-		// field
-		tc.AddGlobalMemOffSet(n.i.s, -8 + vtble_offset);
-		vtble_offset -= 8;
-	} else {
-		// local var
-		tc.AddMemOffSet(n.i.s, -8 + stack_offset);
-		stack_offset -= 8;
-	}
+    n.t.accept(this);
+    n.i.accept(this);
   }
 
   // Type t;
@@ -149,25 +154,34 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e;
   public void visit(MethodDecl n) {
 	// method
-	tc.AddGlobalMemOffSet(n.i.s, -8 + vtble_offset);
-	vtble_offset -= 8;
 	tc.PushMethod(n.i.s);
+	n.t.accept(this);
+    n.i.accept(this);
+	int local_count = n.vl.size();
+    cg.genFunctionEntry(n.i.s);
+	cg.addLocalsToStack(local_count);
+    String[] registers = {"%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"};
+    if (n.fl.size() > 6) System.exit(1); // more than 6 params is illegal (at the moment)
+    for (int i = n.fl.size() - 1; i >= 0; i--) {
+      n.fl.get(i).accept(this);
+      //cg.genFormal(registers[i]);
+    }
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
     }
-	stack_offset += n.vl.size() * 8;
-  }
-
-  // StatementList sl;
-  public void visit(Block n) {
-	for (int i = 0; i < n.sl.size(); i++) {
+    for (int i = 0; i < n.sl.size(); i++) {
       n.sl.get(i).accept(this);
     }
+    n.e.accept(this);
+	
+    cg.genFunctionExit(n.i.s, local_count);
   }
-  
-  // \\\\\\\\\\\\\\\\\\\\\\\BELOW ARE USELESS METHODS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-  
+
+  // Type t;
+  // Identifier i;
   public void visit(Formal n) {
+    n.t.accept(this);
+    n.i.accept(this);
   }
 
   public void visit(IntArrayType n) {
@@ -189,100 +203,189 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(IdentifierType n) {
   }
 
+  // StatementList sl;
+  public void visit(Block n) {
+	for (int i = 0; i < n.sl.size(); i++) {
+      n.sl.get(i).accept(this);
+    }
+  }
+
   // Exp e;
   // Statement s1,s2;
   public void visit(If n) {
+    n.e.accept(this);
+    int label = cg.genIfBeg(n.line_number);
+	for (int i = 0; i < n.s1.size(); i++) {
+      n.s1.get(i).accept(this);
+    }
+	cg.genIfMid(label);
+    for (int i = 0; i < n.s2.size(); i++) {
+      n.s2.get(i).accept(this);
+    }
+	cg.genIfEnd(label);
   }
 
   // Exp e;
   // StatementList s;
   public void visit(While n) {
+    int label = cg.genWhileBeg(n.line_number);
+	for (int i = 0; i < n.s.size(); i++) {
+      n.s.get(i).accept(this);
+    }
+	cg.genWhileMid(label);
+	n.e.accept(this);
+	cg.genWhileEnd(label);
   }
 
   // Exp e;
   public void visit(Print n) {
+    n.e.accept(this);
+	cg.genDisplay(n.line_number);
   }
 
   // Identifier i;
   // Exp e;
   public void visit(Assign n) {
+    n.i.accept(this);
+    n.e.accept(this);
+	int offset = tc.GetMemOffSet(n.i.s); // returns zero if not local var
+	if (offset == 0){
+		offset = tc.GetGlobalMemOffSet(n.i.s);
+		cg.storeNonLocal(offset);
+	} else{
+		cg.storeLocal(offset);
+	}
   }
 
   // Identifier i;
   // Exp e1,e2;
   public void visit(ArrayAssign n) {
+    n.i.accept(this);
+    n.e1.accept(this);
+    n.e2.accept(this);
   }
 
   // Exp e1,e2;
   public void visit(ShortCircuitAnd n) {
+    n.e1.accept(this);
+	int label = cg.genShortCircuitAndMid(n.line_number);
+    n.e2.accept(this);
+	cg.genShortCircuitAndEnd(label);
   }
   
   // Exp e1,e2;
   public void visit(ShortCircuitOr n) {
+    n.e1.accept(this);
+	int label = cg.genShortCircuitOrMid(n.line_number);
+    n.e2.accept(this);
+	cg.genShortCircuitOrEnd(label);
   }
 
   // Exp e1,e2;
   public void visit(LessThan n) {
-	
+    n.e1.accept(this);
+    n.e2.accept(this);
+	cg.genLessThan(n.line_number);
   }
   
   // Exp e1,e2;
-  public void visit(LessThanOrEqualTo n) {	
+  public void visit(LessThanOrEqualTo n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+	cg.genLessThanOrEqualTo(n.line_number);
   }
   
   // Exp e1,e2;
-  public void visit(GreaterThanOrEqualTo n) {	
+  public void visit(GreaterThanOrEqualTo n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+	cg.genGreaterThanOrEqualTo(n.line_number);
   }
   
   // Exp e1,e2;
-  public void visit(GreaterThan n) {	
+  public void visit(GreaterThan n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+	cg.genGreaterThan(n.line_number);
   }
   
   // Exp e1,e2;
-  public void visit(Equals n) {	
+  public void visit(Equals n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+	cg.genEqual(n.line_number);
   }
   
   // Exp e1,e2;
-  public void visit(NotEqual n) {	
+  public void visit(NotEqual n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+	cg.genNotEqual(n.line_number);
   }
   
   // Exp e1,e2;
   public void visit(Mod n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+	cg.genMod(n.line_number);
   }
 
   // Exp e1,e2;
   public void visit(Plus n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+    cg.genAdd(n.line_number);
   }
 
   // Exp e1,e2;
   public void visit(Minus n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+	cg.genMinus(n.line_number);
   }
 
   // Exp e1,e2;
   public void visit(Times n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+	cg.genTimes(n.line_number);
   }
   
   // Exp e1,e2;
   public void visit(Divide n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
+	cg.genDivide(n.line_number);
   }
 
   // Exp e1,e2;
   public void visit(ArrayLookup n) {
+    n.e1.accept(this);
+    n.e2.accept(this);
   }
 
   // Exp e;
   public void visit(ArrayLength n) {
+    n.e.accept(this);
   }
 
   // Exp e;
   // Identifier i;
   // ExpList el;
   public void visit(Call n) {
+    n.e.accept(this); // this pushes addr of struct to the stack
+	String className = callee;
+    n.i.accept(this);
+    for (int i = 0; i < n.el.size(); i++) {
+      n.el.get(i).accept(this);
+    }
+	int offset = tc.GetGlobalMemOffSet(n.i.s);
+    cg.genCall(className, n.i.s, offset, n.el.size(), n.line_number);
   }
 
   // long i;
   public void visit(IntegerLiteral n) {
-      
+      cg.genIntegerLiteral(n.i);
   }
   
   // double i;
@@ -290,18 +393,26 @@ public class CodeGeneratorVisitor implements Visitor {
   }
 
   public void visit(True n) {
-    
+    cg.genTrue();
   }
 
   public void visit(False n) {
-    
+    cg.genFalse();
   }
 
   public void visit(IdentifierExp n) {
+	callee = n.s;
+	int offset = tc.GetMemOffSet(n.s); // returns zero if not local var
+	if (offset == 0){
+		offset = tc.GetGlobalMemOffSet(n.s);
+		cg.loadNonLocal(offset);
+	} else {
+		cg.loadLocal(offset);
+	}
   }
 
   public void visit(ConstantExp n) {
-      
+      cg.genConstant(n.value);
   }
 
   public void visit(This n) {
@@ -309,22 +420,28 @@ public class CodeGeneratorVisitor implements Visitor {
 
   // Exp e;
   public void visit(NewIntArray n) {
+    n.e.accept(this);
   }
 
   // Exp e;
   public void visit(NewDoubleArray n) {
+    n.e.accept(this);
   }
   
   // Identifier i;
   public void visit(NewObject n) {
+	callee = n.i.s;
+	cg.genNewObj(n.i.s, tc);
   }
 
   // Exp e;
   public void visit(Not n) {
-	
+    n.e.accept(this);
+	cg.genNot(n.line_number);
   }
 
   // String s;
   public void visit(Identifier n) {
+	callee = n.s;
   }
 }

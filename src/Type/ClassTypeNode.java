@@ -10,12 +10,14 @@ import java.util.*;
 public class ClassTypeNode extends TypeNode {
   public IdentifierTypeNode base_type;			// extends base_type
   public Map<String, TypeNode> fields;			// local variable list name->object
+  public Map<String, Integer> mem_offset;		// local variable list name->offset in memory
   public Map<String, MethodTypeNode> methods;	// method list name->object
 
   public ClassTypeNode(IdentifierTypeNode base_type) {
     super();
 	fields = new HashMap<String, TypeNode>();
 	methods = new HashMap<String, MethodTypeNode>();
+	mem_offset = new HashMap<String, Integer>();
 	this.base_type = base_type;
   }
   
