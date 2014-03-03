@@ -83,11 +83,11 @@ public class TypeCheckerVisitor implements Visitor {
     // Display added for toy example language.  Not used in regular MiniJava
     public void visit(Display n) {
         n.e.accept(this);
-	TypeNode elt = type_stack.pop();
-	if (elt != tc.int_type && elt != tc.double_type) {
+		TypeNode elt = type_stack.pop();
+		if (elt != tc.int_type && elt != tc.double_type) {
             System.err.println("Error at line: "+n.line_number+". Print expression cannot print type "+elt+".");
             System.exit(1);
-	}
+		}
     }
 
     // MainClass m;

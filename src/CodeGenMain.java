@@ -1,4 +1,5 @@
 import AST.*;
+import Type.Visitor.*;
 import CodeGenerator.*;
 import Parser.parser;
 import Scanner.scanner;
@@ -32,7 +33,10 @@ public class CodeGenMain {
       root = p.parse();
       Program program = (Program) root.value;
 	  program.accept(new InitialTypeVisitor(tc));
-      program.accept(new CodeGeneratorVisitor(cg));
+      program.accept(new SecondaryTypeVisitor(tc));
+      program.accept(new TertiaryTypeVisitor(tc));
+      program.accept(new TypeCheckerVisitor(tc));
+      program.accept(new CodeGeneratorVisitor(cg, tc));
 	  //
       // System.out.print("\n" + "Parsing completed");
       //

@@ -7,7 +7,6 @@ package Type;
 
 abstract public class TypeNode {
     public boolean initialized; // for the nodes that can represent variables
-
   public TypeNode() {
       initialized = false;
   }

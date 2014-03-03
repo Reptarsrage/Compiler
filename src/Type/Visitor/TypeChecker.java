@@ -39,6 +39,41 @@ public class TypeChecker {
         nest.push(program);
     }
 	
+	public void AddMemOffset(String var_name, int offset) {
+		if (!(nest.peek() instanceof BlockTypeNode)){
+			// FAIL
+            System.err.println("Internal error, trying to add a memory offset to a local with a " +
+                               nest.peek() + " on top of stack.");
+            System.exit(1);
+		}
+		BlockTypeNode block = (BlockTypeNode) nest.peek();
+		if (block.locals.get(var_name) == null){
+			System.err.println("Internal error, trying to add a memory offset to an unrecognized local: " +
+                               var_name + ".");
+            System.exit(1);
+		
+		}
+		
+		block.mem_offset.put(var_name, offset);      
+	}
+	
+	public int GetMemOffset(String var_name) {
+		if (!(nest.peek() instanceof BlockTypeNode)){
+			// FAIL
+            System.err.println("Internal error, trying to get a memory offset to a local with a " +
+                               nest.peek() + " on top of stack.");
+            System.exit(1);
+		}
+		BlockTypeNode block = (BlockTypeNode) nest.peek();
+		if (block.locals.get(var_name) == null){
+			System.err.println("Internal error, trying to get a memory offset to an unrecognized local: " +
+                               var_name + ".");
+            System.exit(1);
+		
+		}
+		return block.mem_offset.get(var_name);      
+	}
+	
     // Adds a class to our graph
     public void AddClass(String name, int line_number){
         if (CheckSymbolTables(name, TypeLevel.CLASS) != null){

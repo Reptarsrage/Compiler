@@ -10,10 +10,12 @@ import java.util.*;
 public class BlockTypeNode extends TypeNode {
 	public Map<String, TypeNode> locals; // local variable list name->object
 	public BlockTypeNode inside;		// A nested block
+	public Map<String, Integer> mem_offset;	// list of local variables name->stack memory offset
 
 	public BlockTypeNode() {
 	super();
 	locals = new HashMap<String, TypeNode>();
+	mem_offset = new HashMap<String, Integer>();
 	}
 	
 	public void print(String ind){

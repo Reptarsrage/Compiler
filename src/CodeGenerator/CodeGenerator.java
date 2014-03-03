@@ -2,6 +2,7 @@ package CodeGenerator;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import Type.*;
 
 public class CodeGenerator {
 
@@ -29,7 +30,27 @@ public class CodeGenerator {
       assemblerPrefixName = "";
     }
   }
-
+  
+  public void loadLocal(int offset) {
+	printInsn("pushq", offset + "(%rbp)");
+  }
+  
+  public void storeLocal(int offset) {
+	printInsn("popq", offset + "(%rbp)");
+  }
+  
+  public void addLocalsToStack(int count) {
+	for (int i = 0; i < count; i++) {
+		printInsn("pushq", "$0"); // local vars initialized to zero
+	}
+  }
+  
+  public void removeLocalsFromStack(int count) {
+	for (int i = 0; i < count; i++) {
+		printInsn("popq", "%r14"); // local vars dumped
+	}
+  }
+	
   public void setClass(String name) {
 	current_class = name;
   }
@@ -68,8 +89,9 @@ public class CodeGenerator {
     printInsn("pushq", "$0");
   }
   
-  public void genFunctionExit(String functionName) {
+  public void genFunctionExit(String functionName, int local_count) {
 	 printInsn("popq", "%rax");
+	 removeLocalsFromStack(local_count);
 	 genMainExit(functionName );
   }
 

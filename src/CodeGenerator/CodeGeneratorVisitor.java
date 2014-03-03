@@ -59,8 +59,9 @@ import AST.Type;
 import AST.VarDecl;
 import AST.VarDeclList;
 import AST.While;
-
 import AST.Visitor.Visitor;
+import Type.Visitor.TypeChecker;
+import Type.*;
 
 // Sample code generation visitor.
 // Robert R. Henry 2013-11-12
@@ -69,10 +70,14 @@ public class CodeGeneratorVisitor implements Visitor {
 
   private CodeGenerator cg;
   private String callee;
- 
-  public CodeGeneratorVisitor(CodeGenerator cg) {
+  private TypeChecker tc;
+  private int stack_offset;
+  
+  public CodeGeneratorVisitor(CodeGenerator cg, TypeChecker tc) {
     this.cg = cg;
 	callee = "NULL";
+	this.tc = tc;
+	stack_offset = 0;
   }
 
   // Display added for toy example language.  Not used in regular MiniJava
@@ -137,6 +142,8 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(VarDecl n) {
     n.t.accept(this);
     n.i.accept(this);
+	tc.AddMemOffset(n.i.s, -8 + stack_offset);
+	stack_offset -= 8;
   }
 
   // Type t;
@@ -148,7 +155,9 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(MethodDecl n) {
 	n.t.accept(this);
     n.i.accept(this);
+	int local_count = n.vl.size();
     cg.genFunctionEntry(n.i.s);
+	cg.addLocalsToStack(local_count);
     String[] registers = {"%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"};
     if (n.fl.size() > 6) System.exit(1); // more than 6 params is illegal (at the moment)
     for (int i = n.fl.size() - 1; i >= 0; i--) {
@@ -162,7 +171,9 @@ public class CodeGeneratorVisitor implements Visitor {
       n.sl.get(i).accept(this);
     }
     n.e.accept(this);
-    cg.genFunctionExit(n.i.s);
+	
+    cg.genFunctionExit(n.i.s, local_count);
+	stack_offset += local_count * 8;
   }
 
   // Type t;
@@ -236,6 +247,7 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(Assign n) {
     n.i.accept(this);
     n.e.accept(this);
+	cg.storeLocal(tc.GetMemOffset(n.i.s));
   }
 
   // Identifier i;
@@ -382,6 +394,7 @@ public class CodeGeneratorVisitor implements Visitor {
 
   public void visit(IdentifierExp n) {
 	callee = n.s;
+	cg.loadLocal(tc.GetMemOffset(callee));
   }
 
   public void visit(ConstantExp n) {
