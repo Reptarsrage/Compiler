@@ -1,7 +1,7 @@
 class Assignment4 {
   public static void main (String [ ] args) {
      display(new Dog().Foo());
-	display(new Dog().Foo());
+     display(new Dog().Foo());
   }
 }
 
