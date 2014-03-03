@@ -71,11 +71,13 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   private CodeGenerator cg;
   private String callee;
   private TypeChecker tc;
+  private String recent_class;
   
   public CodeGeneratorSecondaryVisitor(CodeGenerator cg, TypeChecker tc) {
     this.cg = cg;
 	callee = "NULL";
 	this.tc = tc;
+	recent_class = "NULL";
   }
 
   // Display added for toy example language.  Not used in regular MiniJava
@@ -98,6 +100,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Block b;
   public void visit(MainClass n) {
 	tc.PushClass("asm_main");
+	recent_class = "asm_main";
 	cg.genMainEntry("asm_main");
     n.i1.accept(this);
     n.i2.accept(this);
@@ -112,6 +115,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // MethodDeclList ml;
   public void visit(ClassDeclSimple n) {
 	tc.PushClass(n.i.s);
+	recent_class = n.i.s;
 	cg.setClass(n.i.s);
 	n.i.accept(this);
     for (int i = 0; i < n.vl.size(); i++) {
@@ -128,6 +132,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
 	tc.PushClass(n.i.s);
+	recent_class = n.i.s;
 	cg.setClass(n.i.s);
 	n.i.accept(this);
     n.j.accept(this);
@@ -251,7 +256,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 	int offset = tc.GetMemOffSet(n.i.s); // returns zero if not local var
 	if (offset == 0){
 		offset = tc.GetGlobalMemOffSet(n.i.s);
-		cg.storeNonLocal(offset);
+		cg.storeNonLocal(recent_class, offset);
 	} else{
 		cg.storeLocal(offset);
 	}
@@ -405,7 +410,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 	int offset = tc.GetMemOffSet(n.s); // returns zero if not local var
 	if (offset == 0){
 		offset = tc.GetGlobalMemOffSet(n.s);
-		cg.loadNonLocal(offset);
+		cg.loadNonLocal(recent_class, offset);
 	} else {
 		cg.loadLocal(offset);
 	}

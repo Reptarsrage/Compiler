@@ -44,31 +44,30 @@ public class CodeGenerator {
 			printInsn(".quad", c.base_type.name); // vtable pointer, extends
 		}
 		String[] toPrint = new String[c.methods.size() + c.fields.size()];
-                //                System.out.println(name + " has " + (c.methods.size() + c.fields.size()) + " members" );
 		 for (String meth : c.methods.keySet()) {
 			TypeNode t = c.methods.get(meth);
 			int i = c.mem_offset.get(meth);
-			toPrint[(i / (-8)) - 1] = name +"$" +meth;
+			toPrint[i / 8 - 1] = name +"$" +meth;
 		 }
 		 
 		 for (String var : c.fields.keySet()) {
 			TypeNode t = c.fields.get(var);
 			int i = c.mem_offset.get(var);
-			toPrint[(i / (-8)) - 1] = "0"; // field initialitzed to zero
+			toPrint[i / 8 - 1] = "0"; // field initialitzed to zero
 		 }
 		 for (String s : toPrint)
 			printInsn(".quad", s);
 	}
   }
   
-  public void loadNonLocal(int offset) {
-	printInsn("popq", "%r14");
-	printInsn("pushq", "*" +offset + "(%r14)");
+  public void loadNonLocal(String className, int offset) {
+	printInsn("movq", "$" +className+"$$","%r14");
+	printInsn("pushq", offset + "(%r14)");
   }
   
-  public void storeNonLocal(int offset) {
-	printInsn("popq", "%r14");
-	printInsn("popq", "*" +offset + "(%r14)");
+  public void storeNonLocal(String className, int offset) {
+	printInsn("movq", "$" +className+"$$","%r14");
+	printInsn("popq", offset + "(%r14)");
   }
   
   public void loadLocal(int offset) {
@@ -81,7 +80,6 @@ public class CodeGenerator {
 	//System.out.println("Created new object " + name + ", with size " + size);
 	printInsn("movq", "$" + size, "%rdi"); // RDI the first parameter?
 	printInsn("call", "mjmalloc");
-	printInsn("pushq", "%rax"); // push location
   }
   
   public void storeLocal(int offset) {

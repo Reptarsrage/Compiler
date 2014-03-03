@@ -132,8 +132,8 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(VarDecl n) {
 	if (tc.topOfStackIsClass()) {
 		// field
-		tc.AddGlobalMemOffSet(n.i.s, -8 + vtble_offset);
-		vtble_offset -= 8;
+		tc.AddGlobalMemOffSet(n.i.s, 8 + vtble_offset);
+		vtble_offset += 8;
 	} else {
 		// local var
 		tc.AddMemOffSet(n.i.s, -8 + stack_offset);
@@ -149,8 +149,8 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e;
   public void visit(MethodDecl n) {
 	// method
-	tc.AddGlobalMemOffSet(n.i.s, -8 + vtble_offset);
-	vtble_offset -= 8;
+	tc.AddGlobalMemOffSet(n.i.s, 8 + vtble_offset);
+	vtble_offset += 8;
 	tc.PushMethod(n.i.s);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);

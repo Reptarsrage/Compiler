@@ -62,6 +62,7 @@ public class TypeChecker {
 		return nest.peek() instanceof ClassTypeNode;
 	}
 	
+	
 	public void AddMemOffSet(String var_name, int offset) {
 		if (nest.peek() instanceof BlockTypeNode){
 			BlockTypeNode block = (BlockTypeNode) nest.peek();
