@@ -49,37 +49,63 @@ public class CodeGenerator {
 			int i = c.mem_offset.get(meth);
 			toPrint[i / 8 - 1] = name +"$" +meth;
 		 }
-		 
-		 for (String var : c.fields.keySet()) {
-			TypeNode t = c.fields.get(var);
-			int i = c.mem_offset.get(var);
-			toPrint[i / 8 - 1] = "0"; // field initialitzed to zero
-		 }
 		 for (String s : toPrint)
-			printInsn(".quad", s);
+			if (s != null)
+				printInsn(".quad", s);
+			else
+				printInsn(".quad", "0");
 	}
   }
   
-  public void loadNonLocal(String className, int offset) {
-	printInsn("movq", "$" +className+"$$","%r14");
-	printInsn("pushq", offset + "(%r14)");
+  public void loadNonLocal(String className, String id, TypeChecker tc, int offset) {
+	ClassTypeNode c = tc.program.classes.get(className);
+	if (c.fields.get(id) != null){
+		// loading a field
+		// expect our class addr to be in r15
+		//printInsn("movq", "$" +className+"$$","%r14");
+		printInsn("pushq", offset + "(%r15)");
+	} else {
+		// loading a method
+		// TODO extended
+		printInsn("movq", "*(%r15)", "%r14"); // get vtable addr
+		printInsn("pushq", offset + "(%r14)");
+	}
   }
   
   public void storeNonLocal(String className, int offset) {
-	printInsn("movq", "$" +className+"$$","%r14");
-	printInsn("popq", offset + "(%r14)");
+	// storing a field
+	// expect our class addr to be in r15
+	printInsn("popq", "%r14");
+	//printInsn("movq", "$" +className+"$$","%r14");
+	printInsn("movq", "%r14", offset + "(%r15)");
   }
   
   public void loadLocal(int offset) {
 	printInsn("pushq", offset + "(%rbp)");
   }
   
+  public void genNewArray() {
+	printInsn("popq", "%rdi");
+	printInsn("movq", "%rdi", "%r14");
+	printInsn("call", "check_initial_bounds");
+	printInsn("incq", "%r14");
+	printInsn("imulq", "$8", "%r14");
+	printInsn("movq", "%r14", "%rdi");
+	printInsn("call", "mjmalloc");
+	printInsn("movq", "%r14", "*(%rax)");
+	printInsn("addq", "$8", "%rax");
+	printInsn("pushq", "%rax");
+  }
+  
   public void genNewObj(String name, TypeChecker tc) {
 	ClassTypeNode c = tc.program.classes.get(name);
-	int size = (c.fields.size() + c.methods.size() + 1) * 8;
+	int size = (c.fields.size() + 1) * 8;
 	//System.out.println("Created new object " + name + ", with size " + size);
 	printInsn("movq", "$" + size, "%rdi"); // RDI the first parameter?
 	printInsn("call", "mjmalloc");
+	printInsn("movq", "$" + name + "$$", "%r13");
+	printInsn("movq", "%r13", "(%rax)");
+	printInsn("pushq", "%rax");
   }
   
   public void storeLocal(int offset) {
@@ -153,8 +179,9 @@ public class CodeGenerator {
       printInsn("popq", registers[argc - 1 - i]);
     }
 	
-    printInsn("popq", "%r14"); // addr of class
-	printInsn("movq", "$" + className + "$$", "%r14");
+    printInsn("popq", "%r15"); // addr of class
+	//printInsn("movq", "$" + className + "$$", "%r14");
+	printInsn("movq", "(%r15)", "%r14");
 	printInsn("call", "*"+offset+"(%r14)");
     printInsn("pushq", "%rax");
   }

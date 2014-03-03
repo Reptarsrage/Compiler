@@ -251,8 +251,8 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Identifier i;
   // Exp e;
   public void visit(Assign n) {
-    n.i.accept(this);
     n.e.accept(this);
+	n.i.accept(this);
 	int offset = tc.GetMemOffSet(n.i.s); // returns zero if not local var
 	if (offset == 0){
 		offset = tc.GetGlobalMemOffSet(n.i.s);
@@ -410,7 +410,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 	int offset = tc.GetMemOffSet(n.s); // returns zero if not local var
 	if (offset == 0){
 		offset = tc.GetGlobalMemOffSet(n.s);
-		cg.loadNonLocal(recent_class, offset);
+		cg.loadNonLocal(recent_class, n.s, tc, offset);
 	} else {
 		cg.loadLocal(offset);
 	}
@@ -426,11 +426,13 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Exp e;
   public void visit(NewIntArray n) {
     n.e.accept(this);
+	cg.genNewArray();
   }
 
   // Exp e;
   public void visit(NewDoubleArray n) {
     n.e.accept(this);
+	cg.genNewArray();
   }
   
   // Identifier i;
