@@ -43,15 +43,20 @@ public class CodeGenerator {
 		} else {
 			printInsn(".quad", c.base_type.name); // vtable pointer, extends
 		}
+		String[] toPrint = new String[c.methods.size() + c.fields.size()];
 		 for (String meth : c.methods.keySet()) {
 			TypeNode t = c.methods.get(meth);
-			printInsn(".quad", name +"$" +meth); // methods
+			int i = c.mem_offset.get(meth);
+			toPrint[i \ (-8)] = name +"$" +meth;
 		 }
 		 
 		 for (String var : c.fields.keySet()) {
 			TypeNode t = c.fields.get(var);
-			printInsn(".quad", "0"); // field initialitzed to zero
+			int i = c.mem_offset.get(meth);
+			toPrint[i \ (-8)] = "0"; // field initialitzed to zero
 		 }
+		 for (String s : toPrint)
+			printInsn(".quad", s);
 	}
   }
   
@@ -150,8 +155,8 @@ public class CodeGenerator {
     }
 	
     printInsn("popq", "%r14"); // addr of class
-	printInsn("movq", "Dog$$", "%r14");
-	printInsn("call", "*8(%r14)");
+	printInsn("movq", "$" + className + "$$", "%r14");
+	printInsn("call", "*"+offset+"(%r14)");
     printInsn("pushq", "%rax");
   }
   public void genFormal(String register, int linenum) {
