@@ -89,15 +89,17 @@ public class CodeGeneratorVisitor implements Visitor {
   // MainClass m;
   // ClassDeclList cl;
   public void visit(Program n) {
-    n.m.accept(this);
+	n.m.accept(this);
     for (int i = 0; i < n.cl.size(); i++) {
       n.cl.get(i).accept(this);
     }
+	cg.genVtbles(tc);
   }
 
   // Identifier i1,i2;
   // Block b;
   public void visit(MainClass n) {
+	tc.PushClass("asm_main");
 	cg.genMainEntry("asm_main");
     n.i1.accept(this);
     n.i2.accept(this);
@@ -111,7 +113,8 @@ public class CodeGeneratorVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclSimple n) {
-    cg.setClass(n.i.s);
+    tc.PushClass(n.i.s);
+	cg.setClass(n.i.s);
 	n.i.accept(this);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
@@ -126,7 +129,8 @@ public class CodeGeneratorVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
-    cg.setClass(n.i.s);
+    tc.PushClass(n.i.s);
+	cg.setClass(n.i.s);
 	n.i.accept(this);
     n.j.accept(this);
     for (int i = 0; i < n.vl.size(); i++) {
@@ -153,6 +157,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // StatementList sl;
   // Exp e;
   public void visit(MethodDecl n) {
+	tc.PushMethod(n.i.s);
 	n.t.accept(this);
     n.i.accept(this);
 	int local_count = n.vl.size();
@@ -204,7 +209,7 @@ public class CodeGeneratorVisitor implements Visitor {
 
   // StatementList sl;
   public void visit(Block n) {
-    for (int i = 0; i < n.sl.size(); i++) {
+	for (int i = 0; i < n.sl.size(); i++) {
       n.sl.get(i).accept(this);
     }
   }

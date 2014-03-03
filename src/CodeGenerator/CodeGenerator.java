@@ -3,6 +3,7 @@ package CodeGenerator;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import Type.*;
+import Type.Visitor.TypeChecker;
 
 public class CodeGenerator {
 
@@ -30,6 +31,30 @@ public class CodeGenerator {
       assemblerPrefixName = "";
     }
   }
+  
+  
+  public void genVtbles(TypeChecker tc) {
+	printSection(".data");
+	for (String name : tc.program.classes.keySet()){
+		ClassTypeNode c = tc.program.classes.get(name);
+		 printLabel(name + "$$");
+		 if (c.base_type == tc.undef_id) {
+			printInsn(".quad", "0"); // vtable pointer, no extends
+		} else {
+			printInsn(".quad", c.base_type.name); // vtable pointer, extends
+		}
+		 for (String meth : c.methods.keySet()) {
+			TypeNode t = c.methods.get(meth);
+			printInsn(".quad", name +"$" +meth); // methods
+		 }
+		 
+		 for (String var : c.fields.keySet()) {
+			TypeNode t = c.fields.get(var);
+			printInsn(".quad", "0"); // field initialitzed to zero
+		 }
+	}
+  }
+  
   
   public void loadLocal(int offset) {
 	printInsn("pushq", offset + "(%rbp)");

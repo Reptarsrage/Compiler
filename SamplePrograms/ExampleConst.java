@@ -6,6 +6,9 @@ class Assignment4 {
 }
 
 class Dog {
+  int f;
+  int g;
+  int h;
   public int Foo () {
 	int a;
 	int b;

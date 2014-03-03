@@ -10,7 +10,7 @@ import AST.*;
 import java.util.*;
 
 public class TypeChecker {
-    PackageTypeNode program;		// Contains a list of all classes
+    public PackageTypeNode program;		// Contains a list of all classes
     public IntTypeNode int_type;			// Singleton integer type
     public DoubleTypeNode double_type;		// Singleton double type
     public UndefTypeNode undef_type;		// Singleton undefined type
@@ -40,38 +40,34 @@ public class TypeChecker {
     }
 	
 	public void AddMemOffset(String var_name, int offset) {
-		if (!(nest.peek() instanceof BlockTypeNode)){
-			// FAIL
-            System.err.println("Internal error, trying to add a memory offset to a local with a " +
-                               nest.peek() + " on top of stack.");
-            System.exit(1);
-		}
-		BlockTypeNode block = (BlockTypeNode) nest.peek();
-		if (block.locals.get(var_name) == null){
-			System.err.println("Internal error, trying to add a memory offset to an unrecognized local: " +
-                               var_name + ".");
-            System.exit(1);
-		
-		}
-		
-		block.mem_offset.put(var_name, offset);      
+		if (nest.peek() instanceof BlockTypeNode){
+			BlockTypeNode block = (BlockTypeNode) nest.peek();
+			if (block.locals.get(var_name) == null){
+				System.err.println("Internal error, trying to add a memory offset to an unrecognized local: " +
+								   var_name + ".");
+				System.exit(1);
+			
+			}
+			
+			block.mem_offset.put(var_name, offset); 
+		}		
 	}
 	
 	public int GetMemOffset(String var_name) {
-		if (!(nest.peek() instanceof BlockTypeNode)){
-			// FAIL
-            System.err.println("Internal error, trying to get a memory offset to a local with a " +
-                               nest.peek() + " on top of stack.");
-            System.exit(1);
+		if (nest.peek() instanceof BlockTypeNode){
+			// retrieve a local
+			BlockTypeNode block = (BlockTypeNode) nest.peek();
+			if (block.locals.get(var_name) == null){
+				System.err.println("Internal error, trying to get a memory offset to an unrecognized local: " +
+								   var_name + ".");
+				System.exit(1);
+			
+			}
+			return block.mem_offset.get(var_name);  
+		} else {
+			// TODO retireve a global
+			return 0;
 		}
-		BlockTypeNode block = (BlockTypeNode) nest.peek();
-		if (block.locals.get(var_name) == null){
-			System.err.println("Internal error, trying to get a memory offset to an unrecognized local: " +
-                               var_name + ".");
-            System.exit(1);
-		
-		}
-		return block.mem_offset.get(var_name);      
 	}
 	
     // Adds a class to our graph
