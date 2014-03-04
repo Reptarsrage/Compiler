@@ -372,6 +372,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Exp e;
   public void visit(ArrayLength n) {
     n.e.accept(this);
+	
   }
 
   // Exp e;

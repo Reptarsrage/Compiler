@@ -38,6 +38,26 @@ int64_t get(void)
 }
 
 /*
+ * Array errors
+ *
+ *
+ */
+void check_bounds(int64_t * addr, int64_t index) {
+	int64_t length = *(addr - 8);
+	if (index >= length || index < 0) {
+		printf("%s\n", "Array out of bounds exception!");
+		exit(1);
+	}
+}
+
+void check_initial_bounds(int64_t length) {
+	if (length <= 0) {
+		printf("%s\n", "A new array must have size greater than zero!");
+		exit(1);
+	}
+}
+
+/*
  * Write an int64_t x to standard output.
  * This emulates what java's System.out.println does when given an integer,
  * so we can diff the output of the known-good expect run

@@ -9,7 +9,9 @@ class Dog {
   int g;
   int h;
     public int f() {
-    	return 1;
+    	int[] a;
+	a = new int[5];
+	return 1;
     }
 
   public int Foo (int i, int j, int k, int l, int m) {

@@ -90,7 +90,7 @@ public class CodeGenerator {
 	printInsn("imulq", "$8", "%r14");
 	printInsn("movq", "%r14", "%rdi");
 	printInsn("call", "mjmalloc");
-	printInsn("movq", "%r14", "*(%rax)");
+	printInsn("movq", "%r14", "(%rax)");
 	printInsn("addq", "$8", "%rax");
 	printInsn("pushq", "%rax");
   }
