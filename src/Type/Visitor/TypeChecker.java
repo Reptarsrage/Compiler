@@ -41,14 +41,14 @@ public class TypeChecker {
 	
 	// Adds the offset for a method in a classes v-table
 	public void AddMethodMemOffSet(String id_name, String className, int offset) {
-		//System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ setting method: "+id_name);
+		//System.out.println("#Setting method: "+id_name);
 		while(!(nest.peek() instanceof ClassTypeNode)) 
 		    nest.pop();
 		    
 		// set a global's offset (or possibly a methods)
 		ClassTypeNode c = (ClassTypeNode)nest.peek();
 		if (c.methods.get(id_name) != null){
-		    //System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set method: "+id_name +" with offset "+ offset);
+		    //System.out.println("#Set method: "+id_name +" with offset "+ offset);
 		    c.vtble_offset.put(id_name, offset); 
 			c.vtble_offset_to_class.put(offset, className);
 		} else {
@@ -61,14 +61,14 @@ public class TypeChecker {
 	
 	// Adds the offset for a field in a class
 	public void AddGlobalMemOffSet(String id_name, int offset) {
-		//System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ setting global: "+id_name);
+		//System.out.println("# Setting global: "+id_name);
 		while(!(nest.peek() instanceof ClassTypeNode)) 
 		    nest.pop();
 		    
 		// set a global's offset (or possibly a methods)
 		ClassTypeNode c = (ClassTypeNode)nest.peek();
 		if (c.fields.get(id_name) != null){
-		    //System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set global: "+id_name +" with offset "+ offset);
+		    //System.out.println("# Set global: "+id_name +" with offset "+ offset);
 		    c.mem_offset.put(id_name, offset);
 		} else {
 		    // fail
@@ -85,14 +85,13 @@ public class TypeChecker {
 	
 	// Adds the offset for a local variable in a method (block)
 	public void AddMemOffSet(String var_name, int offset) {
-		//System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ setting local: "+var_name);
+		//System.out.println("# Setting local: "+var_name);
 		if (nest.peek() instanceof BlockTypeNode){
 			BlockTypeNode block = (BlockTypeNode) nest.peek();
 			if (block.locals.get(var_name) != null){
 				// set a local's offset
-				//System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set local: "+var_name +" with offset "+ offset);
+				//System.out.println("# Set local: "+var_name +" with offset "+ offset);
 				block.mem_offset.put(var_name, offset); 
-				//System.out.println("Set " + var_name + ", with offset " + offset);
 			} else {
 				// fail
 				System.err.println("Internal error, trying to set a memory offset to an unrecognized variable: " +
@@ -107,12 +106,12 @@ public class TypeChecker {
 	
 	// Retrieves the offset of a local or a parameter from the base pointer
 	public int GetMemOffSet(String var_name) {
-		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ searching for local: "+var_name);
+		System.out.println("# Searching for local: "+var_name);
 		if (nest.peek() instanceof BlockTypeNode){
 			BlockTypeNode block = (BlockTypeNode) nest.peek();
 			if (block.locals.get(var_name) != null){
 				// retrieve a local's offset
-				System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ found local: "+var_name +" at offset "+ block.mem_offset.get(var_name));
+				System.out.println("# Found local: "+var_name +" at offset "+ block.mem_offset.get(var_name));
 				return block.mem_offset.get(var_name); 
 			} else {
 				// parameter's offset
@@ -126,7 +125,7 @@ public class TypeChecker {
 				int total_offset = (m.args.size() + 1) * -8;
 				for (String arg_name : m.args.keySet()) {
 					if (arg_name.equals(var_name)){
-						System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ found parameter: "+var_name +" at offset "+ (-(1 + count) * 8));
+						System.out.println("# Found parameter: "+var_name +" at offset "+ (-(1 + count) * 8));
 						return total_offset + count * 8;
 					} else
 						count++;
@@ -142,7 +141,7 @@ public class TypeChecker {
 	// retrieves the v-table offset of the method in the class
 	public int GetMethodMemOffSet(String id_name, String className) {
 		// retrieve a method's offset
-		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ searching for method: "+id_name +", "+className);
+		System.out.println("# Searching for method: "+id_name +", "+className);
 		TypeNode t = CheckSymbolTables( className, TypeLevel.VARIABLE);
 		ClassTypeNode c ;
 		if (t == null || !(t instanceof IdentifierTypeNode))
@@ -150,7 +149,7 @@ public class TypeChecker {
 		else
 			c = ((IdentifierTypeNode)t).c;
 		if (c != null && c.vtble_offset.get(id_name) != null){
-			System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ offset of method "+id_name+", is "+c.vtble_offset.get(id_name));
+			System.out.println("# Offset of method "+id_name+", is "+c.vtble_offset.get(id_name));
 			return c.vtble_offset.get(id_name);
 		}
 		System.err.println("Internal error, trying to get a memory offset to an unrecognized function: " +
@@ -161,7 +160,7 @@ public class TypeChecker {
 	
 	// Retrieves the offset of a field from the classes pointer
 	public int GetGlobalMemOffSet(String id_name) {
-		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ searching for field: "+id_name +".");
+		System.out.println("# Searching for field: "+id_name +".");
 		// retrieve a global's offset
 		Stack<TypeNode> popped = new Stack<TypeNode>();	
 		while (!(nest.peek() instanceof ClassTypeNode))
@@ -170,7 +169,7 @@ public class TypeChecker {
 		while (!popped.isEmpty())
 			nest.push(popped.pop());
 		if (c.mem_offset.get(id_name) != null){
-			System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ offset of field "+id_name+", is "+c.mem_offset.get(id_name));
+			System.out.println("# Offset of field "+id_name+", is "+c.mem_offset.get(id_name));
 			return c.mem_offset.get(id_name);
 		}
 		System.err.println("Internal error, trying to get a memory offset to an unrecognized identifier: " +

@@ -52,7 +52,7 @@ public class CodeGenerator {
 		String[] toPrint = new String[c.vtble_offset.size()];
 		 for (String meth : c.vtble_offset.keySet()) {
 			int i = c.vtble_offset.get(meth);
-			System.out.println("#"+meth + " has offset of " + i+"!");
+			System.out.println("\t# Method "+meth + " has v-table offset of " + i+"!");
 			toPrint[i / 8 - 1] = c.vtble_offset_to_class.get(i) +"$" +meth;
 		 }
 
@@ -60,7 +60,7 @@ public class CodeGenerator {
 			printInsn(".quad", s);
 			
 		for (String s : c.mem_offset.keySet()) {
-			System.out.println("#FIELD "+s + " has offset of " + c.mem_offset.get(s)+"!");
+			System.out.println("\t# Field "+s + " has class offset of " + c.mem_offset.get(s)+"!");
 		}
 	}
  }
@@ -128,7 +128,7 @@ public class CodeGenerator {
   public void genNewObj(String name, TypeChecker tc) {
 	ClassTypeNode c = tc.program.classes.get(name);
 	int size = (c.mem_offset.size() + 1) * 8;
-	System.out.println("#@@@@@@@@@@@@@@@@@Created new object " + name + ", with size " + size);
+	System.out.println("# Created new object " + name + ", with size " + size);
 	printInsn("movq", "$" + size, "%rdi"); // RDI the first parameter?
 	printInsn("call", "mjmalloc");
 	printInsn("movq", "$" + name + "$$", "%r13");
