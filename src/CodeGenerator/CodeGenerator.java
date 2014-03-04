@@ -52,9 +52,8 @@ public class CodeGenerator {
 
 		 for (String s : toPrint)
 			printInsn(".quad", s);
-		 }
 	}
-  }
+}
   
   public void loadNonLocal(String className, String id, TypeChecker tc, int offset) {
 	ClassTypeNode c = tc.program.classes.get(className);
