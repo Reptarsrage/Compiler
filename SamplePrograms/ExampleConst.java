@@ -11,7 +11,7 @@ class Dog {
     public int f() {
     	int[] a;
 	a = new int[5];
-	return 1;
+	return a.length;
     }
 
   public int Foo (int i, int j, int k, int l, int m) {
@@ -46,7 +46,7 @@ class Cat {
 		Dog d;
 		d = new Dog();
 		Dog = new Horse();
-		display(d.Foo(1, 2, 3, 4, 5));
+		display(d.f());
 		display(Dog.Foo(1, 2, 3, 4, 5));
 		return 1; 
 	}
