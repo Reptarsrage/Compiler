@@ -111,9 +111,9 @@ public class CodeGenerator {
   public void storeLocal(int offset) {
 	printInsn("popq", offset + "(%rbp)");
   }
+
   
   public void addLocalsToStack(int count) {
-	printInsn("pushq", "%rdi"); // push this pointer to stack in first place!
 	for (int i = 0; i < count; i++) {
 		printInsn("pushq", "$0"); // local vars initialized to zero
 	}
@@ -163,9 +163,9 @@ public class CodeGenerator {
     printInsn("pushq", "$0");
   }
   
-  public void genFunctionExit(String functionName, int local_count) {
+  public void genFunctionExit(String functionName, int local_count, int param_count) {
 	 printInsn("popq", "%rax");
-	 removeLocalsFromStack(local_count + 1); // TODO optimize
+	 removeLocalsFromStack(local_count + param_count); // TODO optimize
 	 genMainExit(functionName );
   }
 

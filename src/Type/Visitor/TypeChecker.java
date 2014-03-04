@@ -104,6 +104,27 @@ public class TypeChecker {
 			if (c.mem_offset.get(id_name) != null)
 				return c.mem_offset.get(id_name);  
 		}
+		Stack<TypeNode> popped = new Stack<TypeNode>();
+		while (!(nest.peek() instanceof MethodTypeNode))
+			popped.push(nest.pop());
+		MethodTypeNode m = (MethodTypeNode)nest.peek();
+		int count = 0;
+		for (String arg_name : m.args.keySet()) {
+			if (arg_name.equals(id_name)){
+				while (!popped.isEmpty())
+					nest.push(popped.pop());
+				return -(1 + count) * 8;
+			} else
+				count++;
+		}
+		while (!(nest.peek() instanceof ClassTypeNode))
+			popped.push(nest.pop());
+		ClassTypeNode c = (ClassTypeNode)nest.peek();
+		while (!popped.isEmpty())
+			nest.push(popped.pop());
+		if (c.mem_offset.get(id_name) != null)
+			return c.mem_offset.get(id_name);
+		
 		System.err.println("Internal error, trying to get a memory offset to an unrecognized identifier: " +
 							   id_name + ".");
 		System.exit(1);

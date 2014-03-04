@@ -164,12 +164,13 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
     // n.i.accept(this);
 	int local_count = n.vl.size();
     cg.genFunctionEntry(n.i.s);
-	cg.addLocalsToStack(local_count);
     String[] registers = {"%rsi", "%rdx", "%rcx", "%r8", "%r9"};
     if (n.fl.size() > 5) System.exit(1); // more than 5 params is illegal (at the moment)
-    for (int i = n.fl.size() - 1; i >= 0; i--) {
-      n.fl.get(i).accept(this);
+    cg.genFormal("%rdi", n.line_number); // add this ptr to stack
+	for (int i = n.fl.size() - 1; i >= 0; i--) {
+	  cg.genFormal(registers[i], n.line_number);
     }
+	cg.addLocalsToStack(local_count);
     // for (int i = 0; i < n.vl.size(); i++) {
       // n.vl.get(i).accept(this);
     // }
@@ -178,7 +179,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
     }
     n.e.accept(this);
 	
-    cg.genFunctionExit(n.i.s, local_count);
+    cg.genFunctionExit(n.i.s, local_count, n.fl.size() + 1);
   }
 
   // Type t;
