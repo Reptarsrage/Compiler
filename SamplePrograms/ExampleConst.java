@@ -8,7 +8,7 @@ class Dog {
   int f;
   int g;
   int h;
-        public int f() {
+    public int f() {
     	return 1;
     }
 
@@ -25,7 +25,7 @@ class Dog {
 	g = 6;
 	h = 7;
 	m = 100;
-	return i + j + k + a + b + l - m;
+	return i + j + k + a + b + l - m + this.f();
   }
 }
 

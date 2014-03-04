@@ -163,6 +163,10 @@ public class CodeGenerator {
     printInsn("pushq", "$0");
   }
   
+  public void genThis() {
+	printInsn("pushq", "-8(%rbp)");
+  }
+  
   public void genFunctionExit(String functionName, int local_count, int param_count) {
 	 printInsn("popq", "%rax");
 	 removeLocalsFromStack(local_count + param_count); // TODO optimize

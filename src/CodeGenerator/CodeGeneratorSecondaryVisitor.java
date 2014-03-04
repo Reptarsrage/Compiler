@@ -421,6 +421,9 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   }
 
   public void visit(This n) {
+	System.out.println("#~~~~~~~~~~~~~~~~~~~Setting callee to " + recent_class);
+	callee = recent_class;
+	cg.genThis();
   }
 
   // Exp e;
