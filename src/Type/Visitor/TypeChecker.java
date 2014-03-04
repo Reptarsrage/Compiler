@@ -41,23 +41,22 @@ public class TypeChecker {
 	
 	public void AddGlobalMemOffSet(String id_name, int offset) {
 		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ setting global: "+id_name);
-		if (nest.peek() instanceof ClassTypeNode){
-			// set a global's offset (or possibly a methods)
-			ClassTypeNode c = (ClassTypeNode)nest.peek();
-			if (c.fields.get(id_name) != null || c.methods.get(id_name) != null){
-				System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set global: "+id_name +" with offset "+ offset);
-				c.mem_offset.put(id_name, offset);  
-				//System.out.println("Set " + id_name + ", with offset " + offset);
-			} else {
-				// fail
-				System.err.println("Internal error, trying to set a memory offset to an unrecognized identifier: " +
-							   id_name + ".");
-				System.exit(1);	
-			}
+		while(!(nest.peek() instanceof ClassTypeNode)) 
+		    nest.pop();
+		    
+		// set a global's offset (or possibly a methods)
+		ClassTypeNode c = (ClassTypeNode)nest.peek();
+		if (c.fields.get(id_name) != null || c.methods.get(id_name) != null){
+		    System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set global: "+id_name +" with offset "+ offset);
+		    c.mem_offset.put(id_name, offset);  
+		    //System.out.println("Set " + id_name + ", with offset " + offset);
 		} else {
-			System.err.println("Internal error, expected a ClassTypeNode on the stack but found a " + nest.peek());
-			System.exit(1);
+		    // fail
+		    System.err.println("Internal error, trying to set a memory offset to an unrecognized identifier: " +
+				       id_name + ".");
+		    System.exit(1);	
 		}
+		
 	}
 	
 	public boolean topOfStackIsClass() {
