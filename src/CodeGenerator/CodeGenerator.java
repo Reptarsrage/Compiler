@@ -106,6 +106,11 @@ public class CodeGenerator {
 	printInsn("pushq", "%rax");
   }
   
+    public void genArrayLookup(int line_number) {
+	printInsn("popq", "%rdi"); // pop index into rdi
+	printInsn("popq", "%rsi");
+    }
+
   public void storeLocal(int offset) {
 	printInsn("popq", offset + "(%rbp)");
   }
