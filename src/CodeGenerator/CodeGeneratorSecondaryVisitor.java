@@ -384,7 +384,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
     }
 	n.e.accept(this); // this pushes addr of struct to the stack
 	String className = callee;
-	int offset = tc.GetMethodMemOffSet(n.i.s, callee); // vtable offset of method
+	int offset = tc.GetGlobalMemOffSet(n.i.s, callee); // vtable offset of method
     cg.genCall(className, n.i.s, offset, n.el.size(), n.line_number);
   }
 
