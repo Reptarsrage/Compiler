@@ -85,14 +85,21 @@ public class CodeGenerator {
   public void genNewArray() {
 	printInsn("popq", "%rdi");
 	printInsn("movq", "%rdi", "%r14");
+	printInsn("movq", "%rdi", "%r15");
 	printInsn("call", "check_initial_bounds");
 	printInsn("incq", "%r14");
 	printInsn("imulq", "$8", "%r14");
 	printInsn("movq", "%r14", "%rdi");
 	printInsn("call", "mjmalloc");
-	printInsn("movq", "%r14", "(%rax)");
+	printInsn("movq", "%r15", "(%rax)");
 	printInsn("addq", "$8", "%rax");
 	printInsn("pushq", "%rax");
+  }
+  
+  public void genArrayLength() {
+	printComment("Call to arrray length");
+	printInsn("popq", "%r15");
+	printInsn("pushq", "-8(%r15)");
   }
   
   public void genNewObj(String name, TypeChecker tc) {
