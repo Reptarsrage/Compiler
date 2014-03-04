@@ -39,6 +39,25 @@ public class TypeChecker {
         nest.push(program);
     }
 	
+	public void AddMethodMemOffSet(String id_name, int offset) {
+		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ setting method: "+id_name);
+		while(!(nest.peek() instanceof ClassTypeNode)) 
+		    nest.pop();
+		    
+		// set a global's offset (or possibly a methods)
+		ClassTypeNode c = (ClassTypeNode)nest.peek();
+		if (c.methods.get(id_name) != null){
+		    System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set method: "+id_name +" with offset "+ offset);
+		    c.vtble_offset.put(id_name, offset);  
+		} else {
+		    // fail
+		    System.err.println("Internal error, trying to set a memory offset to an unrecognized function: " +
+				       id_name + ".");
+		    System.exit(1);	
+		}
+	}
+	
+	
 	public void AddGlobalMemOffSet(String id_name, int offset) {
 		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ setting global: "+id_name);
 		while(!(nest.peek() instanceof ClassTypeNode)) 
@@ -46,17 +65,15 @@ public class TypeChecker {
 		    
 		// set a global's offset (or possibly a methods)
 		ClassTypeNode c = (ClassTypeNode)nest.peek();
-		if (c.fields.get(id_name) != null || c.methods.get(id_name) != null){
+		if (c.fields.get(id_name) != null){
 		    System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set global: "+id_name +" with offset "+ offset);
-		    c.mem_offset.put(id_name, offset);  
-		    //System.out.println("Set " + id_name + ", with offset " + offset);
+		    c.mem_offset.put(id_name, offset);
 		} else {
 		    // fail
 		    System.err.println("Internal error, trying to set a memory offset to an unrecognized identifier: " +
 				       id_name + ".");
 		    System.exit(1);	
 		}
-		
 	}
 	
 	public boolean topOfStackIsClass() {
@@ -129,7 +146,7 @@ public class TypeChecker {
 			c = ((IdentifierTypeNode)t).c;
 		if (c != null && c.methods.get(id_name) != null){
 			System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ offset of method "+id_name+", is "+c.mem_offset.get(id_name));
-			return c.mem_offset.get(id_name);
+			return c.vtble_offset.get(id_name);
 		}
 		System.err.println("Internal error, trying to get a memory offset to an unrecognized function: " +
 							   id_name + ".");

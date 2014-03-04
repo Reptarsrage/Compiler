@@ -41,19 +41,21 @@ public class CodeGenerator {
 		 if (c.base_type == tc.undef_id) {
 			printInsn(".quad", "0"); // vtable pointer, no extends
 		} else {
-			printInsn(".quad", c.base_type.name); // vtable pointer, extends
+			printInsn(".quad", c.base_type.name + "$$"); // vtable pointer, extends
 		}
 		String[] toPrint = new String[c.methods.size() + c.fields.size()];
-		 for (String meth : c.methods.keySet()) {
-			TypeNode t = c.methods.get(meth);
-			int i = c.mem_offset.get(meth);
+		 for (String meth : c.vtble_offset.keySet()) {
+			int i = c.vtble_offset.get(meth);
+			System.out.println("#"+meth + " has offset of " + i+"!");
 			toPrint[i / 8 - 1] = name +"$" +meth;
 		 }
+		 for (String field : c.mem_offset.keySet()) {
+			int i = c.mem_offset.get(field);
+			System.out.println("#"+field + " has offset of " + i+"!");
+			toPrint[i / 8 - 1] = "0";
+		 }
 		 for (String s : toPrint)
-			if (s != null)
-				printInsn(".quad", s);
-			else
-				printInsn(".quad", "0");
+			printInsn(".quad", s);
 	}
   }
   

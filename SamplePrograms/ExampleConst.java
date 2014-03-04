@@ -29,6 +29,12 @@ class Dog {
   }
 }
 
+class Horse extends Dog {
+	public int Foobar() {
+          return 77;
+	}
+}
+
 class Cat {
 	Dog Dog;
 	public int Baz() {

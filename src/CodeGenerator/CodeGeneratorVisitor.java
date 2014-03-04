@@ -71,12 +71,14 @@ public class CodeGeneratorVisitor implements Visitor {
   private TypeChecker tc;
   private int stack_offset;
   private int vtble_offset;
+  private int field_offset;
   
   public CodeGeneratorVisitor(CodeGenerator cg, TypeChecker tc) {
     this.cg = cg;
 	this.tc = tc;
 	stack_offset = -8;
 	vtble_offset = 0;
+	field_offset = 0;
   }
 
   // Display added for toy example language.  Not used in regular MiniJava
@@ -103,6 +105,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // MethodDeclList ml;
   public void visit(ClassDeclSimple n) {
     vtble_offset = 0;
+	field_offset = n.ml.size() * 8;
 	tc.PushClass(n.i.s);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
@@ -118,6 +121,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
     vtble_offset = 0;
+	field_offset = n.ml.size() * 8;
 	tc.PushClass(n.i.s);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
@@ -132,8 +136,8 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(VarDecl n) {
 	if (tc.topOfStackIsClass()) {
 		// field
-		tc.AddGlobalMemOffSet(n.i.s, 8 + vtble_offset);
-		vtble_offset += 8;
+		tc.AddGlobalMemOffSet(n.i.s, 8 + field_offset);
+		field_offset += 8;
 	} else {
 		// local var
 		tc.AddMemOffSet(n.i.s, -8 + stack_offset);
@@ -149,7 +153,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e;
   public void visit(MethodDecl n) {
 	// method
-	tc.AddGlobalMemOffSet(n.i.s, 8 + vtble_offset);
+	tc.AddMethodMemOffSet(n.i.s, 8 + vtble_offset);
 	vtble_offset += 8;
 	tc.PushMethod(n.i.s);
 	stack_offset -= n.fl.size() * 8;
