@@ -92,7 +92,7 @@ public class CodeGeneratorInheritanceVisitor implements Visitor {
 	ClassTypeNode child = (ClassTypeNode)tc.CheckSymbolTables(n.i.s ,TypeChecker.TypeLevel.CLASS);
 	n.j.accept(this);
 	ClassTypeNode parent = child.base_type.c;
-	int original_size = child.vtble_offset.size();
+	int original_size = 8 * child.vtble_offset.size();
 	int end = 8 * (1+parent.vtble_offset.size());
 	for (String meth : child.vtble_offset.keySet()) {
 		if (parent.vtble_offset.containsKey(meth)){
@@ -115,8 +115,32 @@ public class CodeGeneratorInheritanceVisitor implements Visitor {
 			child.vtble_offset_to_class.put(offset , parent.vtble_offset_to_class.get(offset));
 		}
 	}
-	for (Integer i : child.mem_offset.values())
-		i += end - original_size;
+	//	for (Integer i : child.mem_offset.values())
+	//	i += end - original_size;
+
+	// CHECK FIELDS
+	int field_end = 8*(1+parent.mem_offset.size());
+	for (String field : child.mem_offset.keySet()) {
+	if (parent.mem_offset.containsKey(field)){
+	    /*			// overridden
+			int offset = parent.mem_offset.get(field);
+			child.mem_offset.put(field, offset);
+	    */	} else {
+			// not overridden
+	    	    	    System.out.println("#!!!!!!!!!!!!!!!!! field offset for field "+field+"= +" +field_end);
+
+			child.mem_offset.put(field, field_end);
+			field_end += 8;
+		}
+	}
+	for (String field : parent.mem_offset.keySet()) {
+		if (!child.mem_offset.containsKey(field)){
+			// fill in gap
+			int offset = parent.mem_offset.get(field);
+System.out.println("#!!!!!!!!!!!!!!!!! field offset for field "+field+"= +" +offset);
+			child.mem_offset.put(field, offset);
+		}
+	}
   }
 
   

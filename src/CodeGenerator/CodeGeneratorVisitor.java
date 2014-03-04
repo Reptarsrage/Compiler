@@ -109,7 +109,7 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(ClassDeclSimple n) {
 	recent_class = n.i.s;
     vtble_offset = 0;
-	field_offset = n.ml.size() * 8;
+	field_offset = 0;
 	tc.PushClass(n.i.s);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
@@ -126,7 +126,7 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(ClassDeclExtends n) {
   recent_class = n.i.s;
     vtble_offset = 0;
-	field_offset = n.ml.size() * 8;
+	field_offset = 0;
 	tc.PushClass(n.i.s);
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);

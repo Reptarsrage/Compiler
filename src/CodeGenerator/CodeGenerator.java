@@ -106,7 +106,7 @@ public class CodeGenerator {
   
   public void genNewObj(String name, TypeChecker tc) {
 	ClassTypeNode c = tc.program.classes.get(name);
-	int size = (c.fields.size() + 1) * 8;
+	int size = (c.mem_offset.size() + 1) * 8;
 	//System.out.println("Created new object " + name + ", with size " + size);
 	printInsn("movq", "$" + size, "%rdi"); // RDI the first parameter?
 	printInsn("call", "mjmalloc");
