@@ -35,6 +35,7 @@ public class CodeGenMain {
       program.accept(new TertiaryTypeVisitor(tc));
       program.accept(new TypeCheckerVisitor(tc));
       program.accept(new CodeGeneratorVisitor(cg, tc));
+	  program.accept(new CodeGeneratorInheritanceVisitor(cg, tc));
 	  program.accept(new CodeGeneratorSecondaryVisitor(cg, tc));
 	  //
       // System.out.print("\n" + "Parsing completed");

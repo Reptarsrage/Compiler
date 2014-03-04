@@ -39,7 +39,7 @@ public class TypeChecker {
         nest.push(program);
     }
 	
-	public void AddMethodMemOffSet(String id_name, int offset) {
+	public void AddMethodMemOffSet(String id_name, String className, int offset) {
 		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ setting method: "+id_name);
 		while(!(nest.peek() instanceof ClassTypeNode)) 
 		    nest.pop();
@@ -48,7 +48,8 @@ public class TypeChecker {
 		ClassTypeNode c = (ClassTypeNode)nest.peek();
 		if (c.methods.get(id_name) != null){
 		    System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set method: "+id_name +" with offset "+ offset);
-		    c.vtble_offset.put(id_name, offset);  
+		    c.vtble_offset.put(id_name, offset); 
+			c.vtble_offset_to_class.put(offset, className);
 		} else {
 		    // fail
 		    System.err.println("Internal error, trying to set a memory offset to an unrecognized function: " +

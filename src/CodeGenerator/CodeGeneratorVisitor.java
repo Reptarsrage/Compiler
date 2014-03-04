@@ -72,6 +72,7 @@ public class CodeGeneratorVisitor implements Visitor {
   private int stack_offset;
   private int vtble_offset;
   private int field_offset;
+  private String recent_class;
   
   public CodeGeneratorVisitor(CodeGenerator cg, TypeChecker tc) {
     this.cg = cg;
@@ -79,6 +80,7 @@ public class CodeGeneratorVisitor implements Visitor {
 	stack_offset = -8;
 	vtble_offset = 0;
 	field_offset = 0;
+	recent_class = "NULL";
   }
 
   // Display added for toy example language.  Not used in regular MiniJava
@@ -97,6 +99,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Identifier i1,i2;
   // Block b;
   public void visit(MainClass n) {
+	recent_class = "asm_main";
 	vtble_offset = 0;
   }
 
@@ -104,6 +107,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclSimple n) {
+	recent_class = n.i.s;
     vtble_offset = 0;
 	field_offset = n.ml.size() * 8;
 	tc.PushClass(n.i.s);
@@ -120,6 +124,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
+  recent_class = n.i.s;
     vtble_offset = 0;
 	field_offset = n.ml.size() * 8;
 	tc.PushClass(n.i.s);
@@ -153,7 +158,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e;
   public void visit(MethodDecl n) {
 	// method
-	tc.AddMethodMemOffSet(n.i.s, 8 + vtble_offset);
+	tc.AddMethodMemOffSet(n.i.s, recent_class, 8 + vtble_offset);
 	vtble_offset += 8;
 	tc.PushMethod(n.i.s);
 	stack_offset -= n.fl.size() * 8;

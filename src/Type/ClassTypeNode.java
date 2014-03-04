@@ -12,6 +12,7 @@ public class ClassTypeNode extends TypeNode {
   public Map<String, TypeNode> fields;			// local variable list name->object
   public Map<String, Integer> mem_offset;		// local variable list name->offset in memory
   public Map<String, Integer> vtble_offset;		// method list name->offset in vtble
+  public Map<Integer, String> vtble_offset_to_class;		// method list offset in vtble->classname
   public Map<String, MethodTypeNode> methods;	// method list name->object
 
   public ClassTypeNode(IdentifierTypeNode base_type) {
@@ -20,6 +21,7 @@ public class ClassTypeNode extends TypeNode {
 	methods = new HashMap<String, MethodTypeNode>();
 	mem_offset = new HashMap<String, Integer>();
 	vtble_offset = new HashMap<String, Integer>();
+	vtble_offset_to_class = new HashMap<Integer, String>();
 	this.base_type = base_type;
   }
   

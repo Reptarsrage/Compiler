@@ -30,6 +30,9 @@ class Dog {
 }
 
 class Horse extends Dog {
+	public int f() {
+	  return 10; 
+	}
 	public int Foobar() {
           return 77;
 	}
@@ -40,8 +43,8 @@ class Cat {
 	public int Baz() {
 		Dog d;
 		d = new Dog();
-		Dog = new Dog();
-		display(d.Foo(1, 2, 3, 4, 5) + d.f());
+		Dog = new Horse();
+		display(d.Foo(1, 2, 3, 4, 5));
 		display(Dog.Foo(1, 2, 3, 4, 5));
 		return 1; 
 	}

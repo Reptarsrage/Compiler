@@ -43,19 +43,14 @@ public class CodeGenerator {
 		} else {
 			printInsn(".quad", c.base_type.name + "$$"); // vtable pointer, extends
 		}
-		String[] toPrint = new String[c.methods.size() + c.fields.size()];
+		String[] toPrint = new String[c.vtble_offset.size()];
 		 for (String meth : c.vtble_offset.keySet()) {
 			int i = c.vtble_offset.get(meth);
 			System.out.println("#"+meth + " has offset of " + i+"!");
-			toPrint[i / 8 - 1] = name +"$" +meth;
+			toPrint[i / 8 - 1] = c.vtble_offset_to_class.get(i) +"$" +meth;
 		 }
-		 for (String field : c.mem_offset.keySet()) {
-			int i = c.mem_offset.get(field);
-			System.out.println("#"+field + " has offset of " + i+"!");
-			toPrint[i / 8 - 1] = "0";
-		 }
-		 for (String s : toPrint) {
-		     if (!s.equals("0"))
+
+		 for (String s : toPrint)
 			printInsn(".quad", s);
 		 }
 	}
@@ -65,7 +60,7 @@ public class CodeGenerator {
 	ClassTypeNode c = tc.program.classes.get(className);
 	if (c.fields.get(id) != null){
 		// loading a field
-		// expect our class addr to be in rbp
+		// expect our class addr to be in -8(rbp)
 		printInsn("movq", "-8(%rbp)","%r14");
 		printInsn("pushq", offset + "(%r14)");
 	} else {
