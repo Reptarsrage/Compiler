@@ -439,13 +439,13 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Exp e;
   public void visit(NewIntArray n) {
     n.e.accept(this);
-	cg.genNewArray();
+	cg.genNewArray(n.line_number);
   }
 
   // Exp e;
   public void visit(NewDoubleArray n) {
     n.e.accept(this);
-	cg.genNewArray();
+    //	cg.genNewArray();
   }
   
   // Identifier i;

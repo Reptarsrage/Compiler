@@ -42,17 +42,17 @@ int64_t get(void)
  *
  *
  */
-void check_bounds(int64_t * addr, int64_t index) {
+void check_bounds(int64_t * addr, int64_t index, int64_t line_number) {
 	int64_t length = *(addr - 1);
 	if (index >= length || index < 0) {
-		printf("%s\n", "Array out of bounds exception!");
+		printf("%s%d%s\n", "Runtime Error on line: ", line_number,". Array out of bounds exception!");
 		exit(1);
 	}
 }
 
-void check_initial_bounds(int64_t length) {
-	if (length <= 0) {
-		printf("%s\n", "A new array must have size greater than zero!");
+void check_initial_bounds(int64_t length, int64_t line_number) {
+	if (length < 0) {
+	  printf("%s%d%s\n", "Runtime Error on line: ", line_number,". A new array must have non-negative size!");
 		exit(1);
 	}
 }

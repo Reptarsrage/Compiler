@@ -82,11 +82,12 @@ public class CodeGenerator {
 	printInsn("pushq", offset + "(%rbp)");
   }
   
-  public void genNewArray() {
+  public void genNewArray(int line_number) {
       printComment("-- Generating new array --");
 	printInsn("popq", "%rdi");
 	printInsn("movq", "%rdi", "%r14");
 	printInsn("movq", "%rdi", "%r15");
+	printInsn("movq", "$" + line_number, "%rsi");
 	printInsn("call", "check_initial_bounds");
 	printInsn("incq", "%r14");
 	printInsn("imulq", "$8", "%r14");
@@ -118,6 +119,7 @@ public class CodeGenerator {
 	printComment("-- Array lookup from line "+line_number);
 	printInsn("popq", "%rsi"); // pop index into rsi
 	printInsn("popq", "%rdi"); // pop pointer to array into rdi
+	printInsn("movq", "$" + line_number, "%rdx");
 	printInsn("call", "check_bounds"); // call check_bounds(address, index)
 	printInsn("imulq", "$8", "%rsi"); // multiple index by 8 to get offset
 	printInsn("addq", "%rsi", "%rdi"); // add offset to address in rdi
@@ -131,6 +133,7 @@ public class CodeGenerator {
 	printInsn("popq", "%r14"); // pop expression we are assigning into r14
 	printInsn("popq", "%rsi"); // pop index into rsi
 	printInsn("popq", "%rdi"); // pop pointer to array into rdi
+	printInsn("movq", "$" + line_number, "%rdx");
 	printInsn("call", "check_bounds"); // call check_bounds(address, index)
 	printInsn("imulq", "$8", "%rsi");
 	printInsn("addq", "%rsi", "%rdi");
