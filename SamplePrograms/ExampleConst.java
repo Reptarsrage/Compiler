@@ -20,7 +20,8 @@ class Dog {
 	f = 5;
 	g = 6;
 	h = 7;
-    return i;
+	m = 100;
+    return i + j + k + a + b + l - m;
   }
 }
 

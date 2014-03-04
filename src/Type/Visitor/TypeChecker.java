@@ -103,10 +103,11 @@ public class TypeChecker {
 				while (!popped.isEmpty())
 					nest.push(popped.pop());
 				int count = 0;
+				int total_offset = (m.args.size() + 1) * -8;
 				for (String arg_name : m.args.keySet()) {
 					if (arg_name.equals(var_name)){
 						System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ found parameter: "+var_name +" at offset "+ (-(1 + count) * 8));
-						return -(1 + count) * 8;
+						return total_offset + count * 8;
 					} else
 						count++;
 				}
