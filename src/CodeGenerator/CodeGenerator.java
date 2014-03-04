@@ -83,6 +83,7 @@ public class CodeGenerator {
   }
   
   public void genNewArray() {
+      printComment("-- Generating new array --");
 	printInsn("popq", "%rdi");
 	printInsn("movq", "%rdi", "%r14");
 	printInsn("movq", "%rdi", "%r15");
@@ -97,7 +98,7 @@ public class CodeGenerator {
   }
   
   public void genArrayLength() {
-	printComment("Call to arrray length");
+	printComment("-- Call to arrray length --");
 	printInsn("popq", "%r15");
 	printInsn("pushq", "-8(%r15)");
   }
@@ -114,8 +115,14 @@ public class CodeGenerator {
   }
   
     public void genArrayLookup(int line_number) {
-	printInsn("popq", "%rdi"); // pop index into rdi
-	printInsn("popq", "%rsi");
+	printComment("-- Array lookup from line "+line_number);
+	printInsn("popq", "%rsi"); // pop index into rsi
+	printInsn("popq", "%rdi"); // pop pointer to array into rdi
+	printInsn("call", "check_bounds"); // call check_bounds(address, index)
+	printInsn("imulq", "$8", "%rsi"); // multiple index by 8 to get offset
+	printInsn("addq", "%rsi", "%rdi"); // add offset to address in rdi
+	printInsn("movq", "(%rdi)", "%rax"); // move memory from address in rdi offset by amount in rsi to rax
+	printInsn("pushq", "%rax");
     }
 
   public void storeLocal(int offset) {

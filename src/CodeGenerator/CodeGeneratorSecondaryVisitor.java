@@ -367,6 +367,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   public void visit(ArrayLookup n) {
     n.e1.accept(this);
     n.e2.accept(this);
+    cg.genArrayLookup(n.line_number);
   }
 
   // Exp e;

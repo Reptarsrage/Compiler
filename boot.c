@@ -43,7 +43,7 @@ int64_t get(void)
  *
  */
 void check_bounds(int64_t * addr, int64_t index) {
-	int64_t length = *(addr - 8);
+	int64_t length = *(addr - 1);
 	if (index >= length || index < 0) {
 		printf("%s\n", "Array out of bounds exception!");
 		exit(1);

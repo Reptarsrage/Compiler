@@ -43,7 +43,11 @@ class Horse extends Dog {
 class Cat {
 	Dog Dog;
 	public int Baz() {
+	    int[] a;
 		Dog d;
+		a = new int[10];
+		display(a.length);
+		display(a[5]);
 		d = new Dog();
 		Dog = new Horse();
 		display(d.f());
