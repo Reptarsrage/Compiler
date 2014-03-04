@@ -123,6 +123,19 @@ public class CodeGenerator {
 	printInsn("addq", "%rsi", "%rdi"); // add offset to address in rdi
 	printInsn("movq", "(%rdi)", "%rax"); // move memory from address in rdi offset by amount in rsi to rax
 	printInsn("pushq", "%rax");
+	printComment("-- End array lookup --");
+    }
+
+    public void genArrayStore(int line_number) {
+	printComment("-- Array store from line "+line_number);
+	printInsn("popq", "%r14"); // pop expression we are assigning into r14
+	printInsn("popq", "%rsi"); // pop index into rsi
+	printInsn("popq", "%rdi"); // pop pointer to array into rdi
+	printInsn("call", "check_bounds"); // call check_bounds(address, index)
+	printInsn("imulq", "$8", "%rsi");
+	printInsn("addq", "%rsi", "%rdi");
+	printInsn("movq", "%r14", "(%rdi)"); // move expression result into correct address at offset (index*8) from base address of array
+	printComment(" -- End array store --");
     }
 
   public void storeLocal(int offset) {

@@ -47,6 +47,7 @@ class Cat {
 		Dog d;
 		a = new int[10];
 		display(a.length);
+		a[5] = 1;
 		display(a[5]);
 		d = new Dog();
 		Dog = new Horse();

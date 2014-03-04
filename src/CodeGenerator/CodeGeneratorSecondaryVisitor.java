@@ -265,9 +265,17 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Identifier i;
   // Exp e1,e2;
   public void visit(ArrayAssign n) {
-    n.i.accept(this);
+    int offset = tc.GetMemOffSet(n.i.s); // returns zero if not local var
+    if (offset == 0){
+	offset = tc.GetGlobalMemOffSet(n.i.s);
+	cg.loadNonLocal(recent_class, n.i.s, tc, offset);
+    } else {
+	cg.loadLocal(offset);
+    }
+
     n.e1.accept(this);
     n.e2.accept(this);
+    cg.genArrayStore(n.line_number);
   }
 
   // Exp e1,e2;
