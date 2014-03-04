@@ -160,20 +160,19 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   public void visit(MethodDecl n) {
 	// method
 	tc.PushMethod(n.i.s);
-	n.t.accept(this);
-    n.i.accept(this);
+	// n.t.accept(this);
+    // n.i.accept(this);
 	int local_count = n.vl.size();
     cg.genFunctionEntry(n.i.s);
 	cg.addLocalsToStack(local_count);
-    String[] registers = {"%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"};
-    if (n.fl.size() > 6) System.exit(1); // more than 6 params is illegal (at the moment)
+    String[] registers = {"%rsi", "%rdx", "%rcx", "%r8", "%r9"};
+    if (n.fl.size() > 5) System.exit(1); // more than 5 params is illegal (at the moment)
     for (int i = n.fl.size() - 1; i >= 0; i--) {
       n.fl.get(i).accept(this);
-      //cg.genFormal(registers[i]);
     }
-    for (int i = 0; i < n.vl.size(); i++) {
-      n.vl.get(i).accept(this);
-    }
+    // for (int i = 0; i < n.vl.size(); i++) {
+      // n.vl.get(i).accept(this);
+    // }
     for (int i = 0; i < n.sl.size(); i++) {
       n.sl.get(i).accept(this);
     }
@@ -185,8 +184,8 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Type t;
   // Identifier i;
   public void visit(Formal n) {
-    n.t.accept(this);
-    n.i.accept(this);
+    // n.t.accept(this);
+    // n.i.accept(this);
   }
 
   public void visit(IntArrayType n) {
@@ -314,7 +313,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 	cg.genGreaterThan(n.line_number);
   }
   
-  // Exp e1,e2;
+  // Exp e1,e2;call n
   public void visit(Equals n) {
     n.e1.accept(this);
     n.e2.accept(this);
@@ -378,13 +377,13 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Identifier i;
   // ExpList el;
   public void visit(Call n) {
-    n.e.accept(this); // this pushes addr of struct to the stack
-	String className = callee;
-    n.i.accept(this);
+    n.i.accept(this); // does not push anything onto stack, but saves method name in callee
     for (int i = 0; i < n.el.size(); i++) {
       n.el.get(i).accept(this);
     }
-	int offset = tc.GetGlobalMemOffSet(n.i.s);
+	n.e.accept(this); // this pushes addr of struct to the stack
+	String className = callee;
+	int offset = tc.GetGlobalMemOffSet(n.i.s); // vtable offset of method
     cg.genCall(className, n.i.s, offset, n.el.size(), n.line_number);
   }
 

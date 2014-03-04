@@ -61,23 +61,23 @@ public class CodeGenerator {
 	ClassTypeNode c = tc.program.classes.get(className);
 	if (c.fields.get(id) != null){
 		// loading a field
-		// expect our class addr to be in r15
-		//printInsn("movq", "$" +className+"$$","%r14");
-		printInsn("pushq", offset + "(%r15)");
+		// expect our class addr to be in rbp
+		printInsn("movq", "(%rbp)","%r14");
+		printInsn("pushq", offset + "(%r14)");
 	} else {
 		// loading a method
 		// TODO extended
-		printInsn("movq", "*(%r15)", "%r14"); // get vtable addr
-		printInsn("pushq", offset + "(%r14)");
+		printInsn("movq", "(%rbp)","%r14");  // get vtable addr
+		printInsn("movq", "(%r14)", "%r15"); // get method addr
+		printInsn("pushq", offset + "(%r15)");
 	}
   }
   
   public void storeNonLocal(String className, int offset) {
 	// storing a field
-	// expect our class addr to be in r15
-	printInsn("popq", "%r14");
-	//printInsn("movq", "$" +className+"$$","%r14");
-	printInsn("movq", "%r14", offset + "(%r15)");
+	// expect our class addr to be on rbp
+	printInsn("movq", "(%rbp)","%r14");
+	printInsn("popq", offset + "(%r14)");
   }
   
   public void loadLocal(int offset) {
@@ -113,6 +113,7 @@ public class CodeGenerator {
   }
   
   public void addLocalsToStack(int count) {
+	printInsn("pushq", "%rdi"); // push this pointer to stack in first place!
 	for (int i = 0; i < count; i++) {
 		printInsn("pushq", "$0"); // local vars initialized to zero
 	}
@@ -145,7 +146,7 @@ public class CodeGenerator {
   
   public void genFunctionEntry(String functionName) {
     String label = functionName;
-	if (current_class != null) {
+	if (current_class != null) { // null in main
 		label = current_class + "$" + label;
 	}
 	printGlobalName(label);
@@ -171,19 +172,17 @@ public class CodeGenerator {
   // currently only works with <= 6 args
   public void genCall(String className, String functionName, int offset, int argc, int linenum) {
     printComment("method call for " + className +"."+functionName + " from line " + linenum);
-	  if (argc > 6) System.exit(1); // too many params passed
-
-    String[] registers = {"%rdi", "%rsi", "%rdx", "%rcx", "%r8", "%r9"};
+	  if (argc > 5) System.exit(1); // too many params passed
+	printInsn("popq", "%rdi"); // addr of class
+    String[] registers = {"%rsi", "%rdx", "%rcx", "%r8", "%r9"};
     for (int i = 0; i < argc; i ++) {
       // have to pop args in reverse order
       printInsn("popq", registers[argc - 1 - i]);
     }
 	
-    printInsn("popq", "%r15"); // addr of class
-	//printInsn("movq", "$" + className + "$$", "%r14");
-	printInsn("movq", "(%r15)", "%r14");
-	printInsn("call", "*"+offset+"(%r14)");
-    printInsn("pushq", "%rax");
+	printInsn("movq", "(%rdi)", "%r14"); // get the start of our class vtable
+	printInsn("call", "*"+offset+"(%r14)"); // goto correct mthod
+    printInsn("pushq", "%rax"); // push result to ret value
   }
   public void genFormal(String register, int linenum) {
       printComment("Formal from line " + linenum);

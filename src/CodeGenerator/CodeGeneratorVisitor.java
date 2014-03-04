@@ -75,7 +75,7 @@ public class CodeGeneratorVisitor implements Visitor {
   public CodeGeneratorVisitor(CodeGenerator cg, TypeChecker tc) {
     this.cg = cg;
 	this.tc = tc;
-	stack_offset = 0;
+	stack_offset = -8;
 	vtble_offset = 0;
   }
 
