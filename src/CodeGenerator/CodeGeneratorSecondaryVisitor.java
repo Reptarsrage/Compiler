@@ -255,7 +255,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 	n.i.accept(this);
 	int offset = tc.GetMemOffSet(n.i.s); // returns zero if not local var
 	if (offset == 0){
-		offset = tc.GetGlobalMemOffSet(n.i.s, callee);
+		offset = tc.GetGlobalMemOffSet(n.i.s);
 		cg.storeNonLocal(recent_class, offset);
 	} else{
 		cg.storeLocal(offset);
@@ -384,7 +384,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
     }
 	n.e.accept(this); // this pushes addr of struct to the stack
 	String className = callee;
-	int offset = tc.GetGlobalMemOffSet(n.i.s, callee); // vtable offset of method
+	int offset = tc.GetMethodMemOffSet(n.i.s, callee); // vtable offset of method
     cg.genCall(className, n.i.s, offset, n.el.size(), n.line_number);
   }
 
@@ -409,7 +409,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 	callee = n.s;
 	int offset = tc.GetMemOffSet(n.s); // returns zero if not local var
 	if (offset == 0){
-		offset = tc.GetGlobalMemOffSet(n.s, callee);
+		offset = tc.GetGlobalMemOffSet(n.s);
 		cg.loadNonLocal(recent_class, n.s, tc, offset);
 	} else {
 		cg.loadLocal(offset);

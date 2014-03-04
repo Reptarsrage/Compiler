@@ -30,13 +30,13 @@ class Dog {
 }
 
 class Cat {
-	Dog f;
+	Dog Dog;
 	public int Baz() {
 		Dog d;
 		d = new Dog();
-		f = new Dog();
+		Dog = new Dog();
 		display(d.Foo(1, 2, 3, 4, 5) + d.f());
-		//display(m.Foo(1));
+		display(Dog.Foo(1, 2, 3, 4, 5));
 		return 1; 
 	}
 }

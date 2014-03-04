@@ -118,8 +118,9 @@ public class TypeChecker {
 		return 0;
 	}
 	
-	public int GetGlobalMemOffSet(String id_name, String className) {
-		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ searching for: "+id_name +", "+className);
+	public int GetMethodMemOffSet(String id_name, String className) {
+		// retrieve a method's offset
+		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ searching for method: "+id_name +", "+className);
 		TypeNode t = CheckSymbolTables( className, TypeLevel.VARIABLE);
 		ClassTypeNode c ;
 		if (t == null || !(t instanceof IdentifierTypeNode))
@@ -130,11 +131,19 @@ public class TypeChecker {
 			System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ offset of method "+id_name+", is "+c.mem_offset.get(id_name));
 			return c.mem_offset.get(id_name);
 		}
-		// retrieve a global's offset (or possibly a methods)
+		System.err.println("Internal error, trying to get a memory offset to an unrecognized function: " +
+							   id_name + ".");
+		System.exit(1);
+		return 0;
+	}
+	
+	public int GetGlobalMemOffSet(String id_name) {
+		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ searching for field: "+id_name +".");
+		// retrieve a global's offset
 		Stack<TypeNode> popped = new Stack<TypeNode>();	
 		while (!(nest.peek() instanceof ClassTypeNode))
 			popped.push(nest.pop());
-		c = (ClassTypeNode)nest.peek();
+		ClassTypeNode c = (ClassTypeNode)nest.peek();
 		while (!popped.isEmpty())
 			nest.push(popped.pop());
 		if (c.mem_offset.get(id_name) != null){
