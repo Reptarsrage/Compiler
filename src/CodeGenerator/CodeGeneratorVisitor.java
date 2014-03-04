@@ -1,3 +1,9 @@
+/* Justin Robb, xreptarx
+ * Adam Croissant, adamc41
+ * 3-4-14
+ * The visitor which builds up vtables and class object offsets
+ */
+
 package CodeGenerator;
 
 import AST.ASTNode;
@@ -67,24 +73,18 @@ import Type.*;
 
 public class CodeGeneratorVisitor implements Visitor {
 
-  private CodeGenerator cg;
-  private TypeChecker tc;
-  private int stack_offset;
-  private int vtble_offset;
-  private int field_offset;
-  private String recent_class;
+  private TypeChecker tc;		// sets the offsets using TypeNode in our type checker graph
+  private int stack_offset;		// offset in the local stack from rbp
+  private int vtble_offset;		// offset in vtable	(first is always parent class)
+  private int field_offset;		// offset in class (first is alwys vtble pointer)
+  private String recent_class;	// the most recently visited class (this*)
   
-  public CodeGeneratorVisitor(CodeGenerator cg, TypeChecker tc) {
-    this.cg = cg;
+  public CodeGeneratorVisitor(TypeChecker tc) {
 	this.tc = tc;
 	stack_offset = -8;
 	vtble_offset = 0;
 	field_offset = 0;
 	recent_class = "NULL";
-  }
-
-  // Display added for toy example language.  Not used in regular MiniJava
-  public void visit(Display n) {
   }
 
   // MainClass m;
@@ -177,164 +177,86 @@ public class CodeGeneratorVisitor implements Visitor {
   
   // \\\\\\\\\\\\\\\\\\\\\\\BELOW ARE USELESS METHODS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   
+  public void visit(Display n) {
+  }
   public void visit(Formal n) {
   }
-
   public void visit(IntArrayType n) {
   }
-  
   public void visit(DoubleArrayType n) {
   }
-
   public void visit(BooleanType n) {
   }
-
   public void visit(IntegerType n) {
   }
-  
   public void visit(DoubleType n) {
   }
-
-  // String s;
   public void visit(IdentifierType n) {
   }
-
-  // Exp e;
-  // Statement s1,s2;
   public void visit(If n) {
   }
-
-  // Exp e;
-  // StatementList s;
   public void visit(While n) {
   }
-
-  // Exp e;
   public void visit(Print n) {
   }
-
-  // Identifier i;
-  // Exp e;
   public void visit(Assign n) {
   }
-
-  // Identifier i;
-  // Exp e1,e2;
   public void visit(ArrayAssign n) {
   }
-
-  // Exp e1,e2;
   public void visit(ShortCircuitAnd n) {
   }
-  
-  // Exp e1,e2;
   public void visit(ShortCircuitOr n) {
   }
-
-  // Exp e1,e2;
   public void visit(LessThan n) {
-	
   }
-  
-  // Exp e1,e2;
   public void visit(LessThanOrEqualTo n) {	
   }
-  
-  // Exp e1,e2;
   public void visit(GreaterThanOrEqualTo n) {	
   }
-  
-  // Exp e1,e2;
   public void visit(GreaterThan n) {	
   }
-  
-  // Exp e1,e2;
   public void visit(Equals n) {	
   }
-  
-  // Exp e1,e2;
   public void visit(NotEqual n) {	
   }
-  
-  // Exp e1,e2;
   public void visit(Mod n) {
   }
-
-  // Exp e1,e2;
   public void visit(Plus n) {
   }
-
-  // Exp e1,e2;
   public void visit(Minus n) {
   }
-
-  // Exp e1,e2;
   public void visit(Times n) {
   }
-  
-  // Exp e1,e2;
   public void visit(Divide n) {
   }
-
-  // Exp e1,e2;
   public void visit(ArrayLookup n) {
   }
-
-  // Exp e;
   public void visit(ArrayLength n) {
   }
-
-  // Exp e;
-  // Identifier i;
-  // ExpList el;
   public void visit(Call n) {
   }
-
-  // long i;
   public void visit(IntegerLiteral n) {
-      
   }
-  
-  // double i;
   public void visit(DoubleLiteral n) {
   }
-
   public void visit(True n) {
-    
   }
-
   public void visit(False n) {
-    
   }
-
   public void visit(IdentifierExp n) {
   }
-
   public void visit(ConstantExp n) {
-      
   }
-
   public void visit(This n) {
   }
-
-  // Exp e;
   public void visit(NewIntArray n) {
   }
-
-  // Exp e;
   public void visit(NewDoubleArray n) {
   }
-  
-  // Identifier i;
   public void visit(NewObject n) {
   }
-
-  // Exp e;
   public void visit(Not n) {
-	
   }
-
-  // String s;
   public void visit(Identifier n) {
   }
 }

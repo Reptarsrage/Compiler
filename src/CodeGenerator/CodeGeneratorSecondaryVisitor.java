@@ -1,3 +1,9 @@
+/* Justin Robb, xreptarx
+ * Adam Croissant, adamc41
+ * 3-4-14
+ * The visitor which generates assembly code 
+ */
+
 package CodeGenerator;
 
 import AST.ASTNode;
@@ -63,15 +69,12 @@ import AST.Visitor.Visitor;
 import Type.Visitor.TypeChecker;
 import Type.*;
 
-// Sample code generation visitor.
-// Robert R. Henry 2013-11-12
-
 public class CodeGeneratorSecondaryVisitor implements Visitor {
 
-  private CodeGenerator cg;
-  private String callee;
-  private TypeChecker tc;
-  private String recent_class;
+  private CodeGenerator cg;	// tool for generating code
+  private String callee;	// for call's callee.f() 
+  private TypeChecker tc;	// type checker graph used to represent all of our classes and methods
+  private String recent_class;	// the most recently visited class (this*)
   
   public CodeGeneratorSecondaryVisitor(CodeGenerator cg, TypeChecker tc) {
     this.cg = cg;
@@ -160,8 +163,6 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   public void visit(MethodDecl n) {
 	// method
 	tc.PushMethod(n.i.s);
-	// n.t.accept(this);
-    // n.i.accept(this);
 	int local_count = n.vl.size();
     cg.genFunctionEntry(n.i.s);
     String[] registers = {"%rsi", "%rdx", "%rcx", "%r8", "%r9"};
@@ -171,41 +172,13 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 	  cg.genFormal(registers[i], n.line_number);
     }
 	cg.addLocalsToStack(local_count);
-    // for (int i = 0; i < n.vl.size(); i++) {
-      // n.vl.get(i).accept(this);
-    // }
+
     for (int i = 0; i < n.sl.size(); i++) {
       n.sl.get(i).accept(this);
     }
     n.e.accept(this);
 	
     cg.genFunctionExit(n.i.s, local_count, n.fl.size() + 1);
-  }
-
-  // Type t;
-  // Identifier i;
-  public void visit(Formal n) {
-    // n.t.accept(this);
-    // n.i.accept(this);
-  }
-
-  public void visit(IntArrayType n) {
-  }
-  
-  public void visit(DoubleArrayType n) {
-  }
-
-  public void visit(BooleanType n) {
-  }
-
-  public void visit(IntegerType n) {
-  }
-  
-  public void visit(DoubleType n) {
-  }
-
-  // String s;
-  public void visit(IdentifierType n) {
   }
 
   // StatementList sl;
@@ -403,8 +376,8 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
       cg.genIntegerLiteral(n.i);
   }
   
-  // double i;
   public void visit(DoubleLiteral n) {
+	// TODO doubles
   }
 
   public void visit(True n) {
@@ -463,5 +436,21 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // String s;
   public void visit(Identifier n) {
 	callee = n.s;
+  }
+  
+  // \\\\\\\\\\\\\\\\\\\\\\\\\\\\ BELOW ARE USELESS METHODS \\\\\\\\\\\\\\\\\\\\\\\\
+  public void visit(Formal n) {
+  }
+  public void visit(IntArrayType n) {
+  }
+  public void visit(DoubleArrayType n) {
+  }
+  public void visit(BooleanType n) {
+  }
+  public void visit(IntegerType n) {
+  }
+  public void visit(DoubleType n) {
+  }
+  public void visit(IdentifierType n) {
   }
 }

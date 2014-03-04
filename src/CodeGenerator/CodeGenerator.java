@@ -1,3 +1,9 @@
+/* Justin Robb, xreptarx
+ * Adam Croissant, adamc41
+ * 3-4-14
+ * The tool which generates assembly code 
+ */
+
 package CodeGenerator;
 
 import java.io.FileNotFoundException;
@@ -7,10 +13,10 @@ import Type.Visitor.TypeChecker;
 
 public class CodeGenerator {
 
-  private int labelCount;
+  private int labelCount;				// a running count for label names
   private PrintStream outputStream;
-  public String assemblerPrefixName;
-  private String current_class;
+  public String assemblerPrefixName;	
+  private String current_class;			// name of this*
 
   public CodeGenerator(String outputFileName) {
     labelCount = 0;
@@ -32,7 +38,7 @@ public class CodeGenerator {
     }
   }
   
-  
+  // Generates .data section for vtables
   public void genVtbles(TypeChecker tc) {
 	printSection(".data");
 	for (String name : tc.program.classes.keySet()){
@@ -57,8 +63,9 @@ public class CodeGenerator {
 			System.out.println("#FIELD "+s + " has offset of " + c.mem_offset.get(s)+"!");
 		}
 	}
-}
+ }
   
+  // pushes a field or method's offset from vtable or class onto stack
   public void loadNonLocal(String className, String id, TypeChecker tc, int offset) {
 	ClassTypeNode c = tc.program.classes.get(className);
 	if (c.mem_offset.get(id) != null){
@@ -75,6 +82,12 @@ public class CodeGenerator {
 	}
   }
   
+  // pushes a parameter or a local variable's offset from rbp onto stack
+  public void loadLocal(int offset) {
+	printInsn("pushq", offset + "(%rbp)");
+  }
+  
+  // pops value off stack into field's position
   public void storeNonLocal(String className, int offset) {
 	// storing a field
 	// expect our class addr to be on rbp
@@ -82,10 +95,12 @@ public class CodeGenerator {
 	printInsn("popq", offset + "(%r14)");
   }
   
-  public void loadLocal(int offset) {
-	printInsn("pushq", offset + "(%rbp)");
+  // pops value off stack into parameter or local variable's position
+  public void storeLocal(int offset) {
+	printInsn("popq", offset + "(%rbp)");
   }
   
+  // Creates a new array, pushes loc on stack
   public void genNewArray(int line_number) {
       printComment("-- Generating new array --");
 	printInsn("popq", "%rdi");
@@ -102,12 +117,14 @@ public class CodeGenerator {
 	printInsn("pushq", "%rax");
   }
   
+  // retireves length of array on top of stack
   public void genArrayLength() {
 	printComment("-- Call to arrray length --");
 	printInsn("popq", "%r15");
 	printInsn("pushq", "-8(%r15)");
   }
   
+  // creates a new object, pushes loc on stack
   public void genNewObj(String name, TypeChecker tc) {
 	ClassTypeNode c = tc.program.classes.get(name);
 	int size = (c.mem_offset.size() + 1) * 8;
@@ -119,7 +136,8 @@ public class CodeGenerator {
 	printInsn("pushq", "%rax");
   }
   
-    public void genArrayLookup(int line_number) {
+  // retireves an element of an array
+  public void genArrayLookup(int line_number) {
 	printComment("-- Array lookup from line "+line_number);
 	printInsn("popq", "%rsi"); // pop index into rsi
 	printInsn("popq", "%rdi"); // pop pointer to array into rdi
@@ -130,9 +148,10 @@ public class CodeGenerator {
 	printInsn("movq", "(%rdi)", "%rax"); // move memory from address in rdi offset by amount in rsi to rax
 	printInsn("pushq", "%rax");
 	printComment("-- End array lookup --");
-    }
-
-    public void genArrayStore(int line_number) {
+  }
+	
+  // sets an element of an array	
+  public void genArrayStore(int line_number) {
 	printComment("-- Array store from line "+line_number);
 	printInsn("popq", "%r14"); // pop expression we are assigning into r14
 	printInsn("popq", "%rsi"); // pop index into rsi
@@ -143,34 +162,34 @@ public class CodeGenerator {
 	printInsn("addq", "%rsi", "%rdi");
 	printInsn("movq", "%r14", "(%rdi)"); // move expression result into correct address at offset (index*8) from base address of array
 	printComment(" -- End array store --");
-    }
-
-  public void storeLocal(int offset) {
-	printInsn("popq", offset + "(%rbp)");
   }
-
   
+  // pushes all local variables & params onto stack, initialized to zero
   public void addLocalsToStack(int count) {
 	for (int i = 0; i < count; i++) {
 		printInsn("pushq", "$0"); // local vars initialized to zero
 	}
   }
   
+  // removes all locals & params from stack
   public void removeLocalsFromStack(int count) {
 	for (int i = 0; i < count; i++) {
 		printInsn("popq", "%r14"); // local vars dumped
 	}
   }
-	
+  
+  // sets the current name of this class
   public void setClass(String name) {
 	current_class = name;
   }
   
-   public void genMainEntry(String functionName) {
-		printSection(".text");
-		genFunctionEntry(functionName);
-   }
+  // generates an entry to the main method
+  public void genMainEntry(String functionName) {
+	printSection(".text");
+	genFunctionEntry(functionName);
+  }
    
+   // generates an exit from the main method
    public void genMainExit(String functionName) {
 	String label = functionName;
 	if (current_class != null) {
@@ -181,6 +200,7 @@ public class CodeGenerator {
     printInsn("ret");
    }
   
+  // generates an entry to a method
   public void genFunctionEntry(String functionName) {
     String label = functionName;
 	if (current_class != null) { // null in main
@@ -191,73 +211,89 @@ public class CodeGenerator {
     printInsn("pushq", "%rbp");
     printInsn("movq", "%rsp", "%rbp");
   }
-
+  
+  // pushes value for true
   public void genTrue() {
     printInsn("pushq", "$1");
   }
   
+  // pushes value for false
   public void genFalse() {
     printInsn("pushq", "$0");
   }
   
+  // pushes value of this pointer (always located -8(rbp))
   public void genThis() {
 	printInsn("pushq", "-8(%rbp)");
   }
   
+  // generates an exit from a method
   public void genFunctionExit(String functionName, int local_count, int param_count) {
 	 printInsn("popq", "%rax");
 	 removeLocalsFromStack(local_count + param_count); // TODO optimize
 	 genMainExit(functionName );
   }
 
-  // currently only works with <= 6 args
+  // currently only works with <= 5 args
   public void genCall(String className, String functionName, int offset, int argc, int linenum) {
     printComment("method call for " + className +"."+functionName + " from line " + linenum);
-	  if (argc > 5) System.exit(1); // too many params passed
+    if (argc > 5) {
+	  // too many params passed
+	  System.err.println("Error at line number: "+linenum+". Recieved too many parameters to a function. Recieved: "+argc+", Expected: 5.");
+	  System.exit(1);
+    }
 	printInsn("popq", "%rdi"); // addr of class
     String[] registers = {"%rsi", "%rdx", "%rcx", "%r8", "%r9"};
     for (int i = 0; i < argc; i ++) {
       // have to pop args in reverse order
       printInsn("popq", registers[argc - 1 - i]);
     }
-	
 	printInsn("movq", "(%rdi)", "%r14"); // get the start of our class vtable
 	printInsn("call", "*"+offset+"(%r14)"); // goto correct mthod
     printInsn("pushq", "%rax"); // push result to ret value
   }
+  
+  // pushes a formal from a register onto stack
   public void genFormal(String register, int linenum) {
       printComment("Formal from line " + linenum);
       printInsn("pushq", register);
-      printComment("-- end formal --");
   }
 
+  // pushes a constant value onto stack
+  // TODO double
   public void genConstant(int value) {
     printInsn("movq", String.format("$%d", value), "%rax");
     printInsn("pushq", "%rax");
   }
   
+  // pushes an integer literal onto stack
   public void genIntegerLiteral(long value) {
     printInsn("movq", String.format("$%d", value), "%rax"); // should be %l??
     printInsn("pushq", "%rax");
   }
   
+  // prints a label
   private void printLabel(String labelName) {
     outputStream.println(assemblerPrefixName + labelName + ":");
   }
-
+  
+  // prints a section
   private void printSection(String directive) {
     outputStream.println(directive);
   }
 
+  // prints a gloabal name
   private void printGlobalName(String name) {
     outputStream.println(".globl " + assemblerPrefixName + name);
   }
-
+  
+  // prints an instruction
   private void printInsn(String opcode) {
     outputStream.print("\t");
     outputStream.println(opcode);
   }
 
+  // prints an instruction
   private void printInsn(String opcode, String op1) {
     outputStream.print("\t");
     outputStream.print(opcode);
@@ -266,6 +302,7 @@ public class CodeGenerator {
     outputStream.println("");
   }
 
+  // prints an instruction
   private void printInsn(String opcode, String op1, String op2) {
     outputStream.print("\t");
     outputStream.print(opcode);
@@ -276,10 +313,12 @@ public class CodeGenerator {
     outputStream.println("");
   }
 
+  // prints a comment
   public void printComment(String comment) {
     outputStream.println("# " + comment);
   }
   
+  // generates first part of if statement
   public int genIfBeg(int linenum) {
   printComment("-- if from line " + linenum + " --");
   printInsn("popq", "%rax"); // expression
@@ -289,28 +328,33 @@ public class CodeGenerator {
 	return labelCount;
   }
   
+  // generates second part of if statement
   public void genIfMid(int labelCount) {
 	printInsn("jmp", "L" + (labelCount - 1)); // jump to L1 when done
 	printLabel("L" + (labelCount - 2)); // create L0
   }
   
+  // generates third part of if statement
   public void genIfEnd(int labelCount) {
 	printLabel("L" + (labelCount - 1)); // create L1
   printComment("-- end if --");
   } 
   
-   public int genWhileBeg(int linenum) {
-  printComment("-- while from line " + linenum + " --");
+  // generates first part of while statement
+  public int genWhileBeg(int linenum) {
+    printComment("-- while from line " + linenum + " --");
 	printInsn("jmp", "L" + (labelCount + 1)); // jump to L1
 	printLabel("L" + labelCount); // create L0
 	labelCount += 2;
 	return labelCount;
   }
   
+  // generates second part of while statement
   public void genWhileMid(int labelCount) {
 	printLabel("L" + (labelCount - 1)); // create L1
   } 
   
+  // generates third part of while statement
   public void genWhileEnd(int labelCount) {
 	printInsn("popq", "%rax");  // right operand
 	printInsn("cmpq", "$0", "%rax");  // right operand
@@ -318,6 +362,7 @@ public class CodeGenerator {
   printComment("-- end while --");
   } 
   
+  // generates an add opp
   public void genAdd(int linenum) {
     printComment("-- add from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
@@ -327,6 +372,7 @@ public class CodeGenerator {
     printComment("-- end add --");
   }
   
+  // generates a subtraction opp
   public void genMinus(int linenum) {
     printComment("-- subtract from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
@@ -336,6 +382,7 @@ public class CodeGenerator {
     printComment("-- end subtract --");
   }
   
+  // generates a times opp
   public void genTimes(int linenum) {
     printComment("-- multiply from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
@@ -345,6 +392,7 @@ public class CodeGenerator {
     printComment("-- end multiply --");
   }
   
+  // generates a divide opp
  public void genDivide(int linenum) {
     printComment("-- div from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
@@ -355,7 +403,8 @@ public class CodeGenerator {
     printComment("-- end divide --");
   }
   
-public void genMod(int linenum) {
+  // generates a modulo opp
+  public void genMod(int linenum) {
     printComment("-- mod from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
@@ -364,9 +413,10 @@ public void genMod(int linenum) {
     printInsn("movq", "%rdx", "%rax"); // not sure what this does
 	printInsn("pushq", "%rax");
     printComment("-- end mod --");
-}
+  }
   
- public void genGreaterThan(int linenum) {
+  // generates a > opp
+  public void genGreaterThan(int linenum) {
     printComment("-- greater than from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
@@ -375,8 +425,9 @@ public void genMod(int linenum) {
 	printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
     printComment("-- end greater than --");
-}
-
+  }
+  
+// generates a < opp
 public void genLessThan(int linenum) {
     printComment("-- less than from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
@@ -388,6 +439,7 @@ public void genLessThan(int linenum) {
     printComment("-- end less than --");
 }
 
+// generates a >= opp
 public void genGreaterThanOrEqualTo(int linenum) {
     printComment("-- greater or equal from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
@@ -399,6 +451,7 @@ public void genGreaterThanOrEqualTo(int linenum) {
     printComment("-- end greater or equal --");
 }
 
+// generates a <= opp
 public void genLessThanOrEqualTo(int linenum) {
     printComment("-- less or equal from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
@@ -410,6 +463,7 @@ public void genLessThanOrEqualTo(int linenum) {
     printComment("-- end less or equal --");
 }
 
+// generates the first part for a || opp
 public int genShortCircuitOrMid(int linenum) { // TODO make short circuit - DONE
     printComment("-- or from line " + linenum + " --");
     printInsn("popq", "%rax");  // left operand
@@ -419,6 +473,7 @@ public int genShortCircuitOrMid(int linenum) { // TODO make short circuit - DONE
 	return (labelCount - 2);
 }
 
+// generates the second part for a || opp
 public void genShortCircuitOrEnd(int labelCount) {
     printInsn("popq", "%rax");  // right operand
     printInsn("cmpq", "$0", "%rax");
@@ -433,6 +488,7 @@ public void genShortCircuitOrEnd(int labelCount) {
   printComment("-- end or --");
 }
 
+// generates the first part for a && opp
 public int genShortCircuitAndMid(int linenum) { // TODO make short circuit - DONE
     printComment("-- and from line " + linenum + " --");
     printInsn("popq", "%rax");  // left operand
@@ -442,6 +498,7 @@ public int genShortCircuitAndMid(int linenum) { // TODO make short circuit - DON
 	return (labelCount - 2);
 }
 
+// generates the second part for a && opp
 public void genShortCircuitAndEnd(int labelCount) { // TODO make short circuit - DONE
     printInsn("popq", "%rax");  // right operand
     printInsn("cmpq", "$0", "%rax");
@@ -456,6 +513,7 @@ public void genShortCircuitAndEnd(int labelCount) { // TODO make short circuit -
     printComment("-- end and --");
 }
 
+// generates the == opp
 public void genEqual(int linenum) {
     printComment("-- equal from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
@@ -467,6 +525,7 @@ public void genEqual(int linenum) {
     printComment("-- end equal --");
 }
 
+// generates the != opp
 public void genNotEqual(int linenum) {
     printComment("-- not equal from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
@@ -478,6 +537,7 @@ public void genNotEqual(int linenum) {
     printComment("-- end not equal --");
 }
 
+// generates the ! opp
 public void genNot(int linenum) {
     printComment("-- not from line " + linenum + " --");
     printInsn("popq", "%rax");  // operand
@@ -488,6 +548,7 @@ public void genNot(int linenum) {
     printComment("-- end not --");
 }
 
+// generates the print and display opps
   public void genDisplay(int linenum) {
     printComment("-- display/print from line " + linenum + " --");
     printInsn("popq", "%rdi");  // single operand

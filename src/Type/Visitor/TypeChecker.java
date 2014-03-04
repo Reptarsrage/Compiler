@@ -19,7 +19,7 @@ public class TypeChecker {
     public IntArrayTypeNode int_array_type; 		// Singleton integer array type
     public DoubleArrayTypeNode double_array_type;  // Singleton double array type
     Stack<TypeNode> nest;			// a stack of symbol tables representing the current 
-    // scope and parent scopes of the program at any point
+									// scope and parent scopes of the program at any point
 									
     // Holds values for what to check in the CheckSymbolTables method.
     public enum TypeLevel { CLASS, METHOD, VARIABLE }  
@@ -39,15 +39,16 @@ public class TypeChecker {
         nest.push(program);
     }
 	
+	// Adds the offset for a method in a classes v-table
 	public void AddMethodMemOffSet(String id_name, String className, int offset) {
-		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ setting method: "+id_name);
+		//System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ setting method: "+id_name);
 		while(!(nest.peek() instanceof ClassTypeNode)) 
 		    nest.pop();
 		    
 		// set a global's offset (or possibly a methods)
 		ClassTypeNode c = (ClassTypeNode)nest.peek();
 		if (c.methods.get(id_name) != null){
-		    System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set method: "+id_name +" with offset "+ offset);
+		    //System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set method: "+id_name +" with offset "+ offset);
 		    c.vtble_offset.put(id_name, offset); 
 			c.vtble_offset_to_class.put(offset, className);
 		} else {
@@ -58,16 +59,16 @@ public class TypeChecker {
 		}
 	}
 	
-	
+	// Adds the offset for a field in a class
 	public void AddGlobalMemOffSet(String id_name, int offset) {
-		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ setting global: "+id_name);
+		//System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ setting global: "+id_name);
 		while(!(nest.peek() instanceof ClassTypeNode)) 
 		    nest.pop();
 		    
 		// set a global's offset (or possibly a methods)
 		ClassTypeNode c = (ClassTypeNode)nest.peek();
 		if (c.fields.get(id_name) != null){
-		    System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set global: "+id_name +" with offset "+ offset);
+		    //System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set global: "+id_name +" with offset "+ offset);
 		    c.mem_offset.put(id_name, offset);
 		} else {
 		    // fail
@@ -77,18 +78,19 @@ public class TypeChecker {
 		}
 	}
 	
+	// returns true if a class was the last thing visited
 	public boolean topOfStackIsClass() {
 		return nest.peek() instanceof ClassTypeNode;
 	}
 	
-	
+	// Adds the offset for a local variable in a method (block)
 	public void AddMemOffSet(String var_name, int offset) {
-		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ setting local: "+var_name);
+		//System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ setting local: "+var_name);
 		if (nest.peek() instanceof BlockTypeNode){
 			BlockTypeNode block = (BlockTypeNode) nest.peek();
 			if (block.locals.get(var_name) != null){
 				// set a local's offset
-				System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set local: "+var_name +" with offset "+ offset);
+				//System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ set local: "+var_name +" with offset "+ offset);
 				block.mem_offset.put(var_name, offset); 
 				//System.out.println("Set " + var_name + ", with offset " + offset);
 			} else {
@@ -103,6 +105,7 @@ public class TypeChecker {
 		}	
 	}
 	
+	// Retrieves the offset of a local or a parameter from the base pointer
 	public int GetMemOffSet(String var_name) {
 		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ searching for local: "+var_name);
 		if (nest.peek() instanceof BlockTypeNode){
@@ -136,6 +139,7 @@ public class TypeChecker {
 		return 0;
 	}
 	
+	// retrieves the v-table offset of the method in the class
 	public int GetMethodMemOffSet(String id_name, String className) {
 		// retrieve a method's offset
 		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ searching for method: "+id_name +", "+className);
@@ -155,6 +159,7 @@ public class TypeChecker {
 		return 0;
 	}
 	
+	// Retrieves the offset of a field from the classes pointer
 	public int GetGlobalMemOffSet(String id_name) {
 		System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ searching for field: "+id_name +".");
 		// retrieve a global's offset
@@ -284,6 +289,7 @@ public class TypeChecker {
         nest.push(m.inside);
     }
 	
+	// Prints our internal stack (for debugging purposes)
     public void printStack(){
         while (!nest.empty()){
             System.err.println(nest.pop());
@@ -353,6 +359,7 @@ public class TypeChecker {
         return undef_type;
     }
 	
+	// REturns true if rhs is assignable to lhs
     public boolean CheckClassAssignability(IdentifierTypeNode lhs, IdentifierTypeNode rhs) {
         ClassTypeNode rhs_class = rhs.c;
         if (rhs_class == lhs.c)
@@ -392,16 +399,17 @@ public class TypeChecker {
         return null;
     }
 
+	// Returns the last class on the stack
     public IdentifierTypeNode GetThis() {
-	Stack<TypeNode> popped = new Stack<TypeNode>();
-	while (!(nest.peek() instanceof ClassTypeNode)){
-            popped.push(nest.pop());
-	}
-	ClassTypeNode c = (ClassTypeNode)nest.peek();
-	while (!popped.empty())
-            nest.push(popped.pop());
-	IdentifierTypeNode id = new IdentifierTypeNode(c, "this");
-	return id;
+		Stack<TypeNode> popped = new Stack<TypeNode>();
+		while (!(nest.peek() instanceof ClassTypeNode)){
+				popped.push(nest.pop());
+		}
+		ClassTypeNode c = (ClassTypeNode)nest.peek();
+		while (!popped.empty())
+				nest.push(popped.pop());
+		IdentifierTypeNode id = new IdentifierTypeNode(c, "this");
+		return id;
     }
   
     // helper method for checking symbol tables when searching for a class
@@ -499,6 +507,7 @@ public class TypeChecker {
         nest.push(popped);
     }
   
+	// checks that method override is done correctly 
     public void CompareMethods(MethodTypeNode method1, String id1, MethodTypeNode method2, String id2, int line_number) {
         // check to make sure return type is the same
         if ( !(method1.return_type.getClass().equals(method2.return_type.getClass())) ) {
