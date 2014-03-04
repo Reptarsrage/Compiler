@@ -152,10 +152,11 @@ public class CodeGeneratorVisitor implements Visitor {
 	tc.AddGlobalMemOffSet(n.i.s, 8 + vtble_offset);
 	vtble_offset += 8;
 	tc.PushMethod(n.i.s);
+	stack_offset -= n.fl.size() * 8;
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
     }
-	stack_offset += n.vl.size() * 8;
+	stack_offset = -8;
   }
 
   // StatementList sl;
