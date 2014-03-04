@@ -54,8 +54,10 @@ public class CodeGenerator {
 			System.out.println("#"+field + " has offset of " + i+"!");
 			toPrint[i / 8 - 1] = "0";
 		 }
-		 for (String s : toPrint)
+		 for (String s : toPrint) {
+		     if (!s.equals("0"))
 			printInsn(".quad", s);
+		 }
 	}
   }
   
