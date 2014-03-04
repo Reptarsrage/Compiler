@@ -145,8 +145,8 @@ public class TypeChecker {
 			c = program.classes.get(className);
 		else
 			c = ((IdentifierTypeNode)t).c;
-		if (c != null && c.methods.get(id_name) != null){
-			System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ offset of method "+id_name+", is "+c.mem_offset.get(id_name));
+		if (c != null && c.vtble_offset.get(id_name) != null){
+			System.out.println("#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ offset of method "+id_name+", is "+c.vtble_offset.get(id_name));
 			return c.vtble_offset.get(id_name);
 		}
 		System.err.println("Internal error, trying to get a memory offset to an unrecognized function: " +

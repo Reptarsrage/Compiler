@@ -5,7 +5,7 @@ class Assignment4 {
 }
 
 class Dog {
-  int f;
+  int override;
   int g;
   int h;
     public int f() {
@@ -23,7 +23,7 @@ class Dog {
 	b = 2;
 	c = 3;
 	d = 4;
-	f = 5;
+	override = 5;
 	g = 6;
 	h = 7;
 	m = 100;
@@ -32,8 +32,14 @@ class Dog {
 }
 
 class Horse extends Dog {
-	public int f() {
-	  return 10; 
+    int q;
+    public int f() {
+	q = 20;
+	//	    override = q;
+	display(override);
+	override = 30;
+	display(override);
+	  return q;
 	}
 	public int Foobar() {
           return 77;

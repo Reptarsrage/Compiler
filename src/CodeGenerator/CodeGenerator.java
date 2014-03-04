@@ -52,12 +52,16 @@ public class CodeGenerator {
 
 		 for (String s : toPrint)
 			printInsn(".quad", s);
+			
+		for (String s : c.mem_offset.keySet()) {
+			System.out.println("#FIELD "+s + " has offset of " + c.mem_offset.get(s)+"!");
+		}
 	}
 }
   
   public void loadNonLocal(String className, String id, TypeChecker tc, int offset) {
 	ClassTypeNode c = tc.program.classes.get(className);
-	if (c.fields.get(id) != null){
+	if (c.mem_offset.get(id) != null){
 		// loading a field
 		// expect our class addr to be in -8(rbp)
 		printInsn("movq", "-8(%rbp)","%r14");
@@ -107,7 +111,7 @@ public class CodeGenerator {
   public void genNewObj(String name, TypeChecker tc) {
 	ClassTypeNode c = tc.program.classes.get(name);
 	int size = (c.mem_offset.size() + 1) * 8;
-	//System.out.println("Created new object " + name + ", with size " + size);
+	System.out.println("#@@@@@@@@@@@@@@@@@Created new object " + name + ", with size " + size);
 	printInsn("movq", "$" + size, "%rdi"); // RDI the first parameter?
 	printInsn("call", "mjmalloc");
 	printInsn("movq", "$" + name + "$$", "%r13");
