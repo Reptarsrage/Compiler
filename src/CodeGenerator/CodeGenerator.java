@@ -62,12 +62,12 @@ public class CodeGenerator {
 	if (c.fields.get(id) != null){
 		// loading a field
 		// expect our class addr to be in rbp
-		printInsn("movq", "(%rbp)","%r14");
+		printInsn("movq", "-8(%rbp)","%r14");
 		printInsn("pushq", offset + "(%r14)");
 	} else {
 		// loading a method
 		// TODO extended
-		printInsn("movq", "(%rbp)","%r14");  // get vtable addr
+		printInsn("movq", "-8(%rbp)","%r14");  // get vtable addr
 		printInsn("movq", "(%r14)", "%r15"); // get method addr
 		printInsn("pushq", offset + "(%r15)");
 	}
@@ -76,7 +76,7 @@ public class CodeGenerator {
   public void storeNonLocal(String className, int offset) {
 	// storing a field
 	// expect our class addr to be on rbp
-	printInsn("movq", "(%rbp)","%r14");
+	printInsn("movq", "-8(%rbp)","%r14");
 	printInsn("popq", offset + "(%r14)");
   }
   
@@ -165,7 +165,7 @@ public class CodeGenerator {
   
   public void genFunctionExit(String functionName, int local_count) {
 	 printInsn("popq", "%rax");
-	 removeLocalsFromStack(local_count);
+	 removeLocalsFromStack(local_count + 1); // TODO optimize
 	 genMainExit(functionName );
   }
 

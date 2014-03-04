@@ -8,7 +8,7 @@ class Dog {
   int f;
   int g;
   int h;
-  public int Foo () {
+  public int Foo (int i) {
 	int a;
 	int b;
 	int c;
@@ -30,8 +30,8 @@ class Cat {
 		Dog d;
 		d = new Dog();
 		m = new Dog();
-		display(d.Foo());
-		display(m.Foo());
+		display(d.Foo(1));
+		display(m.Foo(1));
 		return 1; 
 	}
 }
