@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import Type.*;
 import Type.Visitor.TypeChecker;
+import java.util.*;
 
 public class CodeGenerator {
 
@@ -19,9 +20,11 @@ public class CodeGenerator {
   private String current_class;			// name of this*
   private final String COUNT_LABEL = "LINECOUNT$$$";
   private final String NAME_LABEL = "NAME$$$";
+  private List<Integer> flagged_line_numbers;
 
   public CodeGenerator(String outputFileName) {
     labelCount = 0;
+	flagged_line_numbers = new ArrayList<Integer>();
 	if (outputFileName != null && outputFileName != "stdout") {
       try {
         outputStream = new PrintStream(outputFileName);
@@ -38,6 +41,10 @@ public class CodeGenerator {
     } else {
       assemblerPrefixName = "";
     }
+  }
+  
+  public void addFlaggedLine(int line_num) {
+	flagged_line_numbers.add(line_num);
   }
   
   // Generates .data section for vtables
@@ -109,7 +116,17 @@ public class CodeGenerator {
 	printComment("++Done");
   }
   
-  public void genCountFinish() {
+  public void genCountFinish(int count) {
+	// flag certian lines as non countable
+	printComment("Setting "+flagged_line_numbers.size()+" line count flags..");
+	for (int i =0; i < count + 1; i++) {
+		if (!flagged_line_numbers.contains(i)) {
+			printInsn("movq", "$"+COUNT_LABEL, "%r13");
+			printInsn("movq", "(%r13)", "%r14");
+			printInsn("movq", "$-1", 8*(i - 1) + "(%r14)");
+		}
+	}
+	// print results!
 	printComment("Finishing up with line count..");
 	printInsn("movq", "$"+COUNT_LABEL, "%rdi");
 	printInsn("movq", "$"+NAME_LABEL, "%r14");

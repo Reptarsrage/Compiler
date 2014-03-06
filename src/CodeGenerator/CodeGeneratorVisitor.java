@@ -73,11 +73,13 @@ import Type.*;
 
 public class CodeGeneratorVisitor implements Visitor {
 
+  private CodeGenerator cg;	// tool for generating code
   private TypeChecker tc;		// sets the offsets using TypeNode in our type checker graph
   private int stack_offset;		// offset in the local stack from rbp
   private int vtble_offset;		// offset in vtable	(first is always parent class)
   private int field_offset;		// offset in class (first is alwys vtble pointer)
   private String recent_class;	// the most recently visited class (this*)
+  private boolean count_lines;
   
   public CodeGeneratorVisitor(TypeChecker tc) {
 	this.tc = tc;
@@ -85,6 +87,13 @@ public class CodeGeneratorVisitor implements Visitor {
 	vtble_offset = 0;
 	field_offset = 0;
 	recent_class = "NULL";
+	this.count_lines = false;
+  }
+  
+  public CodeGeneratorVisitor(TypeChecker tc, CodeGenerator cg, boolean count_lines) {
+	this(tc);
+	this.cg = cg;
+	this.count_lines = count_lines;
   }
 
   // MainClass m;
@@ -101,6 +110,7 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(MainClass n) {
 	recent_class = "asm_main";
 	vtble_offset = 0;
+	n.b.accept(this);
   }
 
   // Identifier i;
@@ -124,7 +134,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
-  recent_class = n.i.s;
+	recent_class = n.i.s;
     vtble_offset = 0;
 	field_offset = 0;
 	tc.PushClass(n.i.s);
@@ -165,7 +175,11 @@ public class CodeGeneratorVisitor implements Visitor {
     for (int i = 0; i < n.vl.size(); i++) {
       n.vl.get(i).accept(this);
     }
+	for (int i = 0; i < n.sl.size(); i++) {
+      n.sl.get(i).accept(this);
+    }
 	stack_offset = -8;
+	if (count_lines) cg.addFlaggedLine(n.e.line_number);
   }
 
   // StatementList sl;
@@ -175,10 +189,36 @@ public class CodeGeneratorVisitor implements Visitor {
     }
   }
   
+  public void visit(If n) {
+	if (count_lines) cg.addFlaggedLine(n.line_number);
+	for (int i = 0; i < n.s1.size(); i++) {
+      n.s1.get(i).accept(this);
+    }
+    for (int i = 0; i < n.s2.size(); i++) {
+      n.s2.get(i).accept(this);
+    }
+  }
+  public void visit(While n) {
+	if (count_lines) cg.addFlaggedLine(n.line_number);
+	for (int i = 0; i < n.s.size(); i++) {
+      n.s.get(i).accept(this);
+    }
+  }
+  public void visit(Print n) {
+	if (count_lines) cg.addFlaggedLine(n.line_number);
+  }
+  public void visit(Assign n) {
+	if (count_lines) cg.addFlaggedLine(n.line_number);
+  }
+  public void visit(ArrayAssign n) {
+	if (count_lines) cg.addFlaggedLine(n.line_number);
+  }
+  public void visit(Display n) {
+	if (count_lines) cg.addFlaggedLine(n.line_number);
+  }
+  
   // \\\\\\\\\\\\\\\\\\\\\\\BELOW ARE USELESS METHODS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   
-  public void visit(Display n) {
-  }
   public void visit(Formal n) {
   }
   public void visit(IntArrayType n) {
@@ -192,16 +232,6 @@ public class CodeGeneratorVisitor implements Visitor {
   public void visit(DoubleType n) {
   }
   public void visit(IdentifierType n) {
-  }
-  public void visit(If n) {
-  }
-  public void visit(While n) {
-  }
-  public void visit(Print n) {
-  }
-  public void visit(Assign n) {
-  }
-  public void visit(ArrayAssign n) {
   }
   public void visit(ShortCircuitAnd n) {
   }

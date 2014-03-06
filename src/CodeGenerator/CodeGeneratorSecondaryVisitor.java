@@ -68,6 +68,7 @@ import AST.While;
 import AST.Visitor.Visitor;
 import Type.Visitor.TypeChecker;
 import Type.*;
+import java.io.*;
 
 public class CodeGeneratorSecondaryVisitor implements Visitor {
 
@@ -87,10 +88,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   }
   
   public CodeGeneratorSecondaryVisitor(CodeGenerator cg, TypeChecker tc, boolean count_lines, String imput_filename) {
-    this.cg = cg;
-	callee = "NULL";
-	this.tc = tc;
-	recent_class = "NULL";
+    this(cg, tc);
 	this.count_lines = count_lines;
 	this.input_filename = imput_filename;
   }
@@ -112,7 +110,6 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
       n.cl.get(i).accept(this);
     }
 	cg.genVtbles(tc, count_lines);
-	
   }
 
   // Identifier i1,i2;
@@ -122,12 +119,13 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 	recent_class = "asm_main";
 	cg.genMainEntry("asm_main");
 	cg.genLineCounting(input_filename);
+	
     n.i1.accept(this);
     n.i2.accept(this);
 	for (int i = 0; i < n.b.sl.size(); i ++) {
         n.b.sl.get(i).accept(this);
     }
-	cg.genCountFinish();
+	cg.genCountFinish(count(input_filename));
     cg.genMainExit("asm_main");
   }
 
@@ -135,6 +133,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclSimple n) {
+    
 	tc.PushClass(n.i.s);
 	recent_class = n.i.s;
 	cg.setClass(n.i.s);
@@ -152,6 +151,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // VarDeclList vl;
   // MethodDeclList ml;
   public void visit(ClassDeclExtends n) {
+    
 	tc.PushClass(n.i.s);
 	recent_class = n.i.s;
 	cg.setClass(n.i.s);
@@ -168,6 +168,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Type t;
   // Identifier i;
   public void visit(VarDecl n) {
+    
 	n.t.accept(this);
     n.i.accept(this);
   }
@@ -180,6 +181,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Exp e;
   public void visit(MethodDecl n) {
 	// method
+	
 	tc.PushMethod(n.i.s);
 	int local_count = n.vl.size();
     cg.genFunctionEntry(n.i.s);
@@ -202,6 +204,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 
   // StatementList sl;
   public void visit(Block n) {
+    
 	for (int i = 0; i < n.sl.size(); i++) {
       n.sl.get(i).accept(this);
     }
@@ -460,6 +463,30 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // String s;
   public void visit(Identifier n) {
 	callee = n.s;
+  }
+  
+  private int count(String filename) {
+    try {
+		InputStream is = new BufferedInputStream(new FileInputStream(filename));
+        byte[] c = new byte[1024];
+        int count = 0;
+        int readChars = 0;
+        boolean empty = true;
+        while ((readChars = is.read(c)) != -1) {
+            empty = false;
+            for (int i = 0; i < readChars; ++i) {
+                if (c[i] == '\n') {
+                    ++count;
+                }
+            }
+        }
+		is.close();
+        return (count == 0 && !empty) ? 1 : count;
+    } catch (IOException e) {
+		System.err.println("Internal I/O Exception, aborting...");
+		System.exit(1);
+	}
+	return 0;
   }
   
   // \\\\\\\\\\\\\\\\\\\\\\\\\\\\ BELOW ARE USELESS METHODS \\\\\\\\\\\\\\\\\\\\\\\\

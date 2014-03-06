@@ -186,7 +186,7 @@ Program ::=
           MainClass:mc ClassDeclarationList:cdlist // EOF
 		    {: RESULT = new Program(mc, cdlist,mcleft); :}
 		| MainClass:mc // EOF
-		    {: ClassDeclList list = new ClassDeclList(0);
+		    {: ClassDeclList list = new ClassDeclList(mcleft);
 			   RESULT = new Program(mc, list, mcleft); :}
         ;
 
@@ -255,42 +255,42 @@ MethodDeclaration ::=
 		  LCURLYBRACE StatementList:slist RETURN
 		  Expression:expr SEMICOLON RCURLYBRACE
 			{: 	
-				VarDeclList vdlist =  new VarDeclList(0);
+				VarDeclList vdlist =  new VarDeclList(pleft);
 				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
 		
 		| PUBLIC:p Type:t Identifier:i LPAREN FormalList:flist RPAREN 
 		  LCURLYBRACE VariableDeclarationList:vdlist RETURN
 		  Expression:expr SEMICOLON RCURLYBRACE
-			{:	StatementList slist = new StatementList(0);
+			{:	StatementList slist = new StatementList(pleft);
 				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
 		
 		| PUBLIC:p Type:t Identifier:i LPAREN FormalList:flist RPAREN LCURLYBRACE RETURN
 		  Expression:expr SEMICOLON RCURLYBRACE
-			{: 	VarDeclList vdlist =  new VarDeclList(0);
-				StatementList slist = new StatementList(0);
+			{: 	VarDeclList vdlist =  new VarDeclList(pleft);
+				StatementList slist = new StatementList(pleft);
 				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
 		
 		| PUBLIC:p Type:t Identifier:i LPAREN RPAREN LCURLYBRACE 
 		  VariableDeclarationList:vdlist StatementList:slist RETURN Expression:expr SEMICOLON RCURLYBRACE
-			{:  FormalList flist = new FormalList(0);
+			{:  FormalList flist = new FormalList(pleft);
 				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
 		
 		| PUBLIC:p Type:t Identifier:i LPAREN RPAREN LCURLYBRACE StatementList:slist RETURN
 		  Expression:expr SEMICOLON RCURLYBRACE
-			{:  FormalList flist = new FormalList(0);
-				VarDeclList vdlist =  new VarDeclList(0);
+			{:  FormalList flist = new FormalList(pleft);
+				VarDeclList vdlist =  new VarDeclList(pleft);
 				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
 		
 		| PUBLIC:p Type:t Identifier:i LPAREN RPAREN 
 		  LCURLYBRACE VariableDeclarationList:vdlist RETURN Expression:expr SEMICOLON RCURLYBRACE
-			{:	FormalList flist = new FormalList(0);
-				StatementList slist = new StatementList(0);
+			{:	FormalList flist = new FormalList(pleft);
+				StatementList slist = new StatementList(pleft);
 				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
 		
 		| PUBLIC:p Type:t Identifier:i LPAREN RPAREN LCURLYBRACE RETURN Expression:expr SEMICOLON RCURLYBRACE
-			{:	FormalList flist = new FormalList(0);
-				VarDeclList vdlist =  new VarDeclList(0);
-				StatementList slist = new StatementList(0);
+			{:	FormalList flist = new FormalList(pleft);
+				VarDeclList vdlist =  new VarDeclList(pleft);
+				StatementList slist = new StatementList(pleft);
 				RESULT = new MethodDecl(t, i, flist, vdlist, slist, expr, pleft); :}
 		;
 ClassDeclaration ::=
@@ -300,17 +300,17 @@ ClassDeclaration ::=
 		
 		| CLASS:c Identifier:i EXTENDS Identifier:ext LCURLYBRACE 
 		  VariableDeclarationList:vdlist RCURLYBRACE
-		    {: 	MethodDeclList mdlist = new MethodDeclList(0);
+		    {: 	MethodDeclList mdlist = new MethodDeclList(cleft);
 				RESULT = new ClassDeclExtends(i, ext, vdlist, mdlist, cleft); :}
 		
 		| CLASS:c Identifier:i EXTENDS Identifier:ext LCURLYBRACE 
 		  MethodDeclarationList:mdlist RCURLYBRACE
-		    {: 	VarDeclList vdlist = new VarDeclList(0);
+		    {: 	VarDeclList vdlist = new VarDeclList(cleft);
 				RESULT = new ClassDeclExtends(i, ext, vdlist, mdlist, cleft); :}
 		
 		| CLASS:c Identifier:i EXTENDS Identifier:ext LCURLYBRACE RCURLYBRACE
-		    {: 	VarDeclList vdlist= new VarDeclList(0);
-				MethodDeclList mdlist = new MethodDeclList(0);
+		    {: 	VarDeclList vdlist= new VarDeclList(cleft);
+				MethodDeclList mdlist = new MethodDeclList(cleft);
 				RESULT = new ClassDeclExtends(i, ext, vdlist, mdlist, cleft); :}
 		
 		| CLASS:c Identifier:i LCURLYBRACE VariableDeclarationList:vdlist 
@@ -318,16 +318,16 @@ ClassDeclaration ::=
 		    {: RESULT = new ClassDeclSimple(i, vdlist, mdlist, cleft); :}
 		
 		| CLASS:c Identifier:i LCURLYBRACE VariableDeclarationList:vdlist RCURLYBRACE
-		    {: 	MethodDeclList mdlist = new MethodDeclList(0);
+		    {: 	MethodDeclList mdlist = new MethodDeclList(cleft);
 				RESULT = new ClassDeclSimple(i, vdlist, mdlist, cleft); :}
 		
 		| CLASS:c Identifier:i LCURLYBRACE MethodDeclarationList:mdlist RCURLYBRACE
-		    {: 	VarDeclList vdlist =  new VarDeclList(0);
+		    {: 	VarDeclList vdlist =  new VarDeclList(cleft);
 				RESULT = new ClassDeclSimple(i, vdlist, mdlist, cleft); :}
 		
 		| CLASS:c Identifier:i LCURLYBRACE RCURLYBRACE
-		    {: 	VarDeclList vdlist =  new VarDeclList(0);
-				MethodDeclList mdlist = new MethodDeclList(0);
+		    {: 	VarDeclList vdlist =  new VarDeclList(cleft);
+				MethodDeclList mdlist = new MethodDeclList(cleft);
 				RESULT = new ClassDeclSimple(i, vdlist, mdlist, cleft); :}
 		;
 
@@ -353,7 +353,7 @@ WhileStatement ::=
 			    slist.add(s);
 				RESULT = new While(exp, slist, wleft); :}
 		  | WHILE:w LPAREN Expression:exp RPAREN LCURLYBRACE RCURLYBRACE
-		     {:  StatementList slist = new StatementList(0);
+		     {:  StatementList slist = new StatementList(wleft);
 			     RESULT = new While(exp, slist, wleft); :}	
 		;
 		
@@ -380,25 +380,25 @@ IfElseStatement ::=
 		     {: RESULT = new If(e, s1list, s2list, ileft); :}
 		  
 		  | IF:i LPAREN Expression:e RPAREN Statement:s1 ELSE LCURLYBRACE RCURLYBRACE // if (exp) statement else {}
-		     {: StatementList s2list = new StatementList(0);
+		     {: StatementList s2list = new StatementList(ileft);
 			    StatementList s1list = new StatementList(ileft);
 				s1list.add(s1);
 				RESULT = new If(e, s1list, s2list, ileft); :} 
 		  
 		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE StatementList:s1list RCURLYBRACE  // if (exp) {list} else {}
 			 ELSE LCURLYBRACE RCURLYBRACE
-		     {: StatementList s2list = new StatementList(0);
+		     {: StatementList s2list = new StatementList(ileft);
 			    RESULT = new If(e, s1list, s2list, ileft); :}
 		  
 		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE RCURLYBRACE ELSE Statement:s2 // if (exp) {} else state
-		     {: StatementList s1list = new StatementList(0);
+		     {: StatementList s1list = new StatementList(ileft);
 			    StatementList s2list = new StatementList(ileft);
 				s2list.add(s2);
 				RESULT = new If(e, s1list, s2list, ileft); :}
 		  
 		  | IF:i LPAREN Expression:e RPAREN LCURLYBRACE RCURLYBRACE   //if (exp) {} else {list}
 			 ELSE LCURLYBRACE StatementList:s2list RCURLYBRACE
-		     {: StatementList s1list = new StatementList(0);
+		     {: StatementList s1list = new StatementList(ileft);
 			    RESULT = new If(e, s1list, s2list, ileft); :}
 		;
 			

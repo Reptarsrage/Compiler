@@ -46,7 +46,7 @@ public class CodeGenMain {
       program.accept(new SecondaryTypeVisitor(tc));
       program.accept(new TertiaryTypeVisitor(tc));
       program.accept(new TypeCheckerVisitor(tc));
-      program.accept(new CodeGeneratorVisitor(tc));
+      program.accept(new CodeGeneratorVisitor(tc, cg, countLines));
 	  program.accept(new CodeGeneratorInheritanceVisitor(tc));
 	  program.accept(new CodeGeneratorSecondaryVisitor(cg, tc, countLines, inputFileName));
 	  //
