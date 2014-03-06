@@ -75,12 +75,24 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   private String callee;	// for call's callee.f() 
   private TypeChecker tc;	// type checker graph used to represent all of our classes and methods
   private String recent_class;	// the most recently visited class (this*)
+  private boolean count_lines;
+  private String input_filename;
   
   public CodeGeneratorSecondaryVisitor(CodeGenerator cg, TypeChecker tc) {
     this.cg = cg;
 	callee = "NULL";
 	this.tc = tc;
 	recent_class = "NULL";
+	count_lines = false;
+  }
+  
+  public CodeGeneratorSecondaryVisitor(CodeGenerator cg, TypeChecker tc, boolean count_lines, String imput_filename) {
+    this.cg = cg;
+	callee = "NULL";
+	this.tc = tc;
+	recent_class = "NULL";
+	this.count_lines = count_lines;
+	this.input_filename = imput_filename;
   }
 
   // Display added for toy example language.  Not used in regular MiniJava
@@ -92,6 +104,8 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // MainClass m;
   // ClassDeclList cl;
   public void visit(Program n) {
+	if (count_lines)
+		System.out.println("#COUNTING LINES!");
 	n.m.accept(this);
     for (int i = 0; i < n.cl.size(); i++) {
       n.cl.get(i).accept(this);

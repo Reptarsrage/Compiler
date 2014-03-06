@@ -14,8 +14,20 @@ import java.util.*;
  */
 public class CodeGenMain {
   public static void main(String[] args) {
-    try {
-      //
+    String inputFileName = null;
+	boolean countLines = false;
+	for (int i = 0; i < args.length; i++) {
+	  if (args[i].equals("-LC")) {
+        countLines = true;
+	  } else if (args[i].equals("-i")) {
+        inputFileName = args[i+1];
+        i += 1;
+      }
+	}
+	
+	try {
+	  
+	  //
       // create a scanner on the input file
       //
       scanner s = new scanner(System.in);
@@ -36,7 +48,7 @@ public class CodeGenMain {
       program.accept(new TypeCheckerVisitor(tc));
       program.accept(new CodeGeneratorVisitor(tc));
 	  program.accept(new CodeGeneratorInheritanceVisitor(tc));
-	  program.accept(new CodeGeneratorSecondaryVisitor(cg, tc));
+	  program.accept(new CodeGeneratorSecondaryVisitor(cg, tc, countLines, inputFileName));
 	  //
       // System.out.print("\n" + "Parsing completed");
       //
