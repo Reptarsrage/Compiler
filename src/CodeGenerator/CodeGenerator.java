@@ -17,6 +17,8 @@ public class CodeGenerator {
   private PrintStream outputStream;
   public String assemblerPrefixName;	
   private String current_class;			// name of this*
+  private final String COUNT_LABEL = "LINECOUNT$$$";
+  private final String NAME_LABEL = "NAME$$$";
 
   public CodeGenerator(String outputFileName) {
     labelCount = 0;
@@ -39,7 +41,7 @@ public class CodeGenerator {
   }
   
   // Generates .data section for vtables
-  public void genVtbles(TypeChecker tc) {
+  public void genVtbles(TypeChecker tc, boolean count_lines) {
 	printSection(".data");
 	for (String name : tc.program.classes.keySet()){
 		ClassTypeNode c = tc.program.classes.get(name);
@@ -63,7 +65,58 @@ public class CodeGenerator {
 			System.out.println("\t# Field "+s + " has class offset of " + c.mem_offset.get(s)+"!");
 		}
 	}
+	if (count_lines) {
+		printLabel(COUNT_LABEL);
+		printInsn(".quad", "0"); // vtable pointer, no extends
+		printLabel(NAME_LABEL);
+		printInsn(".quad", "0"); // vtable pointer, no extends
+	}
  }
+  
+  public void genLineCounting(String name) {
+	// store input filename
+	printComment("Building filename...");
+	byte[] bytes = (name).getBytes();
+	printInsn("movq", "$" + bytes.length, "%rdi");
+	printInsn("call", "mjmalloc");
+	printInsn("movq", "$"+NAME_LABEL, "%r14");
+	printInsn("movq", "%rax", "(%r14)");
+	printInsn("movq", "(%r14)", "%r13");
+	// fill in name
+	for (int i = 0; i < bytes.length; i++) {
+		// push loc, offset, value
+		printInsn("movb", "$" + bytes[i], "%cl");
+		printInsn("mov", "%cl", i+"(%r13)");
+	}
+	printComment("Done building filename!");
+	printComment("Building array of line counters..");
+	// create count array structure
+	printInsn("movq", "%r13", "%rdi");
+	printInsn("call", "get_line_count");
+	printInsn("movq", "%rax", "%rdi");
+	printInsn("imulq", "$8", "%rdi");
+	printInsn("call", "mjmalloc");
+	printInsn("movq", "$"+COUNT_LABEL, "%r14");
+	printInsn("movq", "%rax", "(%r14)");
+	printComment("Done building array of line counters!");
+  }
+  
+  public void genUpdateCount(int line_number) {
+	printComment("++Inrementing line count at " + line_number);
+	printInsn("movq", "$"+COUNT_LABEL, "%r13");
+	printInsn("movq", "(%r13)", "%r14");
+	printInsn("incq", 8*(line_number - 1) + "(%r14)");
+	printComment("++Done");
+  }
+  
+  public void genCountFinish() {
+	printComment("Finishing up with line count..");
+	printInsn("movq", "$"+COUNT_LABEL, "%rdi");
+	printInsn("movq", "$"+NAME_LABEL, "%r14");
+	printInsn("movq", "(%r14)", "%rsi");
+	printInsn("call", "display_line_count_results");
+	printComment("Done with line counting!");
+  }
   
   // pushes a field or method's offset from vtable or class onto stack
   public void loadNonLocal(String className, String id, TypeChecker tc, int offset) {
@@ -102,7 +155,7 @@ public class CodeGenerator {
   
   // Creates a new array, pushes loc on stack
   public void genNewArray(int line_number) {
-      printComment("-- Generating new array --");
+    printComment("-- Generating new array --");
 	printInsn("popq", "%rdi");
 	printInsn("movq", "%rdi", "%r14");
 	printInsn("movq", "%rdi", "%r15");

@@ -97,7 +97,8 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 
   // Display added for toy example language.  Not used in regular MiniJava
   public void visit(Display n) {
-    n.e.accept(this);
+    if (count_lines) cg.genUpdateCount(n.line_number);
+	n.e.accept(this);
     cg.genDisplay(n.line_number);
   }
 
@@ -110,7 +111,8 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
     for (int i = 0; i < n.cl.size(); i++) {
       n.cl.get(i).accept(this);
     }
-	cg.genVtbles(tc);
+	cg.genVtbles(tc, count_lines);
+	
   }
 
   // Identifier i1,i2;
@@ -119,11 +121,13 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 	tc.PushClass("asm_main");
 	recent_class = "asm_main";
 	cg.genMainEntry("asm_main");
+	cg.genLineCounting(input_filename);
     n.i1.accept(this);
     n.i2.accept(this);
-    for (int i = 0; i < n.b.sl.size(); i ++) {
+	for (int i = 0; i < n.b.sl.size(); i ++) {
         n.b.sl.get(i).accept(this);
     }
+	cg.genCountFinish();
     cg.genMainExit("asm_main");
   }
 
@@ -164,7 +168,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Type t;
   // Identifier i;
   public void visit(VarDecl n) {
-    n.t.accept(this);
+	n.t.accept(this);
     n.i.accept(this);
   }
 
@@ -190,6 +194,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
     for (int i = 0; i < n.sl.size(); i++) {
       n.sl.get(i).accept(this);
     }
+	if (count_lines) cg.genUpdateCount(n.e.line_number);
     n.e.accept(this);
 	
     cg.genFunctionExit(n.i.s, local_count, n.fl.size() + 1);
@@ -205,7 +210,8 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Exp e;
   // Statement s1,s2;
   public void visit(If n) {
-    n.e.accept(this);
+    if (count_lines) cg.genUpdateCount(n.line_number);
+	n.e.accept(this);
     int label = cg.genIfBeg(n.line_number);
 	for (int i = 0; i < n.s1.size(); i++) {
       n.s1.get(i).accept(this);
@@ -220,7 +226,8 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Exp e;
   // StatementList s;
   public void visit(While n) {
-    int label = cg.genWhileBeg(n.line_number);
+    if (count_lines) cg.genUpdateCount(n.line_number);
+	int label = cg.genWhileBeg(n.line_number);
 	for (int i = 0; i < n.s.size(); i++) {
       n.s.get(i).accept(this);
     }
@@ -231,14 +238,16 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 
   // Exp e;
   public void visit(Print n) {
-    n.e.accept(this);
+    if (count_lines) cg.genUpdateCount(n.line_number);
+	n.e.accept(this);
 	cg.genDisplay(n.line_number);
   }
 
   // Identifier i;
   // Exp e;
   public void visit(Assign n) {
-    n.e.accept(this);
+    if (count_lines) cg.genUpdateCount(n.line_number);
+	n.e.accept(this);
 	n.i.accept(this);
 	int offset = tc.GetMemOffSet(n.i.s); // returns zero if not local var
 	if (offset == 0){
@@ -252,7 +261,8 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Identifier i;
   // Exp e1,e2;
   public void visit(ArrayAssign n) {
-    int offset = tc.GetMemOffSet(n.i.s); // returns zero if not local var
+    if (count_lines) cg.genUpdateCount(n.line_number);
+	int offset = tc.GetMemOffSet(n.i.s); // returns zero if not local var
     if (offset == 0){
 	offset = tc.GetGlobalMemOffSet(n.i.s);
 	cg.loadNonLocal(recent_class, n.i.s, tc, offset);
@@ -267,7 +277,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 
   // Exp e1,e2;
   public void visit(ShortCircuitAnd n) {
-    n.e1.accept(this);
+	n.e1.accept(this);
 	int label = cg.genShortCircuitAndMid(n.line_number);
     n.e2.accept(this);
 	cg.genShortCircuitAndEnd(label);
