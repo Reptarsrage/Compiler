@@ -88,12 +88,14 @@ int display_line_count_results( int64_t **counts, char ** file_name) {
 	FILE                *fp = fopen((char *)file_name, "r");
 	char line[256];
 	int64_t count;
+	int max_width;
+	max_width = 8;
 	while (fgets(line, sizeof(line), fp)) {
 		count = *(*(counts) +i);
 		if (count < 0) {
-			printf("-   " );
+			printf("%*s:   %d:", max_width, "-", i);
 		} else {
-			printf("%d   ", count);
+			printf("%*d:   %d:", max_width, count, i);
 		}
 		printf("%s", line); 
 		i++;

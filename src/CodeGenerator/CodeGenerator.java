@@ -619,11 +619,13 @@ public void genNot(int linenum) {
 }
 
 // generates the print and display opps
-  public void genDisplay(int linenum) {
+  public void genDisplay(int linenum, boolean count_lines) {
     printComment("-- display/print from line " + linenum + " --");
     printInsn("popq", "%rdi");  // single operand
-    printInsn("call", assemblerPrefixName + "put");
-    printComment("-- end display/print --");
+    if (!count_lines) {
+	   printInsn("call", assemblerPrefixName + "put");
+    }
+	printComment("-- end display/print --");
   }
 
 }

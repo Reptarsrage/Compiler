@@ -97,7 +97,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   public void visit(Display n) {
     if (count_lines) cg.genUpdateCount(n.line_number);
 	n.e.accept(this);
-    cg.genDisplay(n.line_number);
+    cg.genDisplay(n.line_number, count_lines);
   }
 
   // MainClass m;
@@ -119,7 +119,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 	recent_class = "asm_main";
 	cg.genMainEntry("asm_main");
 	cg.genLineCounting(input_filename);
-	
+	if (count_lines) cg.genUpdateCount(n.i2.line_number);
     n.i1.accept(this);
     n.i2.accept(this);
 	for (int i = 0; i < n.b.sl.size(); i ++) {
@@ -185,6 +185,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 	tc.PushMethod(n.i.s);
 	int local_count = n.vl.size();
     cg.genFunctionEntry(n.i.s);
+	if (count_lines) cg.genUpdateCount(n.line_number);
     String[] registers = {"%rsi", "%rdx", "%rcx", "%r8", "%r9"};
     if (n.fl.size() > 5) System.exit(1); // more than 5 params is illegal (at the moment)
     cg.genFormal("%rdi", n.line_number); // add this ptr to stack
@@ -229,12 +230,13 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Exp e;
   // StatementList s;
   public void visit(While n) {
-    if (count_lines) cg.genUpdateCount(n.line_number);
+	if (count_lines) cg.genUpdateCount(n.line_number);
 	int label = cg.genWhileBeg(n.line_number);
 	for (int i = 0; i < n.s.size(); i++) {
       n.s.get(i).accept(this);
     }
 	cg.genWhileMid(label);
+	if (count_lines) cg.genUpdateCount(n.line_number);
 	n.e.accept(this);
 	cg.genWhileEnd(label);
   }
@@ -243,7 +245,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   public void visit(Print n) {
     if (count_lines) cg.genUpdateCount(n.line_number);
 	n.e.accept(this);
-	cg.genDisplay(n.line_number);
+	cg.genDisplay(n.line_number, count_lines);
   }
 
   // Identifier i;

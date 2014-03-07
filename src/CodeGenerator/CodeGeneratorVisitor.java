@@ -108,6 +108,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Identifier i1,i2;
   // Block b;
   public void visit(MainClass n) {
+	if (count_lines) cg.addFlaggedLine(n.i2.line_number);
 	recent_class = "asm_main";
 	vtble_offset = 0;
 	n.b.accept(this);
@@ -168,6 +169,7 @@ public class CodeGeneratorVisitor implements Visitor {
   // Exp e;
   public void visit(MethodDecl n) {
 	// method
+	if (count_lines) cg.addFlaggedLine(n.line_number);
 	tc.AddMethodMemOffSet(n.i.s, recent_class, 8 + vtble_offset);
 	vtble_offset += 8;
 	tc.PushMethod(n.i.s);
