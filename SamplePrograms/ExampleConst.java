@@ -1,95 +1,30 @@
-//
-// Compute digits of Pi
-// See:
-//   http://www.mathpropress.com/stan/bibliography/spigot.pdf
-//   http://rosettacode.org/wiki/Pi#Pascal
-//
-// This needs MiniJava to be extended to support integer / and %
-//
-class Pi {
-  public static void main(String[] a) {
-    System.out.println(
-      new PiWorker().doWork()
-    );
-  }
+// test doubles being assigned to variables
+
+class cse401c_correct_10 {
+	public static void main(String[] args) {
+            System.out.println(new TestDoubleSimple().test());
+	}
 }
 
-class PiWorker {
-
-  public int writeDigit(int x) {
-    System.out.println(x);
-    return x;
-  }
-
-  public int doWork() {
-    int n;
-    int len;
-    int i;
-    int j;
-    int k;
-    int q;
-    int x;
-    int nines;
-    int predigit;
-    int junk;
-    int [] a;
-
-    n = 1000;
-    len = 10 * n / 3;
-    a = new int[len+1];
-
-    j = 1;
-    while (j <= len) {
-      a[j] = 2;
-      j = j + 1;
-    }
-    nines = 0;
-    predigit = 0;
-
-    j = 1;
-    while (j <= n) {
-      q = 0;
-      i = len;
-      while (i >= 1) {
-        x = 10*a[i] + q*i;
-        a[i] = x % (2*i-1);
-        q = x / (2*i-1);
-        i = i - 1;
-      }
-      a[1] = q % 10;
-      q = q / 10;
-
-      if (q == 9) {
-        nines = nines + 1;
-      } else {
-        if (q == 10) {
-          junk = this.writeDigit(predigit+1);
-          k = 1;
-          while (k <= nines) {
-            junk = this.writeDigit(0);
-            k = k + 1;
-          }
-          predigit = 0;
-          nines = 0;
-        } else {
-          junk = this.writeDigit(predigit);
-          predigit = q;
-          if (nines != 0) {
-            k = 1;
-            while (k <= nines) {
-              junk = this.writeDigit(9);
-              k = k + 1;
-            }
-            nines = 0;
-          } else {
-          }
-        }
-      }
-      j = j + 1;
-    }
-    junk = this.writeDigit(predigit);
-
-    return 111111;
-  }
-
+class TestDoubleSimple {
+	public double test() {
+            double d1;
+            double d2;
+            double d3;
+            double d4;
+	    d1 = 1.0;
+	    d2 = 2.0;
+	    d3 = 3.0;
+	    d4 = 10.0;
+	    //d1 = 2e+01;
+            //d2 = 0.003;
+            //d3 = .004D;
+            //d4 = 34e10;
+            //System.out.println(d3 * d1);
+            //System.out.println(d1 / d1);
+            //System.out.println(3. * d2);
+            //System.out.println(d3 * 3 * d4 + d2 - d1 % d3);
+            //System.out.println(d1 / d2);
+            return (d1 + d2 + d3 + d4);
+	}
 }
