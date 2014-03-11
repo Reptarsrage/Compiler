@@ -410,15 +410,16 @@ public class TypeCheckerVisitor implements Visitor {
         n.e2.accept(this);
 	TypeNode e2 = type_stack.pop();
 	TypeNode e1 = type_stack.pop();
-	if  (e1 != tc.int_type && e2 != tc.int_type &&
-             e1 != tc.double_type && e2 != tc.double_type) {
+	if  (e1 != tc.int_type && e2 != tc.int_type //&&
+	     // Don't need to implement mod for doubles
+             /*e1 != tc.double_type && e2 != tc.double_type */) {
             System.err.println("Error at line: "+n.line_number+". Illegal types, "+e1+" and "+e2+".");
             System.exit(1);
 	}
-	if (e1 == tc.int_type && e2 == tc.int_type)
-            type_stack.push(tc.int_type);
-	else
-            type_stack.push(tc.double_type);
+	//	if (e1 == tc.int_type && e2 == tc.int_type)
+	type_stack.push(tc.int_type);
+	/*	else
+		type_stack.push(tc.double_type);*/
     }
 
     // Exp e1,e2;
@@ -427,8 +428,9 @@ public class TypeCheckerVisitor implements Visitor {
         n.e2.accept(this);
 	TypeNode e2 = type_stack.pop();
 	TypeNode e1 = type_stack.pop();
-	if  (e1 != tc.int_type && e2 != tc.int_type &&
-             e1 != tc.double_type && e2 != tc.double_type) {
+	// changed if to reject anything but int = int and double = double (don't need to do implicit conversion)
+	if  (!(e1 == tc.int_type && e2 == tc.int_type) &&
+             !(e1 == tc.double_type && e2 == tc.double_type)) {
             System.err.println("Error at line: "+n.line_number+". Illegal types, "+e1+" and "+e2+".");
             System.exit(1);
 	}
@@ -444,8 +446,9 @@ public class TypeCheckerVisitor implements Visitor {
         n.e2.accept(this);
 	TypeNode e2 = type_stack.pop();
 	TypeNode e1 = type_stack.pop();
-	if  (e1 != tc.int_type && e2 != tc.int_type &&
-             e1 != tc.double_type && e2 != tc.double_type) {
+	// changed if to reject anything but int = int and double = double (don't need to do implicit conversion)
+	if  (!(e1 == tc.int_type && e2 == tc.int_type) &&
+             !(e1 == tc.double_type && e2 == tc.double_type)) {
             System.err.println("Error at line: "+n.line_number+". Illegal types, "+e1+" and "+e2+".");
             System.exit(1);
 	}
@@ -461,8 +464,9 @@ public class TypeCheckerVisitor implements Visitor {
         n.e2.accept(this);
 	TypeNode e2 = type_stack.pop();
 	TypeNode e1 = type_stack.pop();
-	if  (e1 != tc.int_type && e2 != tc.int_type &&
-             e1 != tc.double_type && e2 != tc.double_type) {
+	// changed if to reject anything but int = int and double = double (don't need to do implicit conversion)
+	if  (!(e1 == tc.int_type && e2 == tc.int_type) &&
+             !(e1 == tc.double_type && e2 == tc.double_type)) {
             System.err.println("Error at line: "+n.line_number+". Illegal types, "+e1+" and "+e2+".");
             System.exit(1);
 	}
@@ -478,8 +482,9 @@ public class TypeCheckerVisitor implements Visitor {
         n.e2.accept(this);
 	TypeNode e2 = type_stack.pop();
 	TypeNode e1 = type_stack.pop();
-	if  (e1 != tc.int_type && e2 != tc.int_type &&
-             e1 != tc.double_type && e2 != tc.double_type) {
+	// changed if to reject anything but int = int and double = double (don't need to do implicit conversion)
+	if  (!(e1 == tc.int_type && e2 == tc.int_type) &&
+             !(e1 == tc.double_type && e2 == tc.double_type)) {
             System.err.println("Error at line: "+n.line_number+". Illegal types, "+e1+" and "+e2+".");
             System.exit(1);
 	}
