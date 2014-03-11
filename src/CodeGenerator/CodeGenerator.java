@@ -341,6 +341,14 @@ public class CodeGenerator {
     printInsn("movq", String.format("$%d", value), "%rax"); // should be %l??
     printInsn("pushq", "%rax");
   }
+
+  // pushes a double literal onto stack
+  public void genDoubleLiteral(double value) {
+      printComment("-- Generating double literal for value: " + value + " --");
+      printInsn("movq", "$" + Double.doubleToLongBits(value) + ", %rax"); // should be %l??
+    printInsn("pushq", "%rax");
+  }
+
   
   // prints a label
   private void printLabel(String labelName) {

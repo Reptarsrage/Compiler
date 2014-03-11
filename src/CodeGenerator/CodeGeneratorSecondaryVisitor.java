@@ -96,7 +96,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Display added for toy example language.  Not used in regular MiniJava
   public void visit(Display n) {
     if (count_lines) cg.genUpdateCount(n.line_number);
-	n.e.accept(this);
+    n.e.accept(this);
     cg.genDisplay(n.line_number, count_lines);
   }
 
@@ -118,14 +118,16 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 	tc.PushClass("asm_main");
 	recent_class = "asm_main";
 	cg.genMainEntry("asm_main");
-	cg.genLineCounting(input_filename);
-	if (count_lines) cg.genUpdateCount(n.i2.line_number);
+	if (count_lines) {
+	    cg.genLineCounting(input_filename);
+	    cg.genUpdateCount(n.i2.line_number);
+	}
     n.i1.accept(this);
     n.i2.accept(this);
 	for (int i = 0; i < n.b.sl.size(); i ++) {
         n.b.sl.get(i).accept(this);
     }
-	cg.genCountFinish(count(input_filename));
+	if (count_lines) cg.genCountFinish(count(input_filename));
     cg.genMainExit("asm_main");
   }
 
@@ -405,8 +407,10 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
       cg.genIntegerLiteral(n.i);
   }
   
+    // double i
   public void visit(DoubleLiteral n) {
 	// TODO doubles
+      cg.genDoubleLiteral(n.i);
   }
 
   public void visit(True n) {
