@@ -5,7 +5,7 @@ public class Not extends Exp {
   public Exp e;
 
   public Not(Exp ae, int lineNumber) {
-    super(lineNumber);
+      super(lineNumber, ae.t);
     this.e = ae;
   }
 

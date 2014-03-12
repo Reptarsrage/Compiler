@@ -3,7 +3,7 @@ import AST.Visitor.Visitor;
 
 public class True extends Exp {
   public True(int lineNumber) {
-    super(lineNumber);
+      super(lineNumber, ExprType.OTHER);
   }
 
   public void accept(Visitor v) {

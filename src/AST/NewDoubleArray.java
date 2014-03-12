@@ -5,7 +5,7 @@ public class NewDoubleArray extends Exp {
   public Exp e;
 
   public NewDoubleArray(Exp ae, int lineNumber) {
-    super(lineNumber);
+      super(lineNumber, ExprType.OTHER);
     this.e = ae;
   }
 

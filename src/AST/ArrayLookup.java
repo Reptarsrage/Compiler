@@ -6,7 +6,7 @@ public class ArrayLookup extends Exp {
   public Exp e2;
 
   public ArrayLookup(Exp ae1, Exp ae2, int lineNumber) {
-    super(lineNumber);
+    super(lineNumber, ExprType.OTHER);
     this.e1 = ae1;
     this.e2 = ae2;
   }

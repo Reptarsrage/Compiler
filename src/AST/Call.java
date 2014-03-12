@@ -7,7 +7,7 @@ public class Call extends Exp {
   public ExpList el;
 
   public Call(Exp ae, Identifier ai, ExpList ael, int lineNumber) {
-    super(lineNumber);
+    super(lineNumber, ExprType.OTHER);
     this.e = ae;
     this.i = ai;
     this.el = ael;
