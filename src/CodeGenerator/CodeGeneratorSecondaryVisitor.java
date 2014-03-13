@@ -97,7 +97,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   public void visit(Display n) {
     if (count_lines) cg.genUpdateCount(n.line_number);
     n.e.accept(this);
-    cg.genDisplay(n.line_number, count_lines);
+    cg.genDisplay(n.line_number, count_lines, n.e.isDouble);
   }
 
   // MainClass m;
@@ -247,7 +247,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   public void visit(Print n) {
     if (count_lines) cg.genUpdateCount(n.line_number);
 	n.e.accept(this);
-	cg.genDisplay(n.line_number, count_lines);
+	cg.genDisplay(n.line_number, count_lines, n.e.isDouble);
   }
 
   // Identifier i;
@@ -358,21 +358,21 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   public void visit(Minus n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genMinus(n.line_number);
+    cg.genMinus(n.line_number, n.isDouble);
   }
 
   // Exp e1,e2;
   public void visit(Times n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genTimes(n.line_number);
+    cg.genTimes(n.line_number, n.isDouble);
   }
   
   // Exp e1,e2;
   public void visit(Divide n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genDivide(n.line_number);
+    cg.genDivide(n.line_number, n.isDouble);
   }
 
   // Exp e1,e2;

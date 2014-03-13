@@ -458,32 +458,53 @@ public class CodeGenerator {
   }
   
   // generates a subtraction opp
-  public void genMinus(int linenum) {
+  public void genMinus(int linenum, boolean doubleOp) {
     printComment("-- subtract from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-    printInsn("subq", "%rcx", "%rax");  // %rax -= %rcx  (2nd operand is dst)
+    if (doubleOp) {
+	printInsn("movq", "%rax", "%xmm0");
+	printInsn("movq", "%rcx", "%xmm1");
+	printInsn("subsd", "%xmm1", "%xmm0");
+	printInsn("movq", "%xmm0", "%rax");
+    } else {
+	printInsn("subq", "%rcx", "%rax");  // %rax -= %rcx  (2nd operand is dst)
+    }
     printInsn("pushq", "%rax");
     printComment("-- end subtract --");
   }
   
   // generates a times opp
-  public void genTimes(int linenum) {
+  public void genTimes(int linenum, boolean doubleOp) {
     printComment("-- multiply from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-    printInsn("imulq", "%rcx", "%rax");  // %rax *= %rcx  (2nd operand is dst)
+    if (doubleOp) {
+	printInsn("movq", "%rax", "%xmm0");
+	printInsn("movq", "%rcx", "%xmm1");
+	printInsn("mulsd", "%xmm1", "%xmm0");
+	printInsn("movq", "%xmm0", "%rax");
+    } else {
+	printInsn("imulq", "%rcx", "%rax");  // %rax *= %rcx  (2nd operand is dst)
+    }
     printInsn("pushq", "%rax");
     printComment("-- end multiply --");
   }
   
   // generates a divide opp
- public void genDivide(int linenum) {
+ public void genDivide(int linenum, boolean doubleOp) {
     printComment("-- div from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-    printInsn("cqto");			// gcc does this?
+    if (doubleOp) {
+	printInsn("movq", "%rax", "%xmm0");
+	printInsn("movq", "%rcx", "%xmm1");
+	printInsn("divsd", "%xmm1", "%xmm0");
+	printInsn("movq", "%xmm0", "%rax");
+    } else {
+	printInsn("cqto");			// gcc does this?
 	printInsn("idivq", "%rcx");  // %rax /= %rcx
+    }
     printInsn("pushq", "%rax");
     printComment("-- end divide --");
   }
@@ -505,9 +526,9 @@ public class CodeGenerator {
     printComment("-- greater than from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-	printInsn("cmpq", "%rcx", "%rax");  // %rax > %rcx
-	printInsn("setg", "%al");
-	printInsn("movzbq", "%al", "%rax");
+    printInsn("cmpq", "%rcx", "%rax");  // %rax > %rcx
+    printInsn("setg", "%al");
+    printInsn("movzbq", "%al", "%rax");
     printInsn("pushq", "%rax");
     printComment("-- end greater than --");
   }
@@ -634,11 +655,15 @@ public void genNot(int linenum) {
 }
 
 // generates the print and display opps
-  public void genDisplay(int linenum, boolean count_lines) {
+    public void genDisplay(int linenum, boolean count_lines, boolean isDouble) {
     printComment("-- display/print from line " + linenum + " --");
     printInsn("popq", "%rdi");  // single operand
-    if (!count_lines) {
-	   printInsn("call", assemblerPrefixName + "put");
+    if (!count_lines) { // why only when not counting lines?
+	if (isDouble)
+	    printInsn("call", assemblerPrefixName + "put_double");
+	else
+	    printInsn("call", assemblerPrefixName + "put");
+
     }
 	printComment("-- end display/print --");
   }
