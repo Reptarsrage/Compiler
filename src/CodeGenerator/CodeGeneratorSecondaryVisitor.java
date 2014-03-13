@@ -320,49 +320,49 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   public void visit(LessThan n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genLessThan(n.line_number);
+    cg.genLessThan(n.line_number, n.e1.isDouble);
   }
   
   // Exp e1,e2;
   public void visit(LessThanOrEqualTo n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genLessThanOrEqualTo(n.line_number);
+    cg.genLessThanOrEqualTo(n.line_number, n.e1.isDouble);
   }
   
   // Exp e1,e2;
   public void visit(GreaterThanOrEqualTo n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genGreaterThanOrEqualTo(n.line_number);
+    cg.genGreaterThanOrEqualTo(n.line_number, n.e1.isDouble);
   }
   
   // Exp e1,e2;
   public void visit(GreaterThan n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genGreaterThan(n.line_number);
+    cg.genGreaterThan(n.line_number, n.e1.isDouble);
   }
   
   // Exp e1,e2;call n
   public void visit(Equals n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genEqual(n.line_number);
+    cg.genEqual(n.line_number, n.e1.isDouble);
   }
   
   // Exp e1,e2;
   public void visit(NotEqual n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genNotEqual(n.line_number);
+    cg.genNotEqual(n.line_number, n.e1.isDouble);
   }
   
   // Exp e1,e2;
   public void visit(Mod n) {
     n.e1.accept(this);
     n.e2.accept(this);
-	cg.genMod(n.line_number);
+    cg.genMod(n.line_number);
   }
 
   // Exp e1,e2;
@@ -469,7 +469,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   // Exp e;
   public void visit(NewDoubleArray n) {
     n.e.accept(this);
-    //	cg.genNewArray();
+    cg.genNewArray(n.line_number);
   }
   
   // Identifier i;

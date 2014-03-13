@@ -509,9 +509,8 @@ public class TypeCheckerVisitor implements Visitor {
         n.e2.accept(this);
 	TypeNode e2 = type_stack.pop();
 	TypeNode e1 = type_stack.pop();
-	if  ((e1 == tc.int_array_type && e2 != tc.int_type) ||
-             (e1 == tc.double_array_type && e2 != tc.double_type)) {
-            System.err.println("Error at line: "+n.line_number+". Type mismatch between "+e1+" and "+e2+".");
+	if  ((e1 != tc.int_array_type && e1 != tc.double_array_type) || e2 != tc.int_type ) {
+            System.err.println("Error at line: "+n.line_number+". Array lookup must have types of IntArray or DoubleArray and IntType, not "+e1+" and "+e2);
             System.exit(1);
 	}
 	if (e1 == tc.int_array_type)
@@ -611,7 +610,7 @@ public class TypeCheckerVisitor implements Visitor {
         n.e.accept(this);
 	TypeNode e = type_stack.pop();
 	if  (e != tc.int_type) {
-            System.err.println("Error at line: "+n.line_number+". A new array must have an int array, not a "+e+".");
+            System.err.println("Error at line: "+n.line_number+". A new array must have an integer length, not a "+e+".");
             System.exit(1);
 	}
 	
@@ -623,7 +622,7 @@ public class TypeCheckerVisitor implements Visitor {
         n.e.accept(this);
 	TypeNode e = type_stack.pop();
 	if  (e != tc.int_type) {
-            System.err.println("Error at line: "+n.line_number+". A new array must have an int array, not a "+e+".");
+            System.err.println("Error at line: "+n.line_number+". A new array must have an integer length, not a "+e+".");
             System.exit(1);
 	}
 	

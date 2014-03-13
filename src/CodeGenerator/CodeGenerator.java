@@ -548,49 +548,73 @@ public class CodeGenerator {
   }
   
   // generates a > opp
-  public void genGreaterThan(int linenum) {
+  public void genGreaterThan(int linenum, boolean doubleCmp) {
     printComment("-- greater than from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-    printInsn("cmpq", "%rcx", "%rax");  // %rax > %rcx
-    printInsn("setg", "%al");
-    printInsn("movzbq", "%al", "%rax");
+    if ( doubleCmp) {
+	printInsn("movq", "%rax", "%xmm0");
+	printInsn("movq", "%rcx", "%xmm1");
+	printInsn("call", assemblerPrefixName + "doubleGreater");
+    } else {
+	printInsn("cmpq", "%rcx", "%rax");  // %rax > %rcx
+	printInsn("setg", "%al");
+	printInsn("movzbq", "%al", "%rax");
+    }
     printInsn("pushq", "%rax");
     printComment("-- end greater than --");
   }
   
 // generates a < opp
-public void genLessThan(int linenum) {
+public void genLessThan(int linenum, boolean doubleCmp) {
     printComment("-- less than from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
+    if ( doubleCmp) {
+	printInsn("movq", "%rax", "%xmm0");
+	printInsn("movq", "%rcx", "%xmm1");
+	printInsn("call", assemblerPrefixName + "doubleLess");
+    } else {
 	printInsn("cmpq", "%rcx", "%rax");  // %rax < %rcx
 	printInsn("setl", "%al");
 	printInsn("movzbq", "%al", "%rax");
+    }
     printInsn("pushq", "%rax");
     printComment("-- end less than --");
 }
 
 // generates a >= opp
-public void genGreaterThanOrEqualTo(int linenum) {
+public void genGreaterThanOrEqualTo(int linenum, boolean doubleCmp) {
     printComment("-- greater or equal from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
+    if ( doubleCmp) {
+	printInsn("movq", "%rax", "%xmm0");
+	printInsn("movq", "%rcx", "%xmm1");
+	printInsn("call", assemblerPrefixName + "doubleGreaterEqual");
+    } else {
 	printInsn("cmpq", "%rcx", "%rax");  // %rax >= %rcx
 	printInsn("setge", "%al");
 	printInsn("movzbq", "%al", "%rax");
+    }
     printInsn("pushq", "%rax");
     printComment("-- end greater or equal --");
 }
 
 // generates a <= opp
-public void genLessThanOrEqualTo(int linenum) {
+public void genLessThanOrEqualTo(int linenum, boolean doubleCmp) {
     printComment("-- less or equal from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
+    if ( doubleCmp) {
+	printInsn("movq", "%rax", "%xmm0");
+	printInsn("movq", "%rcx", "%xmm1");
+	printInsn("call", assemblerPrefixName + "doubleLessEqual");
+    } else {
 	printInsn("cmpq", "%rcx", "%rax");  // %rax <= %rcx
 	printInsn("setle", "%al");
 	printInsn("movzbq", "%al", "%rax");
+    }
     printInsn("pushq", "%rax");
     printComment("-- end less or equal --");
 }
@@ -646,25 +670,37 @@ public void genShortCircuitAndEnd(int labelCount) { // TODO make short circuit -
 }
 
 // generates the == opp
-public void genEqual(int linenum) {
+    public void genEqual(int linenum, boolean doubleCmp) {
     printComment("-- equal from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
+    if ( doubleCmp) {
+	printInsn("movq", "%rax", "%xmm0");
+	printInsn("movq", "%rcx", "%xmm1");
+	printInsn("call", assemblerPrefixName + "doubleEquals");
+    } else {
 	printInsn("cmpq", "%rcx", "%rax");  // %rax == %rcx
 	printInsn("sete", "%al");
 	printInsn("movzbq", "%al", "%rax");
+    }
     printInsn("pushq", "%rax");
     printComment("-- end equal --");
 }
 
 // generates the != opp
-public void genNotEqual(int linenum) {
+public void genNotEqual(int linenum, boolean doubleCmp) {
     printComment("-- not equal from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
+    if ( doubleCmp) {
+	printInsn("movq", "%rax", "%xmm0");
+	printInsn("movq", "%rcx", "%xmm1");
+	printInsn("call", assemblerPrefixName + "doubleNotEqual");
+    } else {
 	printInsn("cmpq", "%rcx", "%rax");  // %rax != %rcx
 	printInsn("setne", "%al");
 	printInsn("movzbq", "%al", "%rax");
+    }
     printInsn("pushq", "%rax");
     printComment("-- end not equal --");
 }

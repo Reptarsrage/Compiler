@@ -49,6 +49,7 @@ public class CodeGenMain {
 	    program.accept(new CodeGeneratorVisitor(tc, cg, countLines));
 	    program.accept(new CodeGeneratorInheritanceVisitor(tc));
 	    program.accept(new CodeGeneratorSecondaryVisitor(cg, tc, countLines, inputFileName));
+
 	    //
 	    // System.out.print("\n" + "Parsing completed");
 	    //
