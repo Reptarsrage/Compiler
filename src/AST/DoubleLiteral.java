@@ -5,7 +5,7 @@ public class DoubleLiteral extends Exp {
   public double i;
 
   public DoubleLiteral(double ai, int lineNumber) {
-    super(lineNumber);
+      super(lineNumber, true);
     this.i = ai;
   }
 

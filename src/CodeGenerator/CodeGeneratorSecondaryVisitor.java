@@ -351,7 +351,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
   public void visit(Plus n) {
     n.e1.accept(this);
     n.e2.accept(this);
-    cg.genAdd(n.line_number);
+    cg.genAdd(n.line_number, n.isDouble);
   }
 
   // Exp e1,e2;

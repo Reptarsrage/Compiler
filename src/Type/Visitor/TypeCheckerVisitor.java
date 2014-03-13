@@ -260,7 +260,7 @@ public class TypeCheckerVisitor implements Visitor {
                 System.err.println("Error at line: "+n.line_number+". Can't assign a "+rhs+" to a "+lhs+".");
                 System.exit(1);
             }
-	} else if ((id == tc.double_type && (exp != tc.double_type && exp != tc.int_type)) || (exp != id)) {
+	} else if ((id == tc.double_type && (exp != tc.double_type)) || (exp != id)) {
             System.err.println("Error at line: "+n.line_number+". Can't assign a "+exp+" to a "+id+".");
             System.exit(1);
 	}
@@ -436,8 +436,11 @@ public class TypeCheckerVisitor implements Visitor {
 	}
 	if (e1 == tc.int_type && e2 == tc.int_type)
             type_stack.push(tc.int_type);
-	else
+	else {
+	    System.out.println("#------- Add from line "+n.line_number+" is double addition -------"); 
             type_stack.push(tc.double_type);
+	    n.isDouble = true;
+	}  
     }
 
     // Exp e1,e2;
@@ -454,8 +457,10 @@ public class TypeCheckerVisitor implements Visitor {
 	}
 	if (e1 == tc.int_type && e2 == tc.int_type)
             type_stack.push(tc.int_type);
-	else
+	else {
             type_stack.push(tc.double_type);
+	    n.isDouble = true;
+	}
     }
 
     // Exp e1,e2;
@@ -472,8 +477,10 @@ public class TypeCheckerVisitor implements Visitor {
 	}
 	if (e1 == tc.int_type && e2 == tc.int_type)
             type_stack.push(tc.int_type);
-	else
+	else {
             type_stack.push(tc.double_type);
+	    n.isDouble = true;
+	}
     }
   
     // Exp e1,e2;
@@ -490,8 +497,10 @@ public class TypeCheckerVisitor implements Visitor {
 	}
 	if (e1 == tc.int_type && e2 == tc.int_type)
             type_stack.push(tc.int_type);
-	else
+	else {
             type_stack.push(tc.double_type);
+	    n.isDouble = true;
+	}
     }
 
     // Exp e1,e2;
@@ -507,8 +516,10 @@ public class TypeCheckerVisitor implements Visitor {
 	}
 	if (e1 == tc.int_array_type)
             type_stack.push(tc.int_type);
-	else
+	else {
             type_stack.push(tc.double_type);
+	    // TODO -- n.isDouble = true;
+	}
     }
 
     // Exp e;
@@ -644,6 +655,11 @@ public class TypeCheckerVisitor implements Visitor {
             System.err.println("Error at line: "+n.line_number+". Variable " + n.s + " is used when uninitialized.");
             System.exit(1);
         }
+
+	if (elt == tc.double_type) {
+	    n.isDouble = true;
+	    System.out.println("# ------- Variable "+n.s+" marked as double ---------");
+	}
 
 	// TODO
 	// TypeNode elt = tc.CheckSymbolTables(n.s, TypeChecker.TypeLevel.METHOD);

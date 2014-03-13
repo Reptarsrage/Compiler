@@ -441,11 +441,18 @@ public class CodeGenerator {
   } 
   
   // generates an add opp
-  public void genAdd(int linenum) {
+    public void genAdd(int linenum, boolean doubleOp) {
     printComment("-- add from line " + linenum + " --");
     printInsn("popq", "%rcx");  // right operand
     printInsn("popq", "%rax");  // left operand
-    printInsn("addq", "%rcx", "%rax");  // %rax += %rcx  (2nd operand is dst)
+    if (doubleOp) {
+	printInsn("movq", "%rax", "%xmm0");
+	printInsn("movq", "%rcx", "%xmm1");
+	printInsn("addsd", "%xmm1", "%xmm0");
+	printInsn("movq", "%xmm0", "%rax");
+    } else {
+	printInsn("addq", "%rcx", "%rax");  // %rax += %rcx  (2nd operand is dst)
+    }
     printInsn("pushq", "%rax");
     printComment("-- end add --");
   }
