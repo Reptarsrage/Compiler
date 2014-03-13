@@ -8,6 +8,8 @@ package CodeGenerator;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import AST.ExpList;
+import AST.Exp;
 import Type.*;
 import Type.Visitor.TypeChecker;
 import java.util.*;
@@ -298,35 +300,59 @@ public class CodeGenerator {
   }
   
   // generates an exit from a method
-  public void genFunctionExit(String functionName, int local_count, int param_count) {
+    public void genFunctionExit(String functionName, int local_count, int param_count, boolean returnDouble) {
 	 printInsn("popq", "%rax");
+	 if (returnDouble)
+	     printInsn("movq", "%rax", "%xmm0"); 
 	 removeLocalsFromStack(local_count + param_count); // TODO optimize
 	 genMainExit(functionName );
   }
 
   // currently only works with <= 5 args
-  public void genCall(String className, String functionName, int offset, int argc, int linenum) {
+    public void genCall(String className, String functionName, int offset, int linenum, ExpList el, boolean returnDouble) {
     printComment("method call for " + className +"."+functionName + " from line " + linenum);
-    if (argc > 5) {
+    if (returnDouble) 
+	printComment("Is marked as returning double");
+    if (el.size() > 5) {
 	  // too many params passed
-	  System.err.println("Error at line number: "+linenum+". Recieved too many parameters to a function. Recieved: "+argc+", Expected: 5.");
+	System.err.println("Error at line number: "+linenum+". Recieved too many parameters to a function. Recieved: "+el.size()+", Expected: <= 5.");
 	  System.exit(1);
     }
 	printInsn("popq", "%rdi"); // addr of class
     String[] registers = {"%rsi", "%rdx", "%rcx", "%r8", "%r9"};
-    for (int i = 0; i < argc; i ++) {
-      // have to pop args in reverse order
-      printInsn("popq", registers[argc - 1 - i]);
+    String[] doubleregs = {"%xmm0", "%xmm1", "%xmm2", "%xmm3", "%xmm4"}; // not allowed to use more than 5
+    int i = 0;
+    int j = 0;
+    while ( (i + j) < el.size() ) {
+	if ( (el.get(i+j)).isDouble ) {
+	    printInsn("popq", "%r12"); // don't think we use %r12 for anything
+	    printInsn("movq", "%r12", doubleregs[el.size() - 1 - j]);
+	    j++;
+	} else {
+	    printInsn("popq", registers[el.size() - 1 - i]);
+	    i++;
+	}
     }
-	printInsn("movq", "(%rdi)", "%r14"); // get the start of our class vtable
-	printInsn("call", "*"+offset+"(%r14)"); // goto correct mthod
+    /*    for (int i = 0; i < argc; i ++) {
+      // have to pop args in reverse order
+
+      printInsn("popq", registers[argc - 1 - i]);
+      }*/
+    printInsn("movq", "(%rdi)", "%r14"); // get the start of our class vtable
+    printInsn("call", "*"+offset+"(%r14)"); // goto correct mthod
+    if (returnDouble)
+	printInsn("movq", "%xmm0", "%rax"); // push result to ret value
     printInsn("pushq", "%rax"); // push result to ret value
   }
   
   // pushes a formal from a register onto stack
-  public void genFormal(String register, int linenum) {
+    public void genFormal(String register, int linenum, boolean isDouble) {
       printComment("Formal from line " + linenum);
-      printInsn("pushq", register);
+      if (isDouble) {
+	  printInsn("movq", register, "%r11"); // r11 unused
+	  printInsn("pushq", "%r11");
+      } else
+	  printInsn("pushq", register);
   }
 
   // pushes a constant value onto stack
@@ -658,6 +684,8 @@ public void genNot(int linenum) {
     public void genDisplay(int linenum, boolean count_lines, boolean isDouble) {
     printComment("-- display/print from line " + linenum + " --");
     printInsn("popq", "%rdi");  // single operand
+    if (isDouble) 
+	printInsn("movq", "%rdi", "%xmm0");
     if (!count_lines) { // why only when not counting lines?
 	if (isDouble)
 	    printInsn("call", assemblerPrefixName + "put_double");

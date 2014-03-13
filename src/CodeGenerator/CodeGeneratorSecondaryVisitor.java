@@ -189,20 +189,38 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
     cg.genFunctionEntry(n.i.s);
 	if (count_lines) cg.genUpdateCount(n.line_number);
     String[] registers = {"%rsi", "%rdx", "%rcx", "%r8", "%r9"};
+    String[] doubleregs = {"%xmm0", "%xmm1", "%xmm2", "%xmm3", "%xmm4"};
     if (n.fl.size() > 5) System.exit(1); // more than 5 params is illegal (at the moment)
-    cg.genFormal("%rdi", n.line_number); // add this ptr to stack
-	for (int i = n.fl.size() - 1; i >= 0; i--) {
-	  cg.genFormal(registers[i], n.line_number);
+    cg.genFormal("%rdi", n.line_number, false); // add this ptr to stack
+    int i = 0;
+    int j = 0;
+    while ((i+j) < n.fl.size()) {
+	if (n.fl.get(i+j).t instanceof DoubleType) {
+	    cg.genFormal(doubleregs[n.fl.size() - 1 - j], n.line_number, true);
+	    j++;
+	} else {
+	    cg.genFormal(registers[n.fl.size() - 1 - i], n.line_number, false);
+	    i++;
+	}
     }
-	cg.addLocalsToStack(local_count);
 
-    for (int i = 0; i < n.sl.size(); i++) {
-      n.sl.get(i).accept(this);
+    /*    for (int i = 0; i < n.fl.size(); i ++) {
+	  cg.genFormal(registers[n.fl.size() - 1 - i], n.line_number);
+	  }
+	  for (int i = n.fl.size() - 1; i >= 0; i--) {
+	  cg.genFormal(registers[i], n.line_number);
+	  }*/
+    cg.addLocalsToStack(local_count);
+
+    for (int k = 0; k < n.sl.size(); k++) {
+      n.sl.get(k).accept(this);
     }
 	if (count_lines) cg.genUpdateCount(n.e.line_number);
     n.e.accept(this);
-	
-    cg.genFunctionExit(n.i.s, local_count, n.fl.size() + 1);
+    boolean returnDouble = false;
+    if (n.t instanceof DoubleType)
+	returnDouble = true;
+    cg.genFunctionExit(n.i.s, local_count, n.fl.size() + 1, returnDouble);
   }
 
   // StatementList sl;
@@ -399,7 +417,7 @@ public class CodeGeneratorSecondaryVisitor implements Visitor {
 	n.e.accept(this); // this pushes addr of struct to the stack
 	String className = callee;
 	int offset = tc.GetMethodMemOffSet(n.i.s, callee); // vtable offset of method
-    cg.genCall(className, n.i.s, offset, n.el.size(), n.line_number);
+	cg.genCall(className, n.i.s, offset, n.line_number, n.el, n.isDouble);
   }
 
   // long i;
