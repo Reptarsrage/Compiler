@@ -272,22 +272,22 @@ public class TypeCheckerVisitor implements Visitor {
     public void visit(ArrayAssign n) {
         n.e1.accept(this);
         n.e2.accept(this);
-	TypeNode e2 = type_stack.pop();
-	TypeNode e1 = type_stack.pop();
-	TypeNode id = tc.CheckSymbolTables(n.i.s, TypeChecker.TypeLevel.VARIABLE);
-	if (id == null) {
-            System.err.println("Error at line: "+n.line_number+". Array type "+id+" not recognized.");
-            System.exit(1);
-	}
-	if (e1 != tc.int_type){
-            System.err.println("Error at line: "+n.line_number+". Array index must be an integer.");
-            System.exit(1);
-	}
-	if ((id == tc.int_array_type && e2 != tc.int_type) ||
-            (id == tc.double_array_type && e2 != tc.double_type && e2 != tc.int_type))	{
-            System.err.println("Error at line: "+n.line_number+". Can't assign a "+e2+" to a "+id+".");
-            System.exit(1);
-	}
+		TypeNode e2 = type_stack.pop();
+		TypeNode e1 = type_stack.pop();
+		TypeNode id = tc.CheckSymbolTables(n.i.s, TypeChecker.TypeLevel.VARIABLE);
+		if (id == null) {
+				System.err.println("Error at line: "+n.line_number+". Array type "+id+" not recognized.");
+				System.exit(1);
+		}
+		if (e1 != tc.int_type){
+				System.err.println("Error at line: "+n.line_number+". Array index must be an integer.");
+				System.exit(1);
+		}
+		if ((id == tc.int_array_type && e2 != tc.int_type) ||
+				(id == tc.double_array_type && e2 != tc.double_type))	{
+				System.err.println("Error at line: "+n.line_number+". Can't assign a "+e2+" to a "+id+".");
+				System.exit(1);
+		}
     }
 
     // Exp e1,e2;
@@ -517,7 +517,7 @@ public class TypeCheckerVisitor implements Visitor {
             type_stack.push(tc.int_type);
 	else {
             type_stack.push(tc.double_type);
-	    // TODO -- n.isDouble = true;
+			n.isDouble = true; // TODO?
 	}
     }
 
