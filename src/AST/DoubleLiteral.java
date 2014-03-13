@@ -6,7 +6,7 @@ public class DoubleLiteral extends Exp {
 
   public DoubleLiteral(double ai, int lineNumber) {
       super(lineNumber, true);
-    this.i = ai;
+      this.i = ai;
   }
 
   public void accept(Visitor v) {

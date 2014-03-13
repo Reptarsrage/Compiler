@@ -5,7 +5,7 @@ public class IntegerLiteral extends Exp {
   public long i;
 
   public IntegerLiteral(long ai, int lineNumber) {
-    super(lineNumber);
+      super(lineNumber);
     this.i = ai;
   }
 

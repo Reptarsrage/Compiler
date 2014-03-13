@@ -6,7 +6,7 @@ public class LessThan extends Exp {
   public Exp e2;
 
   public LessThan(Exp ae1, Exp ae2, int lineNumber) {
-    super(lineNumber);
+      super(lineNumber);
     this.e1 = ae1;
     this.e2 = ae2;
   }

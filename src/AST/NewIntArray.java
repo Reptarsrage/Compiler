@@ -5,7 +5,7 @@ public class NewIntArray extends Exp {
   public Exp e;
 
   public NewIntArray(Exp ae, int lineNumber) {
-    super(lineNumber);
+      super(lineNumber);
     this.e = ae;
   }
 
