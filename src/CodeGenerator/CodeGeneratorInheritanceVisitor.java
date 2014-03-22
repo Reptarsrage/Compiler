@@ -1,5 +1,5 @@
-/* Justin Robb, xreptarx
- * Adam Croissant, adamc41
+/* Justin Robb
+ * Adam Croissant
  * 3-4-14
  * The visitor which modifies vtables and class object offsets to match parent and subclasses
  */

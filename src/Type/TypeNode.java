@@ -1,5 +1,5 @@
-/* Justin Robb, xreptarx
- * Adam Croissant, adamc41
+/* Justin Robb
+ * Adam Croissant
  * 2-18-14
  * General Type
 */

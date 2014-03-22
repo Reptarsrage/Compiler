@@ -1,5 +1,5 @@
-/* Justin Robb, xreptarx
- * Adam Croissant, adamc41
+/* Justin Robb
+ * Adam Croissant
  * 2-18-14
  * Visitor for the second and final sweep of the AST
  * Checks to make sure overridden methods are done so correctly

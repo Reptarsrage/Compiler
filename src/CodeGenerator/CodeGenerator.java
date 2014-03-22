@@ -1,5 +1,5 @@
-/* Justin Robb, xreptarx
- * Adam Croissant, adamc41
+/* Justin Robb
+ * Adam Croissant
  * 3-4-14
  * The tool which generates assembly code 
  */
